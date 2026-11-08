@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tracky · Rubber & plastics prices</title>
+<link rel="icon" href="logo.svg">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0b1466">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tracky">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --ink: #0f1124; --ink-2: #454a5e; --muted: #5d6275; --line: #e4e2da;
+  --cream: #f7f4ec; --soft: #f1eee5; --blue: #2547ff; --blue-ink: #1a33c2; --blue-deep: #0b1466; --blue-wash: #eef1ff;
+  --yellow: #ffd84d; --ok: #13795b; --bad: #b42318; --ease: cubic-bezier(.22, 1, .36, 1);
+  --display: 'Schibsted Grotesk', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: var(--ink); font: 400 15px/1.5 Figtree, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+.wrap { width: min(1200px, 100% - 48px); margin-inline: auto; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* top bar */
+.top { position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, .88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 14px; height: 66px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font: 600 25px/1 var(--display); letter-spacing: -.04em; text-decoration: none; }
+.brand img { width: 32px; height: 32px; display: block; }
+.top .spacer { flex: 1; }
+.sync { display: inline-flex; align-items: center; gap: 7px; color: var(--ok); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.sync i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.sync.stale { color: var(--bad); }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--ink); color: #fff; font-weight: 600; font-size: 14.5px; cursor: pointer; transition: background .2s, transform .2s var(--ease); white-space: nowrap; }
+.btn:hover { background: #272a3d; transform: translateY(-1px); }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .6; cursor: progress; }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.btn.spin svg { animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* hero */
+.hero { position: relative; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; margin: 22px 0 28px; padding: 36px 36px 32px; border-radius: 28px; background: var(--blue-deep); color: #fff; overflow: hidden; isolation: isolate; }
+.mesh { position: absolute; inset: 0; z-index: -1; }
+.mesh i { position: absolute; border-radius: 50%; filter: blur(70px); animation: drift 22s ease-in-out infinite alternate; }
+.mesh .m1 { width: 60%; aspect-ratio: 1; left: -15%; top: -80%; background: #2547ff; }
+.mesh .m2 { width: 50%; aspect-ratio: 1; right: -10%; top: -60%; background: #3a7bff; animation-duration: 26s; animation-delay: -8s; }
+.mesh .m3 { width: 35%; aspect-ratio: 1; left: 40%; top: 10%; background: #5b3dff; opacity: .6; animation-duration: 30s; }
+.mesh .m4 { width: 14%; aspect-ratio: 1; right: 30%; top: -10%; background: #ffd84d; opacity: .4; animation-duration: 18s; }
+@keyframes drift { 50% { transform: translate(8%, 10%) scale(1.1); } 100% { transform: translate(-6%, -4%) scale(.95); } }
+.hero-k { color: #c9d2ff; font-size: 13.5px; font-weight: 600; }
+h1 { margin-top: 6px; font: 600 clamp(32px, 4.4vw, 48px)/1.05 var(--display); letter-spacing: -.035em; }
+.hero-sub { margin-top: 10px; max-width: 500px; color: #dbe1ff; font-size: 16px; }
+.hero-sub b { color: var(--yellow); font-weight: 600; }
+.fx { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
+.fx span { padding: 6px 12px; border-radius: 10px; background: rgba(255, 255, 255, .12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); font-size: 13px; font-weight: 600; }
+.fx span i { font-style: normal; color: #c9d2ff; font-weight: 500; margin-right: 4px; }
+.hero-stat { min-width: 270px; padding: 18px 20px; border-radius: 20px; background: rgba(255, 255, 255, .1); backdrop-filter: blur(12px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); }
+.hero-stat p { color: #c9d2ff; font-size: 13px; font-weight: 600; }
+.hero-stat b { display: block; margin-top: 2px; font: 600 36px/1.1 var(--display); letter-spacing: -.03em; }
+.hero-stat b small { font: 500 14px Figtree, sans-serif; color: #c9d2ff; letter-spacing: 0; margin-left: 3px; }
+.hero-stat svg { display: block; width: 100%; height: 44px; margin: 8px 0 4px; overflow: visible; }
+.hero-stat .delta { color: var(--yellow); font-size: 13px; font-weight: 600; }
+
+/* groups + tiles */
+.group { margin-bottom: 26px; }
+.group-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.group-head h2 { font: 600 20px/1.2 var(--display); letter-spacing: -.025em; }
+.group-head span { color: var(--muted); font-size: 13.5px; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tile { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 18px 20px 16px; border: 0; border-radius: 20px; background: var(--cream); text-align: left; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s; }
+.tile:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgba(15, 17, 36, .35); }
+.tile[aria-pressed="false"] { opacity: .5; }
+.tile.hero-tile { grid-column: span 2; background: var(--blue); color: #fff; }
+#tiles-plastic .tile.hero-tile { grid-column: auto; }
+.tile-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.tile-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+.tile-label i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.tile-origin { padding: 2px 8px; border-radius: 99px; background: #fff; color: var(--ink-2); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.tile.hero-tile .tile-origin { background: rgba(255, 255, 255, .16); color: #fff; }
+.tile-value { margin-top: 12px; font: 600 30px/1 var(--display); letter-spacing: -.03em; }
+.tile.hero-tile .tile-value { font-size: 42px; }
+#tiles-plastic .tile.hero-tile .tile-value { font-size: 30px; }
+.tile-value small { font: 500 14px Figtree, sans-serif; letter-spacing: 0; color: var(--muted); margin-left: 3px; }
+.tile.hero-tile .tile-value small { color: #c9d2ff; }
+.tile-note { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 13px; }
+.tile.hero-tile .tile-note { color: #dbe1ff; }
+.chg { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chg.up { color: var(--ok); } .chg.down { color: var(--bad); } .chg.flat { color: var(--muted); }
+.tile.hero-tile .chg.up, .tile.hero-tile .chg.down, .tile.hero-tile .chg.flat { color: var(--yellow); }
+.tile svg.spark { display: block; width: 100%; height: 36px; margin-top: 14px; overflow: visible; }
+.tile.hero-tile svg.spark { height: 52px; }
+
+/* panels */
+.panel { margin-bottom: 16px; padding: 22px 24px; border-radius: 22px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.panel-head h2 { font: 600 20px/1.3 var(--display); letter-spacing: -.025em; }
+.panel-sub { margin-top: 2px; color: var(--muted); font-size: 13.5px; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.tabs { display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--soft); }
+.tabs button { padding: 6px 12px; border: 0; border-radius: 9px; background: none; color: var(--ink-2); font-weight: 600; font-size: 13.5px; cursor: pointer; }
+.tabs button:hover { color: var(--ink); }
+.tabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 4px rgba(0, 0, 0, .1); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.legend button { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 0; border-radius: 99px; background: var(--cream); font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; }
+.legend i.dash { background-image: linear-gradient(90deg, currentColor 60%, transparent 0) !important; background-size: 5px 3px; }
+.chart { position: relative; height: 380px; }
+
+/* table */
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 0 0 10px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12.5px; font-weight: 600; text-align: right; white-space: nowrap; }
+td { padding: 13px 0; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th + th, td + td { padding-left: 18px; }
+th:first-child, td:first-child { text-align: left; }
+tr:last-child td { border-bottom: 0; }
+tr.avg td { font-weight: 700; background: var(--blue-wash); }
+tr.avg td:first-child { border-radius: 12px 0 0 12px; padding-left: 10px; }
+tr.avg td:last-child { border-radius: 0 12px 12px 0; padding-right: 10px; }
+tr.avg td:first-child .cell b::after { content: 'avg'; margin-left: 8px; padding: 1px 7px; border-radius: 99px; background: var(--yellow); color: var(--ink); font-size: 11px; font-weight: 700; vertical-align: 1px; }
+.cell { display: flex; align-items: center; gap: 10px; }
+.cell i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.cell small { display: block; color: var(--muted); font-size: 12.5px; font-weight: 500; }
+.muted { color: var(--muted); }
+td a { color: var(--blue); font-weight: 600; text-decoration: none; }
+td a:hover { text-decoration: underline; }
+
+.err { display: none; margin-bottom: 16px; padding: 12px 16px; border-radius: 14px; background: #fde6e3; color: var(--bad); font-size: 14px; font-weight: 500; }
+footer { margin-top: 8px; padding: 26px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.65; }
+footer p { max-width: 880px; }
+footer p + p { margin-top: 8px; }
+footer b { color: var(--ink-2); }
+.install { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; padding: 18px 20px; border-radius: 20px; background: var(--cream); }
+.install[hidden] { display: none; }
+.install img { width: 44px; height: 44px; border-radius: 12px; display: block; flex: none; }
+.install-text { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.install-text b { display: block; color: var(--ink); font: 600 17px/1.2 var(--display); letter-spacing: -.02em; }
+.install-text span { color: var(--muted); font-size: 13.5px; }
+.btn.blue { background: var(--blue); }
+.btn.blue:hover { background: var(--blue-ink); }
+dialog { width: min(400px, 100% - 32px); padding: 24px; border: 0; border-radius: 22px; color: var(--ink); box-shadow: 0 30px 80px -20px rgba(11, 20, 102, .45); }
+dialog::backdrop { background: rgba(15, 17, 36, .45); }
+dialog h2 { font: 600 21px/1.2 var(--display); letter-spacing: -.025em; }
+dialog p { margin-top: 6px; color: var(--ink-2); }
+dialog ol { margin: 14px 0 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px; }
+dialog li { counter-increment: s; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--cream); font-weight: 500; }
+dialog li::before { content: counter(s); width: 24px; height: 24px; border-radius: 50%; background: var(--yellow); display: grid; place-items: center; font: 700 13px Figtree, sans-serif; flex: none; }
+dialog li svg { width: 18px; height: 18px; fill: none; stroke: var(--blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; margin-left: auto; }
+dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 18px; }
+
+@media (max-width: 960px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-stat { min-width: 0; width: 100%; }
+}
+@media (max-width: 600px) {
+  .wrap { width: calc(100% - 32px); }
+  .sync { display: none; }
+  .hero { padding: 26px 20px 20px; border-radius: 22px; margin-top: 16px; }
+  .tiles { gap: 10px; }
+  .tile { padding: 14px 14px 12px; }
+  .tile-value { font-size: 22px; }
+  .tile.hero-tile .tile-value { font-size: 34px; }
+  #tiles-plastic .tile.hero-tile .tile-value { font-size: 22px; }
+  .tile-origin { display: none; }
+  .tile.hero-tile .tile-origin { display: inline; }
+  .tile-note { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .panel { padding: 18px 16px; }
+  .chart { height: 280px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="logo.svg" alt="">tracky</a>
+    <div class="spacer"></div>
+    <span class="sync" id="updated"><i></i>Loading…</span>
+    <button class="btn" id="refresh"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Refresh</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="mesh" aria-hidden="true"><i class="m1"></i><i class="m2"></i><i class="m3"></i><i class="m4"></i></div>
+    <div>
+      <p class="hero-k">Prices in ₱/kg</p>
+      <h1>Rubber & plastics</h1>
+      <p class="hero-sub">Malaysian and Philippine rubber next to PVC, LDPE and EVA, all in <b>pesos per kilogram</b>.</p>
+      <div class="fx" id="fx"></div>
+    </div>
+    <div class="hero-stat" id="hero-stat"></div>
+  </section>
+
+  <div class="err" id="err" role="status"></div>
+
+  <section class="group">
+    <div class="group-head"><h2>Rubber</h2><span>SMR 20 daily · PH cuplump monthly</span></div>
+    <div class="tiles" id="tiles-rubber"></div>
+  </section>
+  <section class="group">
+    <div class="group-head"><h2>Plastics</h2><span>Asia monthly index</span></div>
+    <div class="tiles" id="tiles-plastic"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><h2>Price history</h2><p class="panel-sub" id="chart-sub">Average ₱/kg per month</p></div>
+      <div class="controls">
+        <div class="tabs" id="gran" role="tablist" aria-label="Period">
+          <button data-v="daily" aria-selected="false">Daily</button><button data-v="weekly" aria-selected="false">Weekly</button>
+          <button data-v="monthly" aria-selected="true">Monthly</button><button data-v="yearly" aria-selected="false">Yearly</button>
+        </div>
+        <div class="tabs" id="range" role="tablist" aria-label="Range">
+          <button data-v="90" aria-selected="false">3M</button><button data-v="365" aria-selected="false">1Y</button><button data-v="0" aria-selected="true">All</button>
+        </div>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="chart"><canvas id="chart" aria-label="Price history chart" role="img"></canvas></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><h2>Averages</h2><p class="panel-sub">Trailing averages up to each series' latest price. Weekly figures only apply to daily data.</p></div></div>
+    <div class="table-scroll"><table id="tbl"></table></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="install" id="install">
+    <div class="install-text">
+      <img src="/icons/icon-192.png" alt="">
+      <div><b>Tracky on your phone</b><span>Opens like an app and shows the last prices even offline.</span></div>
+    </div>
+    <button class="btn blue" id="install-btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add to home screen</button>
+  </div>
+  <p><b>Sources.</b> SMR 20 — Malaysian Rubber Board daily price (sen/kg). PH rubber — Philippine Statistics Authority national farmgate price for rubber cuplump, monthly and published about 3–4 months late; no public feed carries a daily PSR price.
+  PVC, LDPE, EVA — businessanalytiq monthly Asia price index (US$/kg); history fills in as Tracky keeps scraping each month.</p>
+  <p><b>Conversion.</b> ECB reference rates via Frankfurter, applied on each price's own date. Group averages weight each item equally.</p>
+</footer>
+
+<dialog id="install-help" aria-labelledby="install-title">
+  <h2 id="install-title">Add Tracky to your home screen</h2>
+  <p id="install-intro">Your browser doesn't show an install prompt, so add it from the menu:</p>
+  <ol id="install-steps"></ol>
+  <div class="dialog-actions"><button class="btn" id="install-close">Got it</button></div>
+</dialog>
+
+<script type="module">
+import { aggregate, windowAvg, pctChange, basket } from './agg.js';
+
+// Series colours: distinct in hue and lightness on white; averages use ink with a dashed line.
+const COLORS = { smr20: '#2547ff', phRubber: '#13795b', pvc: '#d9480f', ldpe: '#b07d00', eva: '#c2257a', rubberAvg: '#0b1466', plasticAvg: '#8a8fa3' };
+const GROUPS = { rubber: ['rubberAvg', 'smr20', 'phRubber'], plastic: ['plasticAvg', 'pvc', 'ldpe', 'eva'] };
+const php = (v, d = 2) => v === undefined ? '—' : '₱' + v.toLocaleString('en-PH', { minimumFractionDigits: d, maximumFractionDigits: d });
+const chg = (v, label = '') => v === undefined ? `<span class="chg flat">—</span>`
+  : `<span class="chg ${v > 0.005 ? 'up' : v < -0.005 ? 'down' : 'flat'}">${v > 0.005 ? '▲' : v < -0.005 ? '▼' : ''} ${Math.abs(v).toFixed(2)}%${label}</span>`;
+const fmtDate = (iso, g) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US',
+  g === 'yearly' ? { year: 'numeric', timeZone: 'UTC' } : g === 'monthly' ? { month: 'short', year: 'numeric', timeZone: 'UTC' } : { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+let data, series = {}, hidden = new Set(), gran = 'monthly', rangeDays = 0, chart;
+
+function spark(points, color) {
+  const pts = points.slice(-90);
+  if (pts.length < 2) return `<svg class="spark" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="0" y1="18" x2="100" y2="18" stroke="${color}" stroke-opacity=".35" stroke-dasharray="2 4" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
+  const ys = pts.map((p) => p.php), lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
+  const d = pts.map((p, i) => `${((i / (pts.length - 1)) * 100).toFixed(2)},${(33 - ((p.php - lo) / span) * 30).toFixed(2)}`).join(' L');
+  return `<svg class="spark" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M${d}" fill="none" stroke="${color}" stroke-width="1.75" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+
+function build() {
+  series = {};
+  for (const id of ['smr20', 'phRubber', 'pvc', 'ldpe', 'eva']) if (data.series[id]?.length) series[id] = { ...data.meta[id], pts: data.series[id] };
+  const rub = ['smr20', 'phRubber'].filter((k) => series[k]), pla = ['pvc', 'ldpe', 'eva'].filter((k) => series[k]);
+  if (rub.length) series.rubberAvg = { name: 'Rubber average', origin: 'SMR 20 + PH', freq: 'monthly', basket: true,
+    pts: basket(rub.map((k) => aggregate(series[k].pts, 'monthly'))) };
+  if (pla.length) series.plasticAvg = { name: 'Plastics average', origin: 'PVC · LDPE · EVA', freq: 'monthly', basket: true,
+    pts: basket(pla.map((k) => series[k].pts)) };
+}
+
+function tile(id) {
+  const s = series[id];
+  if (!s) return '';
+  const last = s.pts.at(-1), daily = s.freq === 'daily';
+  const note = s.basket ? `Equal-weight · ${fmtDate(last.date, 'monthly')}` : `${last.native} ${s.unit} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}`;
+  return `<button class="tile ${s.basket ? 'hero-tile' : ''}" data-id="${id}" aria-pressed="${!hidden.has(id)}" title="Show or hide on the chart">
+    <div class="tile-top"><span class="tile-label">${s.basket ? '' : `<i style="background:${COLORS[id]}"></i>`}${s.name}</span><span class="tile-origin">${s.origin}</span></div>
+    <div class="tile-value">${php(last.php)}<small>/kg</small></div>
+    <div class="tile-note"><span>${note}</span>${chg(pctChange(s.pts, daily ? 1 : 31), daily ? ' 1D' : ' 1M')}</div>
+    ${spark(s.pts, s.basket ? '#ffd84d' : COLORS[id])}</button>`;
+}
+
+function renderTiles() {
+  for (const [g, ids] of Object.entries(GROUPS)) document.getElementById('tiles-' + g).innerHTML = ids.map(tile).join('');
+  document.querySelectorAll('.tile').forEach((el) => el.onclick = () => toggle(el.dataset.id));
+}
+
+function toggle(id) { hidden.has(id) ? hidden.delete(id) : hidden.add(id); renderTiles(); renderLegend(); renderChart(); }
+
+function renderLegend() {
+  const el = document.getElementById('legend');
+  el.innerHTML = Object.entries(series).map(([id, s]) => `<button data-id="${id}" aria-pressed="${!hidden.has(id)}" style="color:${COLORS[id]}">
+    <i class="${s.basket ? 'dash' : ''}" style="background:${COLORS[id]}"></i><span style="color:var(--ink)">${s.name}</span></button>`).join('');
+  el.querySelectorAll('button').forEach((b) => b.onclick = () => toggle(b.dataset.id));
+}
+
+function renderChart() {
+  const cutoff = rangeDays ? new Date(Date.now() - rangeDays * 864e5).toISOString().slice(0, 10) : '';
+  const datasets = Object.entries(series).filter(([id]) => !hidden.has(id)).map(([id, s]) => {
+    const pts = aggregate(s.pts, gran).filter((p) => p.date >= cutoff);
+    return { label: s.name, data: pts.map((p) => ({ x: Date.parse(p.date), y: p.php, iso: p.date })),
+      borderColor: COLORS[id], backgroundColor: COLORS[id], borderWidth: s.basket ? 1.75 : 2, borderDash: s.basket ? [5, 4] : [],
+      tension: .3, pointRadius: pts.length === 1 ? 4 : 0, pointHoverRadius: 4, pointHoverBorderWidth: 2, pointHoverBorderColor: '#fff', spanGaps: true };
+  });
+  const font = { family: 'Figtree', size: 12 };
+  document.getElementById('chart-sub').textContent = `Average ₱/kg per ${{ daily: 'day', weekly: 'week', monthly: 'month', yearly: 'year' }[gran]}. Monthly series show one point per month.`;
+  const cfg = {
+    type: 'line', data: { datasets },
+    options: { responsive: true, maintainAspectRatio: false, animation: { duration: 350 },
+      interaction: { mode: 'nearest', axis: 'x', intersect: false },
+      layout: { padding: { top: 6 } },
+      plugins: { legend: { display: false },
+        tooltip: { backgroundColor: '#0f1124', padding: 12, cornerRadius: 12, boxPadding: 5, usePointStyle: true,
+          titleFont: { ...font, weight: '600' }, bodyFont: font, titleColor: '#c9d2ff',
+          callbacks: { title: (it) => fmtDate(it[0].raw.iso, gran), label: (it) => ` ${it.dataset.label}  ${php(it.parsed.y)}` } } },
+      scales: {
+        x: { type: 'linear', grid: { display: false }, border: { color: '#e4e2da' },
+          ticks: { color: '#5d6275', font, maxTicksLimit: 7, maxRotation: 0,
+            callback: (v) => fmtDate(new Date(v).toISOString().slice(0, 10), gran === 'yearly' ? 'yearly' : 'monthly') } },
+        y: { position: 'right', grid: { color: '#f1eee5' }, border: { display: false },
+          ticks: { color: '#5d6275', font, padding: 8, maxTicksLimit: 6, callback: (v) => '₱' + v } } } },
+  };
+  if (chart) { chart.data = cfg.data; chart.options = cfg.options; chart.update(); } else chart = new Chart(document.getElementById('chart'), cfg);
+}
+
+function renderTable() {
+  const head = '<tr><th>Series</th><th>Latest</th><th>Avg 7D</th><th>Avg 30D</th><th>Avg 1Y</th><th>1W</th><th>1M</th><th>1Y</th><th>Source</th></tr>';
+  const order = [...GROUPS.rubber.slice(1), 'rubberAvg', ...GROUPS.plastic.slice(1), 'plasticAvg'].filter((id) => series[id]);
+  const rows = order.map((id) => {
+    const s = series[id], last = s.pts.at(-1), daily = s.freq === 'daily';
+    return `<tr class="${s.basket ? 'avg' : ''}">
+      <td><div class="cell"><i style="background:${COLORS[id]}"></i><div><b>${s.basket ? s.name.replace(' average', '') : s.name}</b><small>${s.freq} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</small></div></div></td>
+      <td>${php(last.php)}</td><td>${daily ? php(windowAvg(s.pts, 7)) : '<span class="muted">—</span>'}</td>
+      <td>${php(windowAvg(s.pts, 30))}</td><td>${php(windowAvg(s.pts, 365))}</td>
+      <td>${chg(daily ? pctChange(s.pts, 7) : undefined)}</td><td>${chg(pctChange(s.pts, 30))}</td><td>${chg(pctChange(s.pts, 365))}</td>
+      <td>${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${s.source}</a>` : '<span class="muted">Computed</span>'}</td></tr>`;
+  }).join('');
+  document.getElementById('tbl').innerHTML = head + rows;
+}
+
+function render(d) {
+  data = d; build(); renderTiles(); renderLegend(); renderChart(); renderTable();
+  document.getElementById('fx').innerHTML = d.fx
+    ? `<span class="num"><i>US$1</i> ₱${d.fx.PHP_per_USD.toFixed(2)}</span><span class="num"><i>RM1</i> ₱${d.fx.PHP_per_MYR.toFixed(2)}</span>` : '';
+  const errs = Object.entries(d.errors || {}), el = document.getElementById('err'), up = document.getElementById('updated');
+  up.className = 'sync' + (errs.length ? ' stale' : '');
+  up.innerHTML = '<i></i>' + (d.updatedAt ? `Updated ${new Date(d.updatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}` : 'No data yet');
+  const smr = series.smr20;
+  document.getElementById('hero-stat').innerHTML = smr ? `<p>SMR 20 · ${fmtDate(smr.pts.at(-1).date, 'daily')}</p>
+    <b>${php(smr.pts.at(-1).php)}<small>/kg</small></b>${spark(smr.pts, '#ffd84d').replace('class="spark"', '')}
+    <span class="delta">${(v => v === undefined ? '' : `${v >= 0 ? '▲' : '▼'} ${Math.abs(v).toFixed(2)}% this month`)(pctChange(smr.pts, 30))}</span>` : '';
+  el.style.display = errs.length ? 'block' : 'none';
+  el.textContent = errs.length ? `Couldn't refresh ${errs.map(([k]) => d.meta?.[k]?.name || k).join(', ')}. Showing the last saved prices.` : '';
+}
+
+const tabs = (id, fn) => document.querySelectorAll(`#${id} button`).forEach((b) => b.onclick = () => {
+  document.querySelectorAll(`#${id} button`).forEach((x) => x.setAttribute('aria-selected', x === b)); fn(b.dataset.v); renderChart();
+});
+tabs('gran', (v) => gran = v);
+tabs('range', (v) => rangeDays = +v);
+
+const btn = document.getElementById('refresh');
+btn.onclick = async () => {
+  btn.disabled = true; btn.classList.add('spin');
+  try { render(await (await fetch('/api/refresh', { method: 'POST' })).json()); } finally { btn.disabled = false; btn.classList.remove('spin'); }
+};
+
+const d = await (await fetch('/api/prices')).json();
+if (Object.keys(d.series || {}).length) render(d);
+else { document.getElementById('updated').innerHTML = '<i></i>Fetching prices…'; btn.click(); }
+
+// ---------- PWA ----------
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch((e) => console.warn('SW failed', e));
+
+const installBox = document.getElementById('install'), help = document.getElementById('install-help');
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+let deferred = null;
+installBox.hidden = standalone();
+addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferred = e; });
+addEventListener('appinstalled', () => { installBox.hidden = true; deferred = null; });
+
+const ICON_SHARE = '<svg viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+const ICON_PLUS = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+const ICON_MENU = '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>';
+document.getElementById('install-btn').onclick = async () => {
+  if (deferred) {
+    deferred.prompt();
+    const { outcome } = await deferred.userChoice;
+    deferred = null;
+    if (outcome === 'accepted') installBox.hidden = true;
+    return;
+  }
+  // No prompt available (iOS Safari, Firefox, or already dismissed): show manual steps.
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  document.getElementById('install-intro').textContent = ios
+    ? 'On iPhone and iPad, add Tracky from Safari\'s Share menu:'
+    : 'Your browser doesn\'t show an install prompt here, so add Tracky from its menu:';
+  document.getElementById('install-steps').innerHTML = ios
+    ? `<li>Tap the Share button${ICON_SHARE}</li><li>Choose “Add to Home Screen”${ICON_PLUS}</li><li>Tap “Add”</li>`
+    : `<li>Open the browser menu${ICON_MENU}</li><li>Choose “Install app” or “Add to Home screen”${ICON_PLUS}</li><li>Confirm</li>`;
+  help.showModal();
+};
+document.getElementById('install-close').onclick = () => help.close();
+help.addEventListener('click', (e) => { if (e.target === help) help.close(); });
+</script>
+</body>
+</html>

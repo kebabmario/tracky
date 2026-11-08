@@ -1,0 +1,12 @@
+{
+  "name": "tracky",
+  "version": "1.0.0",
+  "description": "Rubber & plastics price dashboard (₱/kg)",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "scrape": "node scraper.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=20" }
+}
