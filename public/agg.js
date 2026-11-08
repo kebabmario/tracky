@@ -43,14 +43,3 @@ export function pctChange(points, days) {
   const prev = valueAt(points, toIso(ms(last.date) - days * DAY));
   return prev ? ((last.php - prev) / prev) * 100 : undefined;
 }
-
-// Equal-weight basket: mean of members' forward-filled values on every date where all members have data.
-export function basket(members) {
-  const dates = [...new Set(members.flatMap((s) => s.map((p) => p.date)))].sort();
-  const out = [];
-  for (const date of dates) {
-    const vals = members.map((s) => valueAt(s, date));
-    if (vals.every((v) => v !== undefined)) out.push({ date, php: vals.reduce((a, b) => a + b, 0) / vals.length });
-  }
-  return out;
-}

@@ -5,18 +5,19 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 const DATA_FILE = new URL('./data/prices.json', import.meta.url);
 const UA = 'Mozilla/5.0 (tracky price dashboard)';
 
+const MRB = { source: 'Malaysian Rubber Board', url: 'https://www.lgm.gov.my/', group: 'rubber', origin: 'Malaysia', freq: 'daily', unit: 'RM/kg' };
+const GC = (path) => ({ source: 'Guidechem GuideTrends', url: `https://www.guidechem.com/price/en/${path}.html`, group: 'plastic', origin: 'China', freq: 'daily', unit: 'CNY/t' });
 export const SERIES = {
-  smr20: { name: 'SMR 20', group: 'rubber', origin: 'Malaysia', freq: 'daily', unit: 'RM/kg',
-    source: 'Malaysian Rubber Board', url: 'https://www.lgm.gov.my/' },
+  smr5: { name: 'SMR 5', ...MRB },
+  smr10: { name: 'SMR 10', ...MRB },
+  smr20: { name: 'SMR 20', ...MRB },
   phRubber: { name: 'PH Rubber (cuplump)', group: 'rubber', origin: 'Philippines', freq: 'monthly', unit: '₱/kg',
     source: 'PSA OpenSTAT farmgate prices', url: 'https://openstat.psa.gov.ph/' },
-  pvc: { name: 'PVC', group: 'plastic', origin: 'NE Asia', freq: 'monthly', unit: 'US$/kg',
-    source: 'businessanalytiq price index', url: 'https://businessanalytiq.com/procurementanalytics/index/pvc-price-index/' },
-  ldpe: { name: 'LDPE', group: 'plastic', origin: 'SE Asia', freq: 'monthly', unit: 'US$/kg',
-    source: 'businessanalytiq price index', url: 'https://businessanalytiq.com/procurementanalytics/index/ldpe-price-index/' },
-  eva: { name: 'EVA', group: 'plastic', origin: 'SE Asia', freq: 'monthly', unit: 'US$/kg',
-    source: 'businessanalytiq price index', url: 'https://businessanalytiq.com/procurementanalytics/index/ethylene-vinyl-acetate-eva-price-index/' },
+  pvc: { name: 'PVC', ...GC('detail-babuax'), origin: 'East China · SG-5' },
+  ldpe: { name: 'LDPE', ...GC('detail-elr36h'), origin: 'China · film grade' },
+  eva: { name: 'EVA', ...GC('detail-bq16xn'), origin: 'China · foaming grade' },
 };
+const MRB_GRADES = { smr5: 'SMR 5', smr10: 'SMR 10', smr20: 'SMR 20' };
 
 const iso = (d) => d.toISOString().slice(0, 10);
 const round = (n, p = 2) => Math.round(n * 10 ** p) / 10 ** p;
@@ -39,17 +40,17 @@ export function rateOn(fx, date) {
   return r;
 }
 
-// ---------- Malaysia: SMR 20 daily, sen/kg ----------
-export function parseMrb(rows) {
-  return rows.filter((r) => r.grade === 'SMR 20' && +r.rm > 0).map((r) => ({ date: r.date, native: round(+r.rm / 100, 4) }));
+// ---------- Malaysia: SMR 5 / 10 / 20 daily, sen/kg ----------
+export function parseMrb(rows, grade) {
+  return rows.filter((r) => r.grade === grade && +r.rm > 0).map((r) => ({ date: r.date, native: round(+r.rm / 100, 4) }));
 }
-async function smr20(months) {
+async function mrbRows(months) {
   const out = [];
   const now = new Date();
   for (let i = months - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const res = await get(`https://www.lgm.gov.my/webv2api/api/rubberprice/month=${d.getMonth() + 1}&year=${d.getFullYear()}`);
-    out.push(...parseMrb(await res.json()));
+    out.push(...(await res.json()));
   }
   return out;
 }
@@ -76,23 +77,29 @@ async function phRubber(years) {
     .map((r) => ({ date: `${yearText[r.key[1]]}-${String(+r.key[2] + 1).padStart(2, '0')}-01`, native: +r.values[0] }));
 }
 
-// ---------- Plastics: businessanalytiq monthly index, US$/kg ----------
-const MONTHS = 'January February March April May June July August September October November December'.split(' ');
-export function parseBa(html, regions) {
+// ---------- Plastics: Guidechem public price pages, CNY/tonne daily ----------
+// Uses the page's headline price plus its visible last-3-days table; history grows as the scraper keeps running.
+const cell = (v) => {
+  const m = v.match(/^([\d.]+)(?:-([\d.]+))?$/);
+  return m ? (m[2] ? (+m[1] + +m[2]) / 2 : +m[1]) : undefined;
+};
+export function parseGuidechem(html) {
   const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const m = text.match(/price (January|February|March|April|May|June|July|August|September|October|November|December) (\d{4}) and outlook/);
-  if (!m) throw new Error('businessanalytiq: month heading not found');
-  for (const region of regions) {
-    const p = text.match(new RegExp(`${region}: ?US\\$([\\d.]+)/KG`));
-    if (p) return { date: `${m[2]}-${String(MONTHS.indexOf(m[1]) + 1).padStart(2, '0')}-01`, native: +p[1], region };
+  const head = text.match(/([\d,]+(?:\.\d+)?) CNY\/TON Updated: (\d{4}-\d{2}-\d{2})/);
+  if (!head) throw new Error('guidechem: headline price not found');
+  const pts = new Map([[head[2], +head[1].replace(/,/g, '')]]);
+  const daily = text.match(/Reg Spec (\d{4}\/\d{2}\/\d{2}) (\d{4}\/\d{2}\/\d{2}) (\d{4}\/\d{2}\/\d{2}) Change Unit Comparison (.*?) -?[\d.]+ \/ -?[\d.]+ CNY\/TON/);
+  if (daily) {
+    const vals = daily[4].split(' ').slice(-3);
+    [daily[1], daily[2]].forEach((d, i) => {
+      const v = cell(vals[i]), date = d.replace(/\//g, '-');
+      if (v !== undefined && !pts.has(date)) pts.set(date, v);
+    });
   }
-  throw new Error(`businessanalytiq: no price for ${regions.join('/')}`);
+  return [...pts].map(([date, native]) => ({ date, native })).sort((a, b) => a.date.localeCompare(b.date));
 }
 async function plastic(id) {
-  const html = await (await get(SERIES[id].url)).text();
-  const pt = parseBa(html, ['Southeast Asia', 'Northeast Asia']);
-  SERIES[id].origin = pt.region;
-  return [{ date: pt.date, native: pt.native }];
+  return parseGuidechem(await (await get(SERIES[id].url)).text());
 }
 
 // ---------- merge + save ----------
@@ -108,27 +115,30 @@ export async function loadData() {
 
 export async function scrape() {
   const data = await loadData();
-  const firstRun = !data.series.smr20?.length;
+  const firstRun = !data.series.smr5?.length;
   const start = iso(new Date(Date.now() - 4 * 365 * 864e5));
-  const [myrFx, usdFx] = await Promise.all([fxSeries('MYR', start), fxSeries('USD', start)]);
-  const toPhp = { 'RM/kg': myrFx, 'US$/kg': usdFx };
+  const [myrFx, usdFx, cnyFx] = await Promise.all([fxSeries('MYR', start), fxSeries('USD', start), fxSeries('CNY', start)]);
+  const toPhp = { 'RM/kg': (v, d) => v * rateOn(myrFx, d), 'CNY/t': (v, d) => (v / 1000) * rateOn(cnyFx, d), '₱/kg': (v) => v };
 
+  // A series whose source changed starts fresh, so old numbers from another source never mix in.
+  for (const id of Object.keys(data.series)) if (!SERIES[id] || data.meta?.[id]?.source !== SERIES[id].source) delete data.series[id];
+
+  const mrb = mrbRows(firstRun ? 25 : 2);
   const jobs = {
-    smr20: () => smr20(firstRun ? 25 : 2),
+    ...Object.fromEntries(Object.entries(MRB_GRADES).map(([id, grade]) => [id, async () => parseMrb(await mrb, grade)])),
     phRubber: () => phRubber(4),
     pvc: () => plastic('pvc'), ldpe: () => plastic('ldpe'), eva: () => plastic('eva'),
   };
   const errors = {};
   await Promise.all(Object.entries(jobs).map(async ([id, job]) => {
     try {
-      const fx = toPhp[SERIES[id].unit];
-      const pts = (await job()).map((p) => ({ ...p, php: round(fx ? p.native * rateOn(fx, p.date) : p.native) }));
+      const pts = (await job()).map((p) => ({ ...p, php: round(toPhp[SERIES[id].unit](p.native, p.date)) }));
       data.series[id] = merge(data.series[id], pts);
     } catch (e) { errors[id] = e.message; console.error(`[scrape] ${id}: ${e.message}`); }
   }));
 
   data.meta = SERIES;
-  data.fx = { PHP_per_USD: usdFx.at(-1)[1], PHP_per_MYR: myrFx.at(-1)[1], date: usdFx.at(-1)[0] };
+  data.fx = { PHP_per_USD: usdFx.at(-1)[1], PHP_per_MYR: myrFx.at(-1)[1], PHP_per_CNY: cnyFx.at(-1)[1], date: usdFx.at(-1)[0] };
   data.updatedAt = new Date().toISOString();
   data.errors = errors;
   await mkdir(new URL('./data/', import.meta.url), { recursive: true });

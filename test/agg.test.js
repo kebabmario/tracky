@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { bucketKey, aggregate, windowAvg, pctChange, basket } from '../public/agg.js';
-import { parseMrb, parseBa, rateOn } from '../scraper.js';
+import { bucketKey, aggregate, windowAvg, pctChange } from '../public/agg.js';
+import { parseMrb, parseGuidechem, rateOn } from '../scraper.js';
 
 test('bucketKey', () => {
   assert.equal(bucketKey('2026-11-08', 'weekly'), '2026-11-02'); // Sunday -> Monday
@@ -21,17 +21,17 @@ test('windowAvg averages points inside window', () => {
   assert.equal(windowAvg(pts, 30), 25);
 });
 
-test('pctChange and basket', () => {
+test('pctChange', () => {
   const a = [{ date: '2026-01-01', php: 100 }, { date: '2026-02-01', php: 110 }];
   assert.ok(Math.abs(pctChange(a, 31) - 10) < 1e-9);
-  const b = [{ date: '2026-02-01', php: 50 }];
-  assert.deepEqual(basket([a, b]), [{ date: '2026-02-01', php: 80 }]);
 });
 
 test('scraper parsers', () => {
-  assert.deepEqual(parseMrb([{ date: '2026-11-06', grade: 'SMR 20', rm: '955.50' }, { date: '2026-11-06', grade: 'SMR 5', rm: '975' }]),
-    [{ date: '2026-11-06', native: 9.555 }]);
-  const html = '<h2>PVC price September 2026 and outlook</h2><li>Northeast Asia:US$0.75/KG, 1.4% up</li>';
-  assert.deepEqual(parseBa(html, ['Southeast Asia', 'Northeast Asia']), { date: '2026-09-01', native: 0.75, region: 'Northeast Asia' });
+  const rows = [{ date: '2026-11-06', grade: 'SMR 20', rm: '955.50' }, { date: '2026-11-06', grade: 'SMR 5', rm: '975' }];
+  assert.deepEqual(parseMrb(rows, 'SMR 20'), [{ date: '2026-11-06', native: 9.555 }]);
+  assert.deepEqual(parseMrb(rows, 'SMR 5'), [{ date: '2026-11-06', native: 9.75 }]);
+  const html = '<b>4,955</b> CNY/TON <span>Updated: 2026-11-08</span> ... <th>Reg Spec</th><th>2026/11/06</th><th>2026/11/07</th><th>2026/11/08</th>'
+    + ' Change Unit Comparison <td>East China</td><td>SG-5 First-Class</td><td>4865-5041</td><td>-</td><td>4955</td><td>0 / 0 CNY/TON</td>';
+  assert.deepEqual(parseGuidechem(html), [{ date: '2026-11-06', native: 4953 }, { date: '2026-11-08', native: 4955 }]);
   assert.equal(rateOn([['2026-11-05', 15], ['2026-11-06', 16]], '2026-11-08'), 16);
 });

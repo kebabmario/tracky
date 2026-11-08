@@ -78,28 +78,20 @@ h1 { margin-top: 6px; font: 600 clamp(32px, 4.4vw, 48px)/1.05 var(--display); le
 .group-head h2 { font: 600 20px/1.2 var(--display); letter-spacing: -.025em; }
 .group-head span { color: var(--muted); font-size: 13.5px; }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+#tiles-plastic { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .tile { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 18px 20px 16px; border: 0; border-radius: 20px; background: var(--cream); text-align: left; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s; }
 .tile:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgba(15, 17, 36, .35); }
 .tile[aria-pressed="false"] { opacity: .5; }
-.tile.hero-tile { grid-column: span 2; background: var(--blue); color: #fff; }
-#tiles-plastic .tile.hero-tile { grid-column: auto; }
 .tile-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .tile-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
 .tile-label i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
 .tile-origin { padding: 2px 8px; border-radius: 99px; background: #fff; color: var(--ink-2); font-size: 12px; font-weight: 600; white-space: nowrap; }
-.tile.hero-tile .tile-origin { background: rgba(255, 255, 255, .16); color: #fff; }
 .tile-value { margin-top: 12px; font: 600 30px/1 var(--display); letter-spacing: -.03em; }
-.tile.hero-tile .tile-value { font-size: 42px; }
-#tiles-plastic .tile.hero-tile .tile-value { font-size: 30px; }
 .tile-value small { font: 500 14px Figtree, sans-serif; letter-spacing: 0; color: var(--muted); margin-left: 3px; }
-.tile.hero-tile .tile-value small { color: #c9d2ff; }
 .tile-note { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 13px; }
-.tile.hero-tile .tile-note { color: #dbe1ff; }
 .chg { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .chg.up { color: var(--ok); } .chg.down { color: var(--bad); } .chg.flat { color: var(--muted); }
-.tile.hero-tile .chg.up, .tile.hero-tile .chg.down, .tile.hero-tile .chg.flat { color: var(--yellow); }
 .tile svg.spark { display: block; width: 100%; height: 36px; margin-top: 14px; overflow: visible; }
-.tile.hero-tile svg.spark { height: 52px; }
 
 /* panels */
 .panel { margin-bottom: 16px; padding: 22px 24px; border-radius: 22px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
@@ -115,7 +107,6 @@ h1 { margin-top: 6px; font: 600 clamp(32px, 4.4vw, 48px)/1.05 var(--display); le
 .legend button { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 0; border-radius: 99px; background: var(--cream); font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
 .legend button[aria-pressed="false"] { opacity: .45; }
 .legend i { width: 14px; height: 3px; border-radius: 2px; }
-.legend i.dash { background-image: linear-gradient(90deg, currentColor 60%, transparent 0) !important; background-size: 5px 3px; }
 .chart { position: relative; height: 380px; }
 
 /* table */
@@ -126,10 +117,6 @@ td { padding: 13px 0; border-bottom: 1px solid var(--line); text-align: right; w
 th + th, td + td { padding-left: 18px; }
 th:first-child, td:first-child { text-align: left; }
 tr:last-child td { border-bottom: 0; }
-tr.avg td { font-weight: 700; background: var(--blue-wash); }
-tr.avg td:first-child { border-radius: 12px 0 0 12px; padding-left: 10px; }
-tr.avg td:last-child { border-radius: 0 12px 12px 0; padding-right: 10px; }
-tr.avg td:first-child .cell b::after { content: 'avg'; margin-left: 8px; padding: 1px 7px; border-radius: 99px; background: var(--yellow); color: var(--ink); font-size: 11px; font-weight: 700; vertical-align: 1px; }
 .cell { display: flex; align-items: center; gap: 10px; }
 .cell i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
 .cell small { display: block; color: var(--muted); font-size: 12.5px; font-weight: 500; }
@@ -161,7 +148,7 @@ dialog li svg { width: 18px; height: 18px; fill: none; stroke: var(--blue); stro
 dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 18px; }
 
 @media (max-width: 960px) {
-  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tiles, #tiles-plastic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-stat { min-width: 0; width: 100%; }
 }
 @media (max-width: 600px) {
@@ -171,10 +158,7 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
   .tiles { gap: 10px; }
   .tile { padding: 14px 14px 12px; }
   .tile-value { font-size: 22px; }
-  .tile.hero-tile .tile-value { font-size: 34px; }
-  #tiles-plastic .tile.hero-tile .tile-value { font-size: 22px; }
   .tile-origin { display: none; }
-  .tile.hero-tile .tile-origin { display: inline; }
   .tile-note { flex-direction: column; align-items: flex-start; gap: 2px; }
   .panel { padding: 18px 16px; }
   .chart { height: 280px; }
@@ -207,11 +191,11 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
   <div class="err" id="err" role="status"></div>
 
   <section class="group">
-    <div class="group-head"><h2>Rubber</h2><span>SMR 20 daily · PH cuplump monthly</span></div>
+    <div class="group-head"><h2>Rubber</h2><span>SMR daily · PH cuplump monthly</span></div>
     <div class="tiles" id="tiles-rubber"></div>
   </section>
   <section class="group">
-    <div class="group-head"><h2>Plastics</h2><span>Asia monthly index</span></div>
+    <div class="group-head"><h2>Plastics</h2><span>China spot, daily</span></div>
     <div class="tiles" id="tiles-plastic"></div>
   </section>
 
@@ -246,9 +230,9 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
     </div>
     <button class="btn blue" id="install-btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add to home screen</button>
   </div>
-  <p><b>Sources.</b> SMR 20 — Malaysian Rubber Board daily price (sen/kg). PH rubber — Philippine Statistics Authority national farmgate price for rubber cuplump, monthly and published about 3–4 months late; no public feed carries a daily PSR price.
-  PVC, LDPE, EVA — businessanalytiq monthly Asia price index (US$/kg); history fills in as Tracky keeps scraping each month.</p>
-  <p><b>Conversion.</b> ECB reference rates via Frankfurter, applied on each price's own date. Group averages weight each item equally.</p>
+  <p><b>Sources.</b> SMR 5, 10, 20 — Malaysian Rubber Board daily price (sen/kg). PH rubber — Philippine Statistics Authority national farmgate price for rubber cuplump, monthly and published about 3–4 months late; no public feed carries a daily PSR price.
+  PVC (SG-5, East China), LDPE (film grade) and EVA (foaming grade) — Guidechem GuideTrends daily China spot prices (CNY/tonne); history builds up day by day as Tracky keeps scraping.</p>
+  <p><b>Conversion.</b> ECB reference rates via Frankfurter, applied on each price's own date.</p>
 </footer>
 
 <dialog id="install-help" aria-labelledby="install-title">
@@ -259,11 +243,11 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
 </dialog>
 
 <script type="module">
-import { aggregate, windowAvg, pctChange, basket } from './agg.js';
+import { aggregate, windowAvg, pctChange } from './agg.js';
 
 // Series colours: distinct in hue and lightness on white; averages use ink with a dashed line.
-const COLORS = { smr20: '#2547ff', phRubber: '#13795b', pvc: '#d9480f', ldpe: '#b07d00', eva: '#c2257a', rubberAvg: '#0b1466', plasticAvg: '#8a8fa3' };
-const GROUPS = { rubber: ['rubberAvg', 'smr20', 'phRubber'], plastic: ['plasticAvg', 'pvc', 'ldpe', 'eva'] };
+const COLORS = { smr5: '#7fa6ff', smr10: '#0b1466', smr20: '#2547ff', phRubber: '#13795b', pvc: '#d9480f', ldpe: '#b07d00', eva: '#c2257a' };
+const GROUPS = { rubber: ['smr5', 'smr10', 'smr20', 'phRubber'], plastic: ['pvc', 'ldpe', 'eva'] };
 const php = (v, d = 2) => v === undefined ? '—' : '₱' + v.toLocaleString('en-PH', { minimumFractionDigits: d, maximumFractionDigits: d });
 const chg = (v, label = '') => v === undefined ? `<span class="chg flat">—</span>`
   : `<span class="chg ${v > 0.005 ? 'up' : v < -0.005 ? 'down' : 'flat'}">${v > 0.005 ? '▲' : v < -0.005 ? '▼' : ''} ${Math.abs(v).toFixed(2)}%${label}</span>`;
@@ -284,24 +268,19 @@ function spark(points, color) {
 
 function build() {
   series = {};
-  for (const id of ['smr20', 'phRubber', 'pvc', 'ldpe', 'eva']) if (data.series[id]?.length) series[id] = { ...data.meta[id], pts: data.series[id] };
-  const rub = ['smr20', 'phRubber'].filter((k) => series[k]), pla = ['pvc', 'ldpe', 'eva'].filter((k) => series[k]);
-  if (rub.length) series.rubberAvg = { name: 'Rubber average', origin: 'SMR 20 + PH', freq: 'monthly', basket: true,
-    pts: basket(rub.map((k) => aggregate(series[k].pts, 'monthly'))) };
-  if (pla.length) series.plasticAvg = { name: 'Plastics average', origin: 'PVC · LDPE · EVA', freq: 'monthly', basket: true,
-    pts: basket(pla.map((k) => series[k].pts)) };
+  for (const id of [...GROUPS.rubber, ...GROUPS.plastic]) if (data.series[id]?.length) series[id] = { ...data.meta[id], pts: data.series[id] };
 }
 
 function tile(id) {
   const s = series[id];
   if (!s) return '';
   const last = s.pts.at(-1), daily = s.freq === 'daily';
-  const note = s.basket ? `Equal-weight · ${fmtDate(last.date, 'monthly')}` : `${last.native} ${s.unit} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}`;
-  return `<button class="tile ${s.basket ? 'hero-tile' : ''}" data-id="${id}" aria-pressed="${!hidden.has(id)}" title="Show or hide on the chart">
-    <div class="tile-top"><span class="tile-label">${s.basket ? '' : `<i style="background:${COLORS[id]}"></i>`}${s.name}</span><span class="tile-origin">${s.origin}</span></div>
+  const note = `${last.native.toLocaleString('en-US')} ${s.unit} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}`;
+  return `<button class="tile" data-id="${id}" aria-pressed="${!hidden.has(id)}" title="Show or hide on the chart">
+    <div class="tile-top"><span class="tile-label"><i style="background:${COLORS[id]}"></i>${s.name}</span><span class="tile-origin">${s.origin}</span></div>
     <div class="tile-value">${php(last.php)}<small>/kg</small></div>
     <div class="tile-note"><span>${note}</span>${chg(pctChange(s.pts, daily ? 1 : 31), daily ? ' 1D' : ' 1M')}</div>
-    ${spark(s.pts, s.basket ? '#ffd84d' : COLORS[id])}</button>`;
+    ${spark(s.pts, COLORS[id])}</button>`;
 }
 
 function renderTiles() {
@@ -314,7 +293,7 @@ function toggle(id) { hidden.has(id) ? hidden.delete(id) : hidden.add(id); rende
 function renderLegend() {
   const el = document.getElementById('legend');
   el.innerHTML = Object.entries(series).map(([id, s]) => `<button data-id="${id}" aria-pressed="${!hidden.has(id)}" style="color:${COLORS[id]}">
-    <i class="${s.basket ? 'dash' : ''}" style="background:${COLORS[id]}"></i><span style="color:var(--ink)">${s.name}</span></button>`).join('');
+    <i style="background:${COLORS[id]}"></i><span style="color:var(--ink)">${s.name}</span></button>`).join('');
   el.querySelectorAll('button').forEach((b) => b.onclick = () => toggle(b.dataset.id));
 }
 
@@ -323,7 +302,7 @@ function renderChart() {
   const datasets = Object.entries(series).filter(([id]) => !hidden.has(id)).map(([id, s]) => {
     const pts = aggregate(s.pts, gran).filter((p) => p.date >= cutoff);
     return { label: s.name, data: pts.map((p) => ({ x: Date.parse(p.date), y: p.php, iso: p.date })),
-      borderColor: COLORS[id], backgroundColor: COLORS[id], borderWidth: s.basket ? 1.75 : 2, borderDash: s.basket ? [5, 4] : [],
+      borderColor: COLORS[id], backgroundColor: COLORS[id], borderWidth: 2,
       tension: .3, pointRadius: pts.length === 1 ? 4 : 0, pointHoverRadius: 4, pointHoverBorderWidth: 2, pointHoverBorderColor: '#fff', spanGaps: true };
   });
   const font = { family: 'Figtree', size: 12 };
@@ -349,11 +328,11 @@ function renderChart() {
 
 function renderTable() {
   const head = '<tr><th>Series</th><th>Latest</th><th>Avg 7D</th><th>Avg 30D</th><th>Avg 1Y</th><th>1W</th><th>1M</th><th>1Y</th><th>Source</th></tr>';
-  const order = [...GROUPS.rubber.slice(1), 'rubberAvg', ...GROUPS.plastic.slice(1), 'plasticAvg'].filter((id) => series[id]);
+  const order = [...GROUPS.rubber, ...GROUPS.plastic].filter((id) => series[id]);
   const rows = order.map((id) => {
     const s = series[id], last = s.pts.at(-1), daily = s.freq === 'daily';
-    return `<tr class="${s.basket ? 'avg' : ''}">
-      <td><div class="cell"><i style="background:${COLORS[id]}"></i><div><b>${s.basket ? s.name.replace(' average', '') : s.name}</b><small>${s.freq} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</small></div></div></td>
+    return `<tr>
+      <td><div class="cell"><i style="background:${COLORS[id]}"></i><div><b>${s.name}</b><small>${s.freq} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</small></div></div></td>
       <td>${php(last.php)}</td><td>${daily ? php(windowAvg(s.pts, 7)) : '<span class="muted">—</span>'}</td>
       <td>${php(windowAvg(s.pts, 30))}</td><td>${php(windowAvg(s.pts, 365))}</td>
       <td>${chg(daily ? pctChange(s.pts, 7) : undefined)}</td><td>${chg(pctChange(s.pts, 30))}</td><td>${chg(pctChange(s.pts, 365))}</td>
@@ -365,7 +344,7 @@ function renderTable() {
 function render(d) {
   data = d; build(); renderTiles(); renderLegend(); renderChart(); renderTable();
   document.getElementById('fx').innerHTML = d.fx
-    ? `<span class="num"><i>US$1</i> ₱${d.fx.PHP_per_USD.toFixed(2)}</span><span class="num"><i>RM1</i> ₱${d.fx.PHP_per_MYR.toFixed(2)}</span>` : '';
+    ? `<span class="num"><i>US$1</i> ₱${d.fx.PHP_per_USD.toFixed(2)}</span><span class="num"><i>RM1</i> ₱${d.fx.PHP_per_MYR.toFixed(2)}</span>${d.fx.PHP_per_CNY ? `<span class="num"><i>¥1</i> ₱${d.fx.PHP_per_CNY.toFixed(2)}</span>` : ''}` : '';
   const errs = Object.entries(d.errors || {}), el = document.getElementById('err'), up = document.getElementById('updated');
   up.className = 'sync' + (errs.length ? ' stale' : '');
   up.innerHTML = '<i></i>' + (d.updatedAt ? `Updated ${new Date(d.updatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}` : 'No data yet');
