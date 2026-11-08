@@ -1,5 +1,5 @@
 // Tracky service worker: app shell cached for offline use; prices network-first with the last copy as fallback.
-const VERSION = 'tracky-v2';
+const VERSION = 'tracky-v6';
 const SHELL = ['/', '/agg.js', '/logo.svg', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'];
 

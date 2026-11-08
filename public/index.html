@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tracky · Rubber & plastics prices</title>
+<title>Tracky · Rubber, resin & metals prices</title>
 <link rel="icon" href="logo.svg">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -43,6 +43,11 @@ button { font: inherit; color: inherit; }
 .sync.stale { color: var(--bad); }
 .btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--ink); color: #fff; font-weight: 600; font-size: 14.5px; cursor: pointer; transition: background .2s, transform .2s var(--ease); white-space: nowrap; }
 .btn:hover { background: #272a3d; transform: translateY(-1px); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.cur-pick select { appearance: none; height: 40px; padding: 0 34px 0 14px; border: 0; border-radius: 12px; cursor: pointer;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%230f1124' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center / 12px;
+  box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink); font: 600 14px Figtree, system-ui, sans-serif; transition: box-shadow .15s; }
+.cur-pick select:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn:active { transform: scale(.98); }
 .btn:disabled { opacity: .6; cursor: progress; }
 .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
@@ -78,10 +83,44 @@ h1 { margin-top: 6px; font: 600 clamp(32px, 4.4vw, 48px)/1.05 var(--display); le
 .group-head h2 { font: 600 20px/1.2 var(--display); letter-spacing: -.025em; }
 .group-head span { color: var(--muted); font-size: 13.5px; }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-#tiles-plastic { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#tiles-plastic { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+a.tile.empty { justify-content: space-between; min-height: 150px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink); text-decoration: none; }
+a.tile.empty .empty-v { margin-top: 12px; color: var(--muted); font-size: 14px; }
+a.tile.empty .empty-cta { margin-top: 10px; color: var(--blue); font-size: 13px; font-weight: 600; }
+#tiles-metal, #tiles-lme { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.market { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; color: var(--ink-2); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+.market small { color: var(--muted); font-size: 12.5px; font-weight: 500; }
+.market::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.market.sep { margin-top: 20px; }
+/* detail popup */
+dialog.detail { width: min(580px, 100% - 32px); padding: 0; overflow: hidden; }
+.d-top { padding: 22px 24px 0; }
+.d-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.d-k { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--muted); font-size: 13px; font-weight: 600; }
+.d-k i { width: 10px; height: 10px; border-radius: 3px; }
+dialog.detail h2 { margin-top: 4px; font-size: 26px; }
+.d-close { width: 36px; height: 36px; flex: none; border: 0; border-radius: 10px; background: var(--soft); cursor: pointer; display: grid; place-items: center; }
+.d-close:hover { background: var(--line); }
+.d-close svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
+.d-price { margin-top: 14px; font: 600 40px/1 var(--display); letter-spacing: -.035em; }
+.d-price small { font: 500 15px Figtree, sans-serif; color: var(--muted); letter-spacing: 0; margin-left: 4px; }
+.d-sub { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 8px !important; color: var(--muted) !important; font-size: 13.5px; }
+.d-chart { margin: 18px 24px 0; }
+.d-chart svg { display: block; width: 100%; height: 130px; overflow: visible; }
+.d-axis { display: flex; justify-content: space-between; margin-top: 6px; color: var(--muted); font-size: 12px; }
+.d-empty { padding: 26px 16px; border-radius: 14px; background: var(--cream); color: var(--muted); font-size: 13.5px; text-align: center; }
+.d-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 18px 24px 0; }
+.d-stats div { padding: 10px 12px; border-radius: 12px; background: var(--cream); min-width: 0; }
+.d-stats span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
+.d-stats b { display: block; margin-top: 2px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.d-stats small { display: block; color: var(--muted); font-size: 11.5px; }
+.d-foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 18px; padding: 14px 24px; border-top: 1px solid var(--line); background: #fff; font-size: 13px; color: var(--muted); }
+.d-foot a { color: var(--blue); font-weight: 600; text-decoration: none; }
+.d-foot a:hover { text-decoration: underline; }
+#tiles-plastic .tile-origin { display: none; }
+#tiles-plastic .tile-note { flex-direction: column; align-items: flex-start; gap: 2px; }
 .tile { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 18px 20px 16px; border: 0; border-radius: 20px; background: var(--cream); text-align: left; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s; }
 .tile:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgba(15, 17, 36, .35); }
-.tile[aria-pressed="false"] { opacity: .5; }
 .tile-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .tile-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
 .tile-label i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
@@ -135,6 +174,8 @@ footer b { color: var(--ink-2); }
 .install-text { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .install-text b { display: block; color: var(--ink); font: 600 17px/1.2 var(--display); letter-spacing: -.02em; }
 .install-text span { color: var(--muted); font-size: 13.5px; }
+.install-text span a { color: var(--blue); font-weight: 600; }
+#bm { cursor: grab; text-decoration: none; }
 .btn.blue { background: var(--blue); }
 .btn.blue:hover { background: var(--blue-ink); }
 dialog { width: min(400px, 100% - 32px); padding: 24px; border: 0; border-radius: 22px; color: var(--ink); box-shadow: 0 30px 80px -20px rgba(11, 20, 102, .45); }
@@ -148,12 +189,17 @@ dialog li svg { width: 18px; height: 18px; fill: none; stroke: var(--blue); stro
 dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 18px; }
 
 @media (max-width: 960px) {
-  .tiles, #tiles-plastic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tiles, #tiles-plastic, #tiles-metal, #tiles-lme { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .d-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-stat { min-width: 0; width: 100%; }
 }
 @media (max-width: 600px) {
   .wrap { width: calc(100% - 32px); }
   .sync { display: none; }
+  #refresh { width: 40px; padding: 0; justify-content: center; }
+  #refresh .btn-label { display: none; }
+  .cur-pick select { padding: 0 30px 0 12px; font-size: 13.5px; }
+  .top .wrap { gap: 8px; }
   .hero { padding: 26px 20px 20px; border-radius: 22px; margin-top: 16px; }
   .tiles { gap: 10px; }
   .tile { padding: 14px 14px 12px; }
@@ -172,7 +218,13 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
     <a class="brand" href="/"><img src="logo.svg" alt="">tracky</a>
     <div class="spacer"></div>
     <span class="sync" id="updated"><i></i>Loading…</span>
-    <button class="btn" id="refresh"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Refresh</button>
+    <label class="cur-pick"><span class="sr">Currency</span>
+      <select id="cur">
+        <option value="local">Local currency</option><option value="PHP">₱ PHP</option><option value="USD">$ USD</option>
+        <option value="MYR">RM MYR</option><option value="CNY">¥ CNY</option><option value="EUR">€ EUR</option>
+      </select>
+    </label>
+    <button class="btn" id="refresh" aria-label="Refresh prices"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg><span class="btn-label">Refresh</span></button>
   </div>
 </header>
 
@@ -180,9 +232,9 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
   <section class="hero">
     <div class="mesh" aria-hidden="true"><i class="m1"></i><i class="m2"></i><i class="m3"></i><i class="m4"></i></div>
     <div>
-      <p class="hero-k">Prices in ₱/kg</p>
-      <h1>Rubber & plastics</h1>
-      <p class="hero-sub">Malaysian and Philippine rubber next to PVC, LDPE and EVA, all in <b>pesos per kilogram</b>.</p>
+      <p class="hero-k" id="hero-k">Prices in each market's own currency</p>
+      <h1>Rubber, resin & metals</h1>
+      <p class="hero-sub">Malaysian and Philippine rubber, China plastic resin, and Shanghai and London metals. Switch <b>currency</b> at the top to compare them in one.</p>
       <div class="fx" id="fx"></div>
     </div>
     <div class="hero-stat" id="hero-stat"></div>
@@ -195,14 +247,24 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
     <div class="tiles" id="tiles-rubber"></div>
   </section>
   <section class="group">
-    <div class="group-head"><h2>Plastics</h2><span>China spot, daily</span></div>
+    <div class="group-head"><h2>Plastic resin</h2><span>China spot, daily · per kg</span></div>
     <div class="tiles" id="tiles-plastic"></div>
+  </section>
+  <section class="group">
+    <div class="group-head"><h2>Metals</h2><span>Daily · per tonne</span></div>
+    <div class="market">Shanghai Futures Exchange <small>SHFE · CNY settlement</small></div>
+    <div class="tiles" id="tiles-metal"></div>
+    <div class="market sep">London Metal Exchange <small>LME · US$ cash settlement</small></div>
+    <div class="tiles" id="tiles-lme"></div>
   </section>
 
   <section class="panel">
     <div class="panel-head">
       <div><h2>Price history</h2><p class="panel-sub" id="chart-sub">Average ₱/kg per month</p></div>
       <div class="controls">
+        <div class="tabs" id="cgroup" role="tablist" aria-label="Group">
+          <button data-v="rubber" aria-selected="true">Rubber</button><button data-v="plastic" aria-selected="false">Resin</button><button data-v="metal" aria-selected="false">Metals</button>
+        </div>
         <div class="tabs" id="gran" role="tablist" aria-label="Period">
           <button data-v="daily" aria-selected="false">Daily</button><button data-v="weekly" aria-selected="false">Weekly</button>
           <button data-v="monthly" aria-selected="true">Monthly</button><button data-v="yearly" aria-selected="false">Yearly</button>
@@ -230,10 +292,23 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
     </div>
     <button class="btn blue" id="install-btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add to home screen</button>
   </div>
+  <div class="install" id="bm-box">
+    <div class="install-text">
+      <img src="/logo.svg" alt="">
+      <div><b>Send to Tracky</b><span>For AS and PP block copolymer. Drag the button to your bookmarks bar, open the price page on SunSirs or 21cp, then click the bookmark to save that day's price. Selecting the price first makes it exact. Or <a href="/capture.html">enter one by hand</a>.</span></div>
+    </div>
+    <a class="btn" id="bm" href="#" draggable="true" title="Drag me to your bookmarks bar"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Send to Tracky</a>
+  </div>
   <p><b>Sources.</b> SMR 5, 10, 20 — Malaysian Rubber Board daily price (sen/kg). PH rubber — Philippine Statistics Authority national farmgate price for rubber cuplump, monthly and published about 3–4 months late; no public feed carries a daily PSR price.
-  PVC (SG-5, East China), LDPE (film grade) and EVA (foaming grade) — Guidechem GuideTrends daily China spot prices (CNY/tonne); history builds up day by day as Tracky keeps scraping.</p>
-  <p><b>Conversion.</b> ECB reference rates via Frankfurter, applied on each price's own date.</p>
+  AS and PP block copolymer — prices you capture from SunSirs or 21cp with the Send to Tracky bookmark (CNY/tonne), since those sites block automated access.
+  PVC (SG-5, East China), LDPE (film grade), EVA (foaming grade), PP homo (raffia grade) and ABS — Guidechem GuideTrends daily China spot prices (CNY/tonne), shown per kg; history builds up day by day as Tracky keeps scraping.
+  Copper, aluminum, wire rod — Shanghai Futures Exchange daily settlement price of the most-held contract (CNY/tonne); wire rod futures trade thinly.
+  LME copper and aluminum — London Metal Exchange official cash settlement (US$/tonne), via Westmetall. Metals are shown per tonne.</p>
+  <p><b>Currency.</b> By default each price shows in its market's own currency: SMR in ringgit, PH rubber in pesos, China resin and SHFE metals in yuan, LME metals in US dollars.
+  Picking a currency at the top converts everything with ECB reference rates (via Frankfurter) on each price's own date. The chart uses the group's most common currency until you pick one.</p>
 </footer>
+
+<dialog id="detail" class="detail" aria-labelledby="d-title"></dialog>
 
 <dialog id="install-help" aria-labelledby="install-title">
   <h2 id="install-title">Add Tracky to your home screen</h2>
@@ -245,68 +320,151 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
 <script type="module">
 import { aggregate, windowAvg, pctChange } from './agg.js';
 
-// Series colours: distinct in hue and lightness on white; averages use ink with a dashed line.
-const COLORS = { smr5: '#7fa6ff', smr10: '#0b1466', smr20: '#2547ff', phRubber: '#13795b', pvc: '#d9480f', ldpe: '#b07d00', eva: '#c2257a' };
-const GROUPS = { rubber: ['smr5', 'smr10', 'smr20', 'phRubber'], plastic: ['pvc', 'ldpe', 'eva'] };
-const php = (v, d = 2) => v === undefined ? '—' : '₱' + v.toLocaleString('en-PH', { minimumFractionDigits: d, maximumFractionDigits: d });
+// Series colours: distinct in hue and lightness on white within each group.
+const COLORS = { smr5: '#7fa6ff', smr10: '#0b1466', smr20: '#2547ff', phRubber: '#13795b',
+  pvc: '#d9480f', ldpe: '#b07d00', eva: '#c2257a', ppHomo: '#0f8b8d', abs: '#6b4bd6', as: '#2b8a3e', ppBlock: '#1c7ed6',
+  copper: '#b4532a', aluminum: '#6b7a90', wireRod: '#0b1466', lmeCopper: '#e8915a', lmeAluminum: '#2f3a4a' };
+const GROUPS = { rubber: ['smr5', 'smr10', 'smr20', 'phRubber'], plastic: ['pvc', 'ldpe', 'eva', 'ppHomo', 'abs', 'as', 'ppBlock'], metal: ['copper', 'aluminum', 'wireRod', 'lmeCopper', 'lmeAluminum'] };
+const TILE_ROWS = { rubber: GROUPS.rubber, plastic: GROUPS.plastic, metal: ['copper', 'aluminum', 'wireRod'], lme: ['lmeCopper', 'lmeAluminum'] };
+const label = (s) => s.market ? `${s.name} · ${s.market}` : s.name;
+const SYM = { PHP: '₱', USD: 'US$', MYR: 'RM', CNY: '¥', EUR: '€' };
+const CHOICES = ['local', ...Object.keys(SYM)];
+const money = (cur, v, perT) => v === undefined ? '—'
+  : SYM[cur] + v.toLocaleString('en-US', { minimumFractionDigits: perT ? 0 : 2, maximumFractionDigits: perT ? 0 : 2 }); // per-tonne prices without cents
+const per = (s) => s.per === 't' ? 't' : 'kg';
+const fm = (s, v) => money(s.disp, v, s.per === 't');
+// FX history holds units of each currency per 1 USD by date; use the last rate on or before the price's date.
+function ratesOn(date) {
+  const h = data.fx.history;
+  let lo = 0, hi = h.length - 1;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (h[mid][0] <= date) lo = mid; else hi = mid - 1; }
+  return h[lo][1];
+}
+const convert = (v, from, to, date) => { if (from === to) return v; const r = ratesOn(date); return (v / r[from]) * r[to]; };
+const converted = (s, to) => s.raw.map((p) => ({ date: p.date, v: convert(p.v, s.cur, to, p.date) }));
+// Shown as-is when no conversion or unit change happened, so the source number is only repeated when it adds something.
+const sourceNote = (s) => (s.disp === s.cur && (s.factor ?? 1) === 1) ? '' : `${s.raw.at(-1).native.toLocaleString('en-US')} ${s.unit} · `;
+let currency = 'local';
+try { currency = localStorage.getItem('tracky.currency') || 'local'; } catch {}
+if (!CHOICES.includes(currency)) currency = 'local';
 const chg = (v, label = '') => v === undefined ? `<span class="chg flat">—</span>`
   : `<span class="chg ${v > 0.005 ? 'up' : v < -0.005 ? 'down' : 'flat'}">${v > 0.005 ? '▲' : v < -0.005 ? '▼' : ''} ${Math.abs(v).toFixed(2)}%${label}</span>`;
 const fmtDate = (iso, g) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US',
   g === 'yearly' ? { year: 'numeric', timeZone: 'UTC' } : g === 'monthly' ? { month: 'short', year: 'numeric', timeZone: 'UTC' } : { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
-let data, series = {}, hidden = new Set(), gran = 'monthly', rangeDays = 0, chart;
+let data, series = {}, hidden = new Set(), gran = 'monthly', rangeDays = 0, chartGroup = 'rubber', chart;
 
 function spark(points, color) {
   const pts = points.slice(-90);
   if (pts.length < 2) return `<svg class="spark" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
     <line x1="0" y1="18" x2="100" y2="18" stroke="${color}" stroke-opacity=".35" stroke-dasharray="2 4" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
-  const ys = pts.map((p) => p.php), lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
-  const d = pts.map((p, i) => `${((i / (pts.length - 1)) * 100).toFixed(2)},${(33 - ((p.php - lo) / span) * 30).toFixed(2)}`).join(' L');
+  const ys = pts.map((p) => p.v), lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
+  const d = pts.map((p, i) => `${((i / (pts.length - 1)) * 100).toFixed(2)},${(33 - ((p.v - lo) / span) * 30).toFixed(2)}`).join(' L');
   return `<svg class="spark" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
     <path d="M${d}" fill="none" stroke="${color}" stroke-width="1.75" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
 }
 
 function build() {
   series = {};
-  for (const id of [...GROUPS.rubber, ...GROUPS.plastic]) if (data.series[id]?.length) series[id] = { ...data.meta[id], pts: data.series[id] };
+  for (const id of Object.values(GROUPS).flat()) {
+    if (!data.series[id]?.length) continue;
+    const s = { ...data.meta[id], raw: data.series[id] };
+    s.disp = currency === 'local' ? s.cur : currency;
+    s.pts = converted(s, s.disp);
+    if (s.manual && s.raw.at(-1).src) s.origin = `Captured · ${s.raw.at(-1).src}`;
+    series[id] = s;
+  }
 }
 
 function tile(id) {
   const s = series[id];
-  if (!s) return '';
+  if (!s) {
+    const m = data.meta?.[id];
+    return m?.manual ? `<a class="tile empty" href="#bm-box"><div class="tile-top"><span class="tile-label"><i style="background:${COLORS[id]}"></i>${m.name}</span></div>
+      <div class="empty-v">No price yet</div><div class="empty-cta">Capture one with Send to Tracky ↓</div></a>` : '';
+  }
   const last = s.pts.at(-1), daily = s.freq === 'daily';
-  const note = `${last.native.toLocaleString('en-US')} ${s.unit} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}`;
-  return `<button class="tile" data-id="${id}" aria-pressed="${!hidden.has(id)}" title="Show or hide on the chart">
+  const note = `${sourceNote(s)}${fmtDate(last.date, daily ? 'daily' : 'monthly')}`;
+  return `<button class="tile" data-id="${id}" aria-haspopup="dialog" title="View details">
     <div class="tile-top"><span class="tile-label"><i style="background:${COLORS[id]}"></i>${s.name}</span><span class="tile-origin">${s.origin}</span></div>
-    <div class="tile-value">${php(last.php)}<small>/kg</small></div>
+    <div class="tile-value">${fm(s, last.v)}<small>/${per(s)}</small></div>
     <div class="tile-note"><span>${note}</span>${chg(pctChange(s.pts, daily ? 1 : 31), daily ? ' 1D' : ' 1M')}</div>
     ${spark(s.pts, COLORS[id])}</button>`;
 }
 
 function renderTiles() {
-  for (const [g, ids] of Object.entries(GROUPS)) document.getElementById('tiles-' + g).innerHTML = ids.map(tile).join('');
-  document.querySelectorAll('.tile').forEach((el) => el.onclick = () => toggle(el.dataset.id));
+  for (const [g, ids] of Object.entries(TILE_ROWS)) document.getElementById('tiles-' + g).innerHTML = ids.map(tile).join('');
+  document.querySelectorAll('.tile').forEach((el) => el.onclick = () => openDetail(el.dataset.id));
 }
 
-function toggle(id) { hidden.has(id) ? hidden.delete(id) : hidden.add(id); renderTiles(); renderLegend(); renderChart(); }
+// Legend chips only hide a line on the chart; cards and the table always show every series.
+function toggle(id) { hidden.has(id) ? hidden.delete(id) : hidden.add(id); renderLegend(); renderChart(); }
+
+const dayBefore = (iso, n) => new Date(Date.parse(iso + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10);
+function bigChart(pts, color) {
+  if (pts.length < 2) return `<div class="d-empty">History is still building up: ${pts.length} data point${pts.length === 1 ? '' : 's'} so far. A line appears after the next update.</div>`;
+  const ys = pts.map((p) => p.v), lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
+  const xy = pts.map((p, i) => `${((i / (pts.length - 1)) * 100).toFixed(2)},${(46 - ((p.v - lo) / span) * 42).toFixed(2)}`);
+  const id = 'dg' + color.slice(1);
+  return `<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".18"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    <path d="M${xy.join(' L')} L100,50 L0,50Z" fill="url(#${id})"/>
+    <path d="M${xy.join(' L')}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+    <div class="d-axis"><span>${fmtDate(pts[0].date, 'daily')}</span><span>${fmtDate(pts.at(-1).date, 'daily')}</span></div>`;
+}
+
+function openDetail(id) {
+  const s = series[id], pts = s.pts, last = pts.at(-1), daily = s.freq === 'daily';
+  const year = pts.filter((p) => p.date > dayBefore(last.date, 365));
+  const hi = year.reduce((a, b) => (b.v > a.v ? b : a)), lo = year.reduce((a, b) => (b.v < a.v ? b : a));
+  const native = sourceNote(s).replace(/ · $/, '');
+  const pc = (v) => v === undefined ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`;
+  const cls = (v) => v === undefined ? '' : v > 0.005 ? 'style="color:var(--ok)"' : v < -0.005 ? 'style="color:var(--bad)"' : '';
+  const stat = (k, v, sub = '', style = '') => `<div><span>${k}</span><b ${style}>${v}</b>${sub ? `<small>${sub}</small>` : ''}</div>`;
+  const changes = (daily ? [['1D', 1], ['1W', 7]] : []).concat([['1M', 30], ['1Y', 365]])
+    .map(([k, n]) => { const v = pctChange(pts, n); return stat(`Change ${k}`, pc(v), '', cls(v)); });
+  const dlg = document.getElementById('detail');
+  dlg.innerHTML = `<div class="d-top">
+      <div class="d-head"><div><p class="d-k"><i style="background:${COLORS[id]}"></i>${s.market ? s.market + ' · ' : ''}${s.origin}</p><h2 id="d-title">${s.name}</h2></div>
+        <button class="d-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="d-price">${fm(s, last.v)}<small>/${per(s)}</small></div>
+      <p class="d-sub">${native ? `<span>${native}</span>` : ''}<span>${fmtDate(last.date, daily ? 'daily' : 'monthly')}</span>${chg(pctChange(pts, daily ? 1 : 31), daily ? ' 1D' : ' 1M')}</p>
+    </div>
+    <div class="d-chart">${bigChart(year, COLORS[id])}</div>
+    <div class="d-stats">
+      ${changes.join('')}
+      ${daily ? stat('Avg 7D', fm(s, windowAvg(pts, 7))) : ''}${stat('Avg 30D', fm(s, windowAvg(pts, 30)))}${stat('Avg 1Y', fm(s, windowAvg(pts, 365)))}
+      ${stat('52-wk high', fm(s, hi.v), fmtDate(hi.date, daily ? 'daily' : 'monthly'))}${stat('52-wk low', fm(s, lo.v), fmtDate(lo.date, daily ? 'daily' : 'monthly'))}
+      ${stat('History', `${pts.length} pts`, `since ${fmtDate(pts[0].date, daily ? 'daily' : 'monthly')}`)}
+    </div>
+    <div class="d-foot"><a href="${s.url}" target="_blank" rel="noopener">${s.source} ↗</a><span>Updated ${s.freq}</span></div>`;
+  dlg.querySelector('.d-close').onclick = () => dlg.close();
+  dlg.showModal();
+}
+document.getElementById('detail').addEventListener('click', (e) => { if (e.target.id === 'detail') e.target.close(); });
 
 function renderLegend() {
   const el = document.getElementById('legend');
-  el.innerHTML = Object.entries(series).map(([id, s]) => `<button data-id="${id}" aria-pressed="${!hidden.has(id)}" style="color:${COLORS[id]}">
-    <i style="background:${COLORS[id]}"></i><span style="color:var(--ink)">${s.name}</span></button>`).join('');
+  el.innerHTML = Object.entries(series).filter(([, s]) => s.group === chartGroup).map(([id, s]) => `<button data-id="${id}" aria-pressed="${!hidden.has(id)}" style="color:${COLORS[id]}">
+    <i style="background:${COLORS[id]}"></i><span style="color:var(--ink)">${label(s)}</span></button>`).join('');
   el.querySelectorAll('button').forEach((b) => b.onclick = () => toggle(b.dataset.id));
 }
 
 function renderChart() {
   const cutoff = rangeDays ? new Date(Date.now() - rangeDays * 864e5).toISOString().slice(0, 10) : '';
-  const datasets = Object.entries(series).filter(([id]) => !hidden.has(id)).map(([id, s]) => {
-    const pts = aggregate(s.pts, gran).filter((p) => p.date >= cutoff);
-    return { label: s.name, data: pts.map((p) => ({ x: Date.parse(p.date), y: p.php, iso: p.date })),
+  const unitT = chartGroup === 'metal';
+  const inGroup = Object.entries(series).filter(([, s]) => s.group === chartGroup);
+  // One currency per chart so lines are comparable: the picked one, or the group's most common home currency.
+  const counts = inGroup.reduce((m, [, s]) => ({ ...m, [s.cur]: (m[s.cur] || 0) + 1 }), {});
+  const cc = currency !== 'local' ? currency : Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0] || 'USD';
+  const datasets = inGroup.filter(([id]) => !hidden.has(id)).map(([id, s]) => {
+    const pts = aggregate(converted(s, cc), gran).filter((p) => p.date >= cutoff);
+    return { label: label(s), data: pts.map((p) => ({ x: Date.parse(p.date), y: p.v, iso: p.date })),
       borderColor: COLORS[id], backgroundColor: COLORS[id], borderWidth: 2,
       tension: .3, pointRadius: pts.length === 1 ? 4 : 0, pointHoverRadius: 4, pointHoverBorderWidth: 2, pointHoverBorderColor: '#fff', spanGaps: true };
   });
   const font = { family: 'Figtree', size: 12 };
-  document.getElementById('chart-sub').textContent = `Average ₱/kg per ${{ daily: 'day', weekly: 'week', monthly: 'month', yearly: 'year' }[gran]}. Monthly series show one point per month.`;
+  document.getElementById('chart-sub').textContent = `Average ${SYM[cc]}/${unitT ? 'tonne' : 'kg'} (${cc}) per ${{ daily: 'day', weekly: 'week', monthly: 'month', yearly: 'year' }[gran]}. Monthly series show one point per month.`;
   const cfg = {
     type: 'line', data: { datasets },
     options: { responsive: true, maintainAspectRatio: false, animation: { duration: 350 },
@@ -315,26 +473,26 @@ function renderChart() {
       plugins: { legend: { display: false },
         tooltip: { backgroundColor: '#0f1124', padding: 12, cornerRadius: 12, boxPadding: 5, usePointStyle: true,
           titleFont: { ...font, weight: '600' }, bodyFont: font, titleColor: '#c9d2ff',
-          callbacks: { title: (it) => fmtDate(it[0].raw.iso, gran), label: (it) => ` ${it.dataset.label}  ${php(it.parsed.y)}` } } },
+          callbacks: { title: (it) => fmtDate(it[0].raw.iso, gran), label: (it) => ` ${it.dataset.label}  ${money(cc, it.parsed.y, unitT)}` } } },
       scales: {
         x: { type: 'linear', grid: { display: false }, border: { color: '#e4e2da' },
           ticks: { color: '#5d6275', font, maxTicksLimit: 7, maxRotation: 0,
             callback: (v) => fmtDate(new Date(v).toISOString().slice(0, 10), gran === 'yearly' ? 'yearly' : 'monthly') } },
         y: { position: 'right', grid: { color: '#f1eee5' }, border: { display: false },
-          ticks: { color: '#5d6275', font, padding: 8, maxTicksLimit: 6, callback: (v) => '₱' + v } } } },
+          ticks: { color: '#5d6275', font, padding: 8, maxTicksLimit: 6, callback: (v) => SYM[cc] + (unitT ? Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(v) : v) } } } },
   };
   if (chart) { chart.data = cfg.data; chart.options = cfg.options; chart.update(); } else chart = new Chart(document.getElementById('chart'), cfg);
 }
 
 function renderTable() {
   const head = '<tr><th>Series</th><th>Latest</th><th>Avg 7D</th><th>Avg 30D</th><th>Avg 1Y</th><th>1W</th><th>1M</th><th>1Y</th><th>Source</th></tr>';
-  const order = [...GROUPS.rubber, ...GROUPS.plastic].filter((id) => series[id]);
+  const order = Object.values(GROUPS).flat().filter((id) => series[id]);
   const rows = order.map((id) => {
     const s = series[id], last = s.pts.at(-1), daily = s.freq === 'daily';
     return `<tr>
-      <td><div class="cell"><i style="background:${COLORS[id]}"></i><div><b>${s.name}</b><small>${s.freq} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</small></div></div></td>
-      <td>${php(last.php)}</td><td>${daily ? php(windowAvg(s.pts, 7)) : '<span class="muted">—</span>'}</td>
-      <td>${php(windowAvg(s.pts, 30))}</td><td>${php(windowAvg(s.pts, 365))}</td>
+      <td><div class="cell"><i style="background:${COLORS[id]}"></i><div><b>${label(s)}</b><small>${s.origin} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</small></div></div></td>
+      <td>${fm(s, last.v)}<span class="muted">/${per(s)}</span></td><td>${daily ? fm(s, windowAvg(s.pts, 7)) : '<span class="muted">—</span>'}</td>
+      <td>${fm(s, windowAvg(s.pts, 30))}</td><td>${fm(s, windowAvg(s.pts, 365))}</td>
       <td>${chg(daily ? pctChange(s.pts, 7) : undefined)}</td><td>${chg(pctChange(s.pts, 30))}</td><td>${chg(pctChange(s.pts, 365))}</td>
       <td>${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${s.source}</a>` : '<span class="muted">Computed</span>'}</td></tr>`;
   }).join('');
@@ -343,14 +501,15 @@ function renderTable() {
 
 function render(d) {
   data = d; build(); renderTiles(); renderLegend(); renderChart(); renderTable();
-  document.getElementById('fx').innerHTML = d.fx
-    ? `<span class="num"><i>US$1</i> ₱${d.fx.PHP_per_USD.toFixed(2)}</span><span class="num"><i>RM1</i> ₱${d.fx.PHP_per_MYR.toFixed(2)}</span>${d.fx.PHP_per_CNY ? `<span class="num"><i>¥1</i> ₱${d.fx.PHP_per_CNY.toFixed(2)}</span>` : ''}` : '';
+  const r = d.fx.latest;
+  document.getElementById('fx').innerHTML = ['PHP', 'MYR', 'CNY', 'EUR'].map((c) => `<span class="num"><i>US$1</i> ${SYM[c]}${r[c].toFixed(2)}</span>`).join('');
+  document.getElementById('hero-k').textContent = currency === 'local' ? "Prices in each market's own currency" : `All prices in ${currency}`;
   const errs = Object.entries(d.errors || {}), el = document.getElementById('err'), up = document.getElementById('updated');
   up.className = 'sync' + (errs.length ? ' stale' : '');
   up.innerHTML = '<i></i>' + (d.updatedAt ? `Updated ${new Date(d.updatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}` : 'No data yet');
   const smr = series.smr20;
   document.getElementById('hero-stat').innerHTML = smr ? `<p>SMR 20 · ${fmtDate(smr.pts.at(-1).date, 'daily')}</p>
-    <b>${php(smr.pts.at(-1).php)}<small>/kg</small></b>${spark(smr.pts, '#ffd84d').replace('class="spark"', '')}
+    <b>${fm(smr, smr.pts.at(-1).v)}<small>/kg</small></b>${spark(smr.pts, '#ffd84d').replace('class="spark"', '')}
     <span class="delta">${(v => v === undefined ? '' : `${v >= 0 ? '▲' : '▼'} ${Math.abs(v).toFixed(2)}% this month`)(pctChange(smr.pts, 30))}</span>` : '';
   el.style.display = errs.length ? 'block' : 'none';
   el.textContent = errs.length ? `Couldn't refresh ${errs.map(([k]) => d.meta?.[k]?.name || k).join(', ')}. Showing the last saved prices.` : '';
@@ -361,6 +520,15 @@ const tabs = (id, fn) => document.querySelectorAll(`#${id} button`).forEach((b) 
 });
 tabs('gran', (v) => gran = v);
 tabs('range', (v) => rangeDays = +v);
+tabs('cgroup', (v) => { chartGroup = v; renderLegend(); });
+
+const curSel = document.getElementById('cur');
+curSel.value = currency;
+curSel.onchange = () => {
+  currency = curSel.value;
+  try { localStorage.setItem('tracky.currency', currency); } catch {}
+  if (data) render(data);
+};
 
 const btn = document.getElementById('refresh');
 btn.onclick = async () => {
@@ -371,6 +539,16 @@ btn.onclick = async () => {
 const d = await (await fetch('/api/prices')).json();
 if (Object.keys(d.series || {}).length) render(d);
 else { document.getElementById('updated').innerHTML = '<i></i>Fetching prices…'; btn.click(); }
+
+// ---------- Send to Tracky bookmarklet ----------
+// Collects the page URL, title, selected text and table rows, then opens Tracky's capture page with them in the URL hash
+// (the hash never reaches any server). The user confirms the price there before anything is saved.
+const bookmarklet = `javascript:(()=>{const d={u:location.href,t:document.title,s:String(getSelection()).trim().slice(0,1000),`
+  + `r:[...document.querySelectorAll('tr')].map(e=>e.innerText.replace(/\\s+/g,' ').trim()).filter(t=>/\\d{4}/.test(t)&&t.length<300).slice(0,150)};`
+  + `window.open('${location.origin}/capture.html#'+encodeURIComponent(JSON.stringify(d)),'tracky','width=540,height=800')})()`;
+const bm = document.getElementById('bm');
+bm.href = bookmarklet;
+bm.onclick = (e) => { e.preventDefault(); alert('Drag this button onto your bookmarks bar, then click it on a SunSirs or 21cp price page.'); };
 
 // ---------- PWA ----------
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch((e) => console.warn('SW failed', e));

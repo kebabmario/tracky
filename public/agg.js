@@ -1,4 +1,4 @@
-// Pure helpers shared by the dashboard and tests. Points: [{ date: 'YYYY-MM-DD', php }] sorted by date.
+// Pure helpers shared by the dashboard and tests. Points: [{ date: 'YYYY-MM-DD', v }] sorted by date.
 const DAY = 864e5;
 const toIso = (t) => new Date(t).toISOString().slice(0, 10);
 const ms = (iso) => Date.parse(iso + 'T00:00:00Z');
@@ -16,15 +16,15 @@ export function aggregate(points, g) {
   for (const p of points) {
     const k = bucketKey(p.date, g);
     const b = m.get(k) || m.set(k, { sum: 0, n: 0 }).get(k);
-    b.sum += p.php; b.n++;
+    b.sum += p.v; b.n++;
   }
-  return [...m].map(([date, b]) => ({ date, php: b.sum / b.n })).sort((a, b) => a.date.localeCompare(b.date));
+  return [...m].map(([date, b]) => ({ date, v: b.sum / b.n })).sort((a, b) => a.date.localeCompare(b.date));
 }
 
 // Last known value on or before `date` (forward fill), undefined if none.
 export function valueAt(points, date) {
   let v;
-  for (const p of points) { if (p.date > date) break; v = p.php; }
+  for (const p of points) { if (p.date > date) break; v = p.v; }
   return v;
 }
 
@@ -33,7 +33,7 @@ export function windowAvg(points, days, asOf = points.at(-1)?.date) {
   if (!points.length) return undefined;
   const from = toIso(ms(asOf) - days * DAY);
   const inWin = points.filter((p) => p.date > from && p.date <= asOf);
-  return inWin.length ? inWin.reduce((a, p) => a + p.php, 0) / inWin.length : undefined;
+  return inWin.length ? inWin.reduce((a, p) => a + p.v, 0) / inWin.length : undefined;
 }
 
 // % change of latest value vs the value `days` earlier.
@@ -41,5 +41,5 @@ export function pctChange(points, days) {
   const last = points.at(-1);
   if (!last) return undefined;
   const prev = valueAt(points, toIso(ms(last.date) - days * DAY));
-  return prev ? ((last.php - prev) / prev) * 100 : undefined;
+  return prev ? ((last.v - prev) / prev) * 100 : undefined;
 }
