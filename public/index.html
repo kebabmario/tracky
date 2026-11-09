@@ -85,11 +85,6 @@ button, select { font: inherit; color: inherit; }
 .cur-pick select { appearance: none; height: var(--bar); padding: 0 28px 0 12px; border: 0; border-left: 1px solid rgba(255, 255, 255, .12); border-radius: 0; cursor: pointer; color: #fff; font: 600 12px var(--ui); letter-spacing: .03em;
   background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23ffffff' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right 10px center / 10px; }
 .cur-pick select option { color: var(--ink); }
-#refresh { display: inline-flex; align-items: center; gap: 6px; height: var(--bar); padding: 0 14px; border: 0; background: var(--yellow); color: var(--navy); font: 700 12px var(--ui); letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
-#refresh:hover { background: #ffe27a; }
-#refresh:disabled { opacity: .7; cursor: progress; }
-#refresh svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: square; }
-#refresh.spin svg { animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .err { display: none; padding: 6px 14px; background: #fdecee; color: var(--down); font-size: 12.5px; font-weight: 600; border-bottom: 1px solid #f6c9ce; }
 
@@ -219,8 +214,6 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
 }
 @media (max-width: 760px) {
   .stamp { display: none; }
-  #refresh { padding: 0 12px; }
-  #refresh .btn-label { display: none; }
   .term { display: flex; flex-direction: column; height: auto; }
   .watch, .main { height: auto; overflow: visible; }
   .watch { order: 2; } .main { order: 1; } .side { order: 3; display: block; }
@@ -268,11 +261,11 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
         <a class="mi" href="/capture.html"><div><b>Enter a price by hand</b><small>SAN, PPB, ABS or PPH, in CNY/t</small></div></a>
         <hr>
         <button class="mi" id="install" type="button"><div><b>Install app</b><small>Home screen, works offline</small></div></button>
+        <button class="mi" id="refresh-now" type="button"><div><b>Refresh prices now</b><small>Fetch the latest from every source · prices also update on their own daily</small></div></button>
         <button class="mi" id="forget-key" type="button" hidden><div><b>Forget Tracky key</b><small>Remove the saving key from this device</small></div></button>
         <button class="mi" id="about-btn" type="button"><div><b>About the data</b><small>Sources, units and currency</small></div></button>
       </div>
     </div>
-    <button id="refresh" aria-label="Refresh prices"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg><span class="btn-label">Refresh</span></button>
   </div>
 </header>
 <div class="err" id="err" role="status"></div>
@@ -743,7 +736,7 @@ document.getElementById('watch').addEventListener('keydown', (e) => {
 const q = document.getElementById('q'), qList = document.getElementById('q-list');
 let qItems = [], qIdx = 0;
 const ACTIONS = [
-  { kind: 'Action', code: 'REFRESH', label: 'Refresh prices', run: () => document.getElementById('refresh').click() },
+  { kind: 'Action', code: 'REFRESH', label: 'Refresh prices now', run: () => doRefresh() },
   { kind: 'Action', code: 'CAPTURE', label: 'Enter a SAN, PPB, ABS or PPH price by hand', run: () => { location.href = '/capture.html'; } },
   { kind: 'Action', code: 'ABOUT', label: 'About the data', run: () => document.getElementById('about-dlg').showModal() },
   { kind: 'Action', code: 'INSTALL', label: 'Install app', run: () => document.getElementById('install').click() },
@@ -798,7 +791,8 @@ const curSel = document.getElementById('cur');
 curSel.value = currency;
 curSel.onchange = () => { currency = curSel.value; store.set('tracky.currency', currency); if (data) render(data); };
 
-const btn = document.getElementById('refresh');
+// Manual refresh lives in the ⋯ menu and the search bar (it needs the key on the live site); prices also refresh on their own.
+let refreshing = false;
 // Saving needs the site's Tracky key when the server has one (the live site). It is asked for once and kept on this device.
 const KEY_STORE = 'tracky.key';
 const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ''; } catch { return ''; } };
@@ -816,24 +810,27 @@ async function authFetch(url, opts = {}) {
   return res;
 }
 
-btn.onclick = async () => {
-  btn.disabled = true; btn.classList.add('spin');
-  const err = document.getElementById('err');
+async function doRefresh() {
+  if (refreshing) return;
+  refreshing = true;
+  const err = document.getElementById('err'), stamp = document.getElementById('updated'), before = stamp.textContent;
+  stamp.textContent = 'Refreshing…';
   try {
     const res = await authFetch('/api/refresh', { method: 'POST' });
     const j = await res.json().catch(() => null);
     if (res.ok && j?.series) render(j);
-    else { err.style.display = 'block'; err.textContent = `Refresh failed: ${j?.error || `HTTP ${res.status}`}`; }
-  } catch { err.style.display = 'block'; err.textContent = `Refresh failed: can't reach Tracky's server.`; }
-  finally { btn.disabled = false; btn.classList.remove('spin'); document.getElementById('forget-key').hidden = !getKey(); }
-};
+    else { stamp.textContent = before; err.style.display = 'block'; err.textContent = `Refresh failed: ${j?.error || `HTTP ${res.status}`}`; }
+  } catch { stamp.textContent = before; err.style.display = 'block'; err.textContent = `Refresh failed: can't reach Tracky's server.`; }
+  finally { refreshing = false; document.getElementById('forget-key').hidden = !getKey(); }
+}
+document.getElementById('refresh-now').onclick = () => { setMenu(false); doRefresh(); };
 const forget = document.getElementById('forget-key');
 forget.hidden = !getKey();
 forget.onclick = () => { setKey(''); forget.hidden = true; setMenu(false); };
 
 const d = await (await fetch('/api/prices')).json();
 if (Object.keys(d.series || {}).length) render(d);
-else { document.getElementById('updated').textContent = 'Fetching…'; btn.click(); }
+else document.getElementById('updated').textContent = 'No prices yet';
 
 // ---------- Send to Tracky bookmarklet ----------
 // Collects the page URL, title, selected text and table rows, then opens Tracky's capture page with them in the URL hash
