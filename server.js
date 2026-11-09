@@ -2,7 +2,7 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, normalize } from 'node:path';
-import { scrape, loadData, addCapture } from './scraper.js';
+import { scrape, loadData, addCapture, addCaptures } from './scraper.js';
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = new URL('./public/', import.meta.url).pathname;
@@ -37,10 +37,12 @@ createServer(async (req, res) => {
     }
     if (path === '/api/capture' && req.method === 'POST') {
       try {
-        const c = await readJson(req);
-        await serial(() => addCapture({ series: c.series, date: c.date, price: Number(c.price), src: c.src }));
+        const c = await readJson(req, 256 * 1024);
+        const r = Array.isArray(c.points)
+          ? await serial(() => addCaptures({ series: c.series, src: c.src, points: c.points }))
+          : (await serial(() => addCapture({ series: c.series, date: c.date, price: Number(c.price), src: c.src })), { saved: 1, skipped: 0 });
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        return res.end(JSON.stringify({ ok: true }));
+        return res.end(JSON.stringify({ ok: true, ...r }));
       } catch (e) {
         res.writeHead(e.status || 500, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ ok: false, error: e.status ? e.message : 'Could not save' }));
@@ -49,8 +51,9 @@ createServer(async (req, res) => {
     const file = normalize(PUBLIC + (path === '/' ? 'index.html' : path));
     if (!file.startsWith(PUBLIC)) throw new Error('outside public');
     const body = await readFile(file);
-    // sw.js must not be HTTP-cached so updates to it are picked up.
-    res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', ...(path === '/sw.js' && { 'Cache-Control': 'no-cache' }) });
+    // Pages and sw.js must revalidate every time so a new version is picked up straight away.
+    const fresh = path === '/sw.js' || extname(file) === '.html';
+    res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', ...(fresh && { 'Cache-Control': 'no-cache' }) });
     res.end(body);
   } catch {
     res.writeHead(404).end('Not found');

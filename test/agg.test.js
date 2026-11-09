@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { bucketKey, aggregate, windowAvg, pctChange } from '../public/agg.js';
-import { parseMrb, parseGuidechem, parseShfe, parseWestmetall, rateOn } from '../scraper.js';
+import { parseMrb, parseGuidechem, parseShfe, parseShfeBar, parseWestmetall, rateOn } from '../scraper.js';
 
 test('bucketKey', () => {
   assert.equal(bucketKey('2026-11-08', 'weekly'), '2026-11-02'); // Sunday -> Monday
@@ -41,9 +41,11 @@ test('scraper parsers', () => {
     { PRODUCTGROUPID: 'cu    ', DELIVERYMONTH: '2612', OPENINTEREST: 99, SETTLEMENTPRICE: 105110 },
     { PRODUCTGROUPID: 'cu    ', DELIVERYMONTH: '小计', OPENINTEREST: 999, SETTLEMENTPRICE: '' }] };
   assert.equal(parseShfe(shfe, 'cu'), 105110);
-  const wm = '<tr><th>date</th><th>LME Copper Cash-Settlement</th></tr><tr><td>06. November 2026</td><td>13,955.00</td><td>13,780.00</td></tr>'
-    + '<tr><td>05. November 2026</td><td>14,110.00</td><td>14,030.00</td></tr>';
-  assert.deepEqual(parseWestmetall(wm), [{ date: '2026-11-05', native: 14110 }, { date: '2026-11-06', native: 13955 }]);
+  shfe.o_curinstrument[1] = { ...shfe.o_curinstrument[1], OPENPRICE: 104000, HIGHESTPRICE: 106000, LOWESTPRICE: 103500, CLOSEPRICE: 105000, VOLUME: 1200, OPENINTEREST: 99 };
+  assert.deepEqual(parseShfeBar(shfe, 'cu'), { native: 105110, o: 104000, h: 106000, l: 103500, c: 105000, vol: 1200, oi: 99 });
+  const wm = '<tr><th>date</th><th>LME Copper Cash-Settlement</th></tr><tr><td>06. November 2026</td><td>13,955.00</td><td>13,780.00</td><td>316,675</td></tr>'
+    + '<tr><td>05. November 2026</td><td>14,110.00</td><td>14,030.00</td><td>318,675</td></tr>';
+  assert.deepEqual(parseWestmetall(wm), [{ date: '2026-11-05', native: 14110, stock: 318675 }, { date: '2026-11-06', native: 13955, stock: 316675 }]);
   assert.equal(rateOn([['2026-11-05', 15], ['2026-11-06', 16]], '2026-11-08'), 16);
 });
 
@@ -61,4 +63,38 @@ test('capture helpers', async () => {
   const { checkCapture } = await import('../scraper.js');
   assert.equal(checkCapture({ series: 'ppBlock', date: '2026-11-09', price: 8200 }, '2026-11-09'), null);
   assert.ok(checkCapture({ series: 'ppBlock', date: '2026-11-09', price: NaN }, '2026-11-09'));
+});
+
+test('terminal metrics', async () => {
+  const { volatility, sma, ytd, correlation } = await import('../public/agg.js');
+  const day = (i) => new Date(Date.UTC(2026, 0, 1) + i * 864e5).toISOString().slice(0, 10);
+  const flat = Array.from({ length: 40 }, (_, i) => ({ date: day(i), v: 100 }));
+  assert.equal(volatility(flat, 30), 0);
+  assert.equal(volatility(flat.slice(0, 3), 30), undefined);
+  const zig = flat.map((p, i) => ({ ...p, v: i % 2 ? 101 : 100 }));
+  assert.ok(volatility(zig, 30) > 10);
+  assert.equal(sma([{ v: 1 }, { v: 2 }, { v: 3 }], 2), 2.5);
+  assert.equal(sma([{ v: 1 }], 2), undefined);
+  assert.ok(Math.abs(ytd([{ date: '2025-12-30', v: 100 }, { date: '2026-03-01', v: 110 }]) - 10) < 1e-9);
+  assert.equal(ytd([{ date: '2026-01-05', v: 100 }]), undefined);
+  const a = zig, b = zig.map((p) => ({ ...p, v: p.v * 2 })), c = zig.map((p, i) => ({ ...p, v: i % 2 ? 100 : 101 }));
+  assert.ok(Math.abs(correlation(a, b) - 1) < 1e-9);
+  assert.ok(Math.abs(correlation(a, c) + 1) < 1e-9);
+});
+
+test('chart history from the bookmarklet', async () => {
+  const { normalizeHistory } = await import('../public/capture-parse.js');
+  assert.deepEqual(normalizeHistory([['2025-11-09', '9,800'], ['2026/05/01', 10100], ['2026年11月09日', 10500], ['2026-12-01', 1]], '2026-11-09'),
+    [{ date: '2025-11-09', price: 9800 }, { date: '2026-05-01', price: 10100 }, { date: '2026-11-09', price: 10500 }]);
+  assert.deepEqual(normalizeHistory([['11-30', 1], ['12-31', 2], ['01-02', 3], ['11-09', 4]], '2026-11-09'),
+    [{ date: '2025-11-30', price: 1 }, { date: '2025-12-31', price: 2 }, { date: '2026-01-02', price: 3 }, { date: '2026-11-09', price: 4 }]);
+  assert.deepEqual(normalizeHistory([[Date.UTC(2026, 10, 8), 7], ['bad', 8], ['11-09', '-']], '2026-11-09'), [{ date: '2026-11-08', price: 7 }]);
+  assert.deepEqual(normalizeHistory([['11-20', 5], ['11-09', 6]], '2026-11-09'), [{ date: '2025-11-20', price: 5 }, { date: '2026-11-09', price: 6 }]);
+});
+
+test('bulk capture validation', async () => {
+  const { addCaptures } = await import('../scraper.js');
+  await assert.rejects(addCaptures({ series: 'as', points: [] }), /No prices/);
+  await assert.rejects(addCaptures({ series: 'as', points: [{ date: '2026-01-01', price: 5 }] }), /between 1,000/);
+  await assert.rejects(addCaptures({ series: 'nope', points: [{ date: '2026-01-01', price: 9000 }] }), /Unknown material/);
 });

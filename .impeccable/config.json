@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "public/index.html"
+        ],
+        "createdAt": "2026-11-09T10:27:12.898Z",
+        "reason": "Claude: ticker tape is the financial-terminal convention the user asked for; pauses on hover and is static under prefers-reduced-motion"
+      }
+    ]
+  }
+}

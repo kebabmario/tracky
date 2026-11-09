@@ -44,3 +44,34 @@ export function candidateRows(rows, material) {
     .slice(0, 12)
     .map((x) => x.r);
 }
+
+// Turns one chart series ([x, y] pairs) into dated prices. x can be a timestamp, a full date
+// (2025-11-09, 2025/11/09, 2025年11月09日) or a month-day label (11-09, 11/09); month-day labels get
+// their year by walking back from `today`, stepping back a year whenever the month runs past the later point.
+export function normalizeHistory(pairs, today) {
+  const out = [];
+  let year = +today.slice(0, 4), laterMonth = +today.slice(5, 7);
+  for (let i = (pairs || []).length - 1; i >= 0; i--) {
+    const [x, y] = pairs[i];
+    const v = +String(y).replace(/,/g, '');
+    if (y === null || y === '' || !isFinite(v)) continue;
+    let iso;
+    if (typeof x === 'number' && x > 1e11) iso = new Date(x).toISOString().slice(0, 10);
+    else {
+      const sx = String(x).trim();
+      let m = sx.match(/(20\d{2})\s*[-/.年]\s*(\d{1,2})\s*[-/.月]\s*(\d{1,2})/);
+      if (m) iso = `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`;
+      else if ((m = sx.match(/^(\d{1,2})\s*[-/.月]\s*(\d{1,2})日?$/))) {
+        const mon = +m[1], day = m[2].padStart(2, '0');
+        if (mon > laterMonth) year--;
+        laterMonth = mon;
+        iso = `${year}-${String(mon).padStart(2, '0')}-${day}`;
+        if (iso > today) { year--; iso = `${year}-${String(mon).padStart(2, '0')}-${day}`; }
+      }
+    }
+    if (!iso || isNaN(Date.parse(iso)) || iso > today) continue;
+    out.push({ date: iso, price: v });
+  }
+  const seen = new Set();
+  return out.reverse().filter((p) => !seen.has(p.date) && seen.add(p.date));
+}

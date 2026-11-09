@@ -138,6 +138,15 @@ export function parseShfe(json, product) {
   const main = rows.reduce((a, b) => (b.OPENINTEREST > a.OPENINTEREST ? b : a));
   return +main.SETTLEMENTPRICE || undefined;
 }
+// Full daily bar for the main contract: settlement as the price, plus OHLC, volume and open interest (lots).
+export function parseShfeBar(json, product) {
+  const rows = json.o_curinstrument.filter((r) => r.PRODUCTGROUPID.trim() === product && /^\d{4}$/.test(r.DELIVERYMONTH.trim()));
+  if (!rows.length) return undefined;
+  const m = rows.reduce((a, b) => (b.OPENINTEREST > a.OPENINTEREST ? b : a));
+  const num = (v) => (v === '' || v == null || isNaN(+v) ? undefined : +v);
+  if (!num(m.SETTLEMENTPRICE)) return undefined;
+  return { native: +m.SETTLEMENTPRICE, o: num(m.OPENPRICE), h: num(m.HIGHESTPRICE), l: num(m.LOWESTPRICE), c: num(m.CLOSEPRICE), vol: num(m.VOLUME), oi: num(m.OPENINTEREST) };
+}
 async function shfeDays(days) {
   const dates = [];
   for (let i = days - 1; i >= 0; i--) {
@@ -160,9 +169,13 @@ async function shfeDays(days) {
 const MONTH_NO = Object.fromEntries('January February March April May June July August September October November December'.split(' ').map((m, i) => [m, i + 1]));
 export function parseWestmetall(html) {
   const out = [];
-  for (const [, d, mon, y, cash] of html.matchAll(/<td[^>]*>\s*(\d{1,2})\.\s*([A-Za-z]+)\s+(\d{4})\s*<\/td>\s*<td[^>]*>\s*([\d,.]+)\s*<\/td>/g)) {
+  // Columns: date, cash settlement, 3-month, LME warehouse stock (tonnes).
+  const cell = '\\s*<td[^>]*>\\s*([\\d,.]+)\\s*<\\/td>';
+  const re = new RegExp(`<td[^>]*>\\s*(\\d{1,2})\\.\\s*([A-Za-z]+)\\s+(\\d{4})\\s*<\\/td>${cell}(?:${cell}${cell})?`, 'g');
+  for (const [, d, mon, y, cash, , stock] of html.matchAll(re)) {
     if (!MONTH_NO[mon]) continue;
-    out.push({ date: `${y}-${String(MONTH_NO[mon]).padStart(2, '0')}-${d.padStart(2, '0')}`, native: +cash.replace(/,/g, '') });
+    out.push({ date: `${y}-${String(MONTH_NO[mon]).padStart(2, '0')}-${d.padStart(2, '0')}`, native: +cash.replace(/,/g, ''),
+      ...(stock && { stock: +stock.replace(/,/g, '') }) });
   }
   if (!out.length) throw new Error('westmetall: no rows found');
   return out.sort((a, b) => a.date.localeCompare(b.date));
@@ -189,7 +202,8 @@ export async function scrape() {
   for (const id of Object.keys(data.series)) if (!SERIES[id] || data.meta?.[id]?.source !== SERIES[id].source) delete data.series[id];
 
   const mrb = mrbRows(firstRun ? 25 : 2);
-  const shfe = shfeDays(data.series.copper?.length ? 10 : 180).catch((e) => { throw new Error(`SHFE: ${e.message}`); });
+  // Refetch ~6 months once when stored SHFE points predate volume/open-interest capture.
+  const shfe = shfeDays(data.series.copper?.at(-1)?.vol !== undefined ? 10 : 180).catch((e) => { throw new Error(`SHFE: ${e.message}`); });
   const jobs = {
     ...Object.fromEntries(Object.entries(MRB_GRADES).map(([id, grade]) => [id, async () => parseMrb(await mrb, grade)])),
     phRubber: () => phRubber(4),
@@ -198,7 +212,7 @@ export async function scrape() {
     lmeCopper: async () => parseWestmetall(await (await get(SERIES.lmeCopper.url)).text()),
     lmeAluminum: async () => parseWestmetall(await (await get(SERIES.lmeAluminum.url)).text()),
     ...Object.fromEntries(Object.entries(SHFE_PRODUCTS).map(([id, product]) => [id, async () => {
-      const pts = (await shfe).map(({ date, json }) => ({ date, native: parseShfe(json, product) })).filter((p) => p.native);
+      const pts = (await shfe).map(({ date, json }) => ({ date, ...parseShfeBar(json, product) })).filter((p) => p.native);
       if (!pts.length) throw new Error('no SHFE data');
       return pts;
     }])),
@@ -220,7 +234,8 @@ export async function scrape() {
 async function save(data) {
   for (const [id, pts] of Object.entries(data.series)) {
     const f = SERIES[id].factor ?? 1;
-    data.series[id] = pts.map(({ date, native, src }) => ({ date, native, v: round(native * f, 4), ...(src && { src }) }));
+    // Extra fields (source host, SHFE bar, LME stock) ride along untouched.
+    data.series[id] = pts.map(({ date, native, v, ...extra }) => ({ date, native, v: round(native * f, 4), ...extra }));
   }
   data.meta = SERIES;
   await mkdir(new URL('./data/', import.meta.url), { recursive: true });
@@ -239,13 +254,27 @@ export function checkCapture({ series, date, price, src }, today = iso(new Date(
 }
 
 export async function addCapture(c) {
-  const err = checkCapture(c);
-  if (err) throw Object.assign(new Error(err), { status: 400 });
+  return addCaptures({ series: c.series, src: c.src, points: [{ date: c.date, price: c.price }] });
+}
+
+// Saves many dated prices at once (e.g. a chart's full history from the bookmarklet). Points that fail
+// validation are skipped and counted; the call fails only when none are valid.
+export async function addCaptures({ series, src, points }) {
+  if (!Array.isArray(points) || !points.length) throw Object.assign(new Error('No prices to save'), { status: 400 });
+  if (points.length > 1500) throw Object.assign(new Error('Too many prices in one save (max 1,500)'), { status: 400 });
+  const ok = [], errors = new Set();
+  for (const p of points) {
+    const c = { series, date: p?.date, price: Number(p?.price), src };
+    const err = checkCapture(c);
+    if (err) errors.add(err); else ok.push(c);
+  }
+  if (!ok.length) throw Object.assign(new Error([...errors][0] || 'No valid prices'), { status: 400 });
   const data = await loadData();
   let host;
-  try { host = c.src ? new URL(c.src).hostname : undefined; } catch { host = undefined; }
-  data.series[c.series] = merge(data.series[c.series], [{ date: c.date, native: c.price, ...(host && { src: host }) }]);
-  return save(data);
+  try { host = src ? new URL(src).hostname : undefined; } catch { host = undefined; }
+  data.series[series] = merge(data.series[series], ok.map((c) => ({ date: c.date, native: c.price, ...(host && { src: host }) })));
+  await save(data);
+  return { saved: ok.length, skipped: points.length - ok.length };
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tracky · Rubber, resin & metals prices</title>
+<title>Tracky · Commodity terminal</title>
+<meta name="description" content="Daily rubber, plastic resin and metals prices from Malaysia, the Philippines, China and London.">
 <link rel="icon" href="logo.svg">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -13,292 +14,330 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --ink: #0f1124; --ink-2: #454a5e; --muted: #5d6275; --line: #e4e2da;
-  --cream: #f7f4ec; --soft: #f1eee5; --blue: #2547ff; --blue-ink: #1a33c2; --blue-deep: #0b1466; --blue-wash: #eef1ff;
-  --yellow: #ffd84d; --ok: #13795b; --bad: #b42318; --ease: cubic-bezier(.22, 1, .36, 1);
-  --display: 'Schibsted Grotesk', system-ui, sans-serif;
+  /* Neutral surfaces; navy + yellow are the only brand colours, green/red only for price moves. */
+  --ink: #111827; --ink-2: #374151; --muted: #6b7280; --faint: #9ca3af;
+  --line: rgba(15, 23, 42, .1); --line-2: rgba(15, 23, 42, .06); --page: #f3f4f6; --head: #f8f9fb;
+  --navy: #0b1466; --blue: #2547ff; --sel: #eef1ff; --yellow: #ffd84d;
+  --up: #2e7d32; --down: #d32f2f; --up-bg: #e8f5e9; --down-bg: #fdecea; --flat-bg: #f1f3f5;
+  --ui: 'Inter Tight', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --bar: 44px;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: #fff; color: var(--ink); font: 400 15px/1.5 Figtree, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 13px/1.4 var(--ui); -webkit-font-smoothing: antialiased; font-feature-settings: 'tnum'; }
 h1, h2, h3, p { margin: 0; }
 a { color: inherit; }
-button { font: inherit; color: inherit; }
-:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
-.wrap { width: min(1200px, 100% - 48px); margin-inline: auto; }
-.num { font-variant-numeric: tabular-nums; }
-
-/* top bar */
-.top { position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, .88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
-.top .wrap { display: flex; align-items: center; gap: 14px; height: 66px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; font: 600 25px/1 var(--display); letter-spacing: -.04em; text-decoration: none; }
-.brand img { width: 32px; height: 32px; display: block; }
-.top .spacer { flex: 1; }
-.sync { display: inline-flex; align-items: center; gap: 7px; color: var(--ok); font-size: 13px; font-weight: 600; white-space: nowrap; }
-.sync i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-.sync.stale { color: var(--bad); }
-.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--ink); color: #fff; font-weight: 600; font-size: 14.5px; cursor: pointer; transition: background .2s, transform .2s var(--ease); white-space: nowrap; }
-.btn:hover { background: #272a3d; transform: translateY(-1px); }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.cur-pick select { appearance: none; height: 40px; padding: 0 34px 0 14px; border: 0; border-radius: 12px; cursor: pointer;
-  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%230f1124' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center / 12px;
-  box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink); font: 600 14px Figtree, system-ui, sans-serif; transition: box-shadow .15s; }
-.cur-pick select:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
-.btn:active { transform: scale(.98); }
-.btn:disabled { opacity: .6; cursor: progress; }
-.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.btn.spin svg { animation: spin .8s linear infinite; }
+.num, code { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.up { color: var(--up); } .down { color: var(--down); } .flat { color: var(--muted); }
+.badge { display: inline-block; min-width: 64px; padding: 2px 6px; border-radius: 2px; font: 600 12px/1.35 var(--mono); text-align: right; white-space: nowrap; }
+.badge.up { background: var(--up-bg); } .badge.down { background: var(--down-bg); } .badge.flat { background: var(--flat-bg); color: #5f6368; }
+.cap { color: var(--muted); font: 600 11.5px/1 var(--ui); letter-spacing: .07em; text-transform: uppercase; }
+
+/* ---------- top bar ---------- */
+.bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; height: var(--bar); background: var(--navy); color: #fff; }
+.brand { display: inline-flex; align-items: center; gap: 8px; flex: none; height: 100%; padding: 0 14px; border-right: 1px solid rgba(255, 255, 255, .12); font: 600 15px/1 var(--ui); letter-spacing: -.01em; text-decoration: none; }
+.brand img { width: 20px; height: 20px; display: block; }
+.cmd { position: relative; flex: none; width: 320px; height: 100%; border-right: 1px solid rgba(255, 255, 255, .12); }
+.cmd input { width: 100%; height: 100%; padding: 0 12px 0 40px; border: 0; background: rgba(255, 255, 255, .06); color: #fff; font: 500 12.5px var(--ui); outline: none; }
+.cmd input::placeholder { color: #a5b4cf; }
+.cmd input:focus { background: rgba(255, 255, 255, .12); }
+.cmd .kbd { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); padding: 0 5px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 2px; color: #c7cfe6; font: 600 11px/16px var(--mono); pointer-events: none; }
+.q-list { position: absolute; left: 0; top: 100%; z-index: 30; width: 420px; max-height: 60vh; margin: 0; padding: 4px 0; overflow: auto; list-style: none; background: #fff; color: var(--ink); border: 1px solid var(--line); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .35); }
+.q-list[hidden] { display: none; }
+.q-list li { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 7px 12px; cursor: pointer; }
+.q-list li[aria-selected="true"] { background: var(--sel); }
+.q-list code { font-weight: 600; }
+.q-list small { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.q-list .kind { color: var(--faint); font: 600 11px var(--ui); letter-spacing: .06em; text-transform: uppercase; }
+.q-empty { padding: 10px 12px; color: var(--muted); }
+.menu { position: relative; height: 100%; }
+#menu-btn { width: 40px; height: 100%; border: 0; border-left: 1px solid rgba(255, 255, 255, .12); background: none; color: #fff; cursor: pointer; }
+#menu-btn:hover, #menu-btn[aria-expanded="true"] { background: rgba(255, 255, 255, .1); }
+#menu-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.menu-pop { position: absolute; right: 0; top: 100%; z-index: 30; width: 300px; padding: 6px 0; background: #fff; color: var(--ink); border: 1px solid var(--line); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .35); }
+.menu-pop[hidden] { display: none; }
+.menu-pop .mi { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; padding: 9px 14px; border: 0; background: none; text-align: left; text-decoration: none; cursor: pointer; }
+.menu-pop .mi:hover { background: var(--head); }
+.menu-pop .mi[hidden] { display: none; }
+.menu-pop b { display: block; font-size: 13px; font-weight: 600; }
+.menu-pop small { display: block; color: var(--muted); font-size: 12px; }
+.menu-pop hr { margin: 6px 0; border: 0; border-top: 1px solid var(--line-2); }
+.menu-pop .grab { flex: none; padding: 3px 8px; border: 1px dashed var(--faint); border-radius: 2px; font: 600 11.5px var(--ui); cursor: grab; }
+.tape { position: relative; flex: 1; min-width: 0; height: 100%; overflow: hidden; }
+.tape-track { display: flex; width: max-content; height: 100%; align-items: center; animation: tape 80s linear infinite; }
+.tape:hover .tape-track { animation-play-state: paused; }
+@keyframes tape { to { transform: translateX(-50%); } }
+.tk { display: inline-flex; align-items: baseline; gap: 8px; padding: 0 14px; border: 0; border-right: 1px solid rgba(255, 255, 255, .1); background: none; color: #fff; white-space: nowrap; cursor: pointer; font: 500 12px var(--mono); }
+.tk code { color: var(--yellow); font-weight: 600; }
+.tk .up { color: #4ade80; } .tk .down { color: #fb7185; } .tk .flat { color: #a5b4cf; }
+.bar-r { display: flex; align-items: center; gap: 1px; flex: none; height: 100%; border-left: 1px solid rgba(255, 255, 255, .12); }
+.stamp { padding: 0 12px; color: #c7cfe6; font: 500 11.5px var(--mono); white-space: nowrap; }
+.stamp.stale { color: #fb7185; }
+.cur-pick select { appearance: none; height: var(--bar); padding: 0 28px 0 12px; border: 0; border-left: 1px solid rgba(255, 255, 255, .12); border-radius: 0; cursor: pointer; color: #fff; font: 600 12px var(--ui); letter-spacing: .03em;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23ffffff' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right 10px center / 10px; }
+.cur-pick select option { color: var(--ink); }
+#refresh { display: inline-flex; align-items: center; gap: 6px; height: var(--bar); padding: 0 14px; border: 0; background: var(--yellow); color: var(--navy); font: 700 12px var(--ui); letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+#refresh:hover { background: #ffe27a; }
+#refresh:disabled { opacity: .7; cursor: progress; }
+#refresh svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: square; }
+#refresh.spin svg { animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.err { display: none; padding: 6px 14px; background: #fdecee; color: var(--down); font-size: 12.5px; font-weight: 600; border-bottom: 1px solid #f6c9ce; }
 
-/* hero */
-.hero { position: relative; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; margin: 22px 0 28px; padding: 36px 36px 32px; border-radius: 28px; background: var(--blue-deep); color: #fff; overflow: hidden; isolation: isolate; }
-.mesh { position: absolute; inset: 0; z-index: -1; }
-.mesh i { position: absolute; border-radius: 50%; filter: blur(70px); animation: drift 22s ease-in-out infinite alternate; }
-.mesh .m1 { width: 60%; aspect-ratio: 1; left: -15%; top: -80%; background: #2547ff; }
-.mesh .m2 { width: 50%; aspect-ratio: 1; right: -10%; top: -60%; background: #3a7bff; animation-duration: 26s; animation-delay: -8s; }
-.mesh .m3 { width: 35%; aspect-ratio: 1; left: 40%; top: 10%; background: #5b3dff; opacity: .6; animation-duration: 30s; }
-.mesh .m4 { width: 14%; aspect-ratio: 1; right: 30%; top: -10%; background: #ffd84d; opacity: .4; animation-duration: 18s; }
-@keyframes drift { 50% { transform: translate(8%, 10%) scale(1.1); } 100% { transform: translate(-6%, -4%) scale(.95); } }
-.hero-k { color: #c9d2ff; font-size: 13.5px; font-weight: 600; }
-h1 { margin-top: 6px; font: 600 clamp(32px, 4.4vw, 48px)/1.05 var(--display); letter-spacing: -.035em; }
-.hero-sub { margin-top: 10px; max-width: 500px; color: #dbe1ff; font-size: 16px; }
-.hero-sub b { color: var(--yellow); font-weight: 600; }
-.fx { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
-.fx span { padding: 6px 12px; border-radius: 10px; background: rgba(255, 255, 255, .12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); font-size: 13px; font-weight: 600; }
-.fx span i { font-style: normal; color: #c9d2ff; font-weight: 500; margin-right: 4px; }
-.hero-stat { min-width: 270px; padding: 18px 20px; border-radius: 20px; background: rgba(255, 255, 255, .1); backdrop-filter: blur(12px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); }
-.hero-stat p { color: #c9d2ff; font-size: 13px; font-weight: 600; }
-.hero-stat b { display: block; margin-top: 2px; font: 600 36px/1.1 var(--display); letter-spacing: -.03em; }
-.hero-stat b small { font: 500 14px Figtree, sans-serif; color: #c9d2ff; letter-spacing: 0; margin-left: 3px; }
-.hero-stat svg { display: block; width: 100%; height: 44px; margin: 8px 0 4px; overflow: visible; }
-.hero-stat .delta { color: var(--yellow); font-size: 13px; font-weight: 600; }
+/* ---------- layout ---------- */
+.term { display: grid; grid-template-columns: 410px minmax(0, 1fr) 300px; gap: 0; height: calc(100vh - var(--bar)); height: calc(100dvh - var(--bar)); background: #fff; }
+.watch { border-right: 1px solid var(--line); }
+.side { border-left: 1px solid var(--line); }
+.pane { min-width: 0; min-height: 0; overflow: auto; background: #fff; }
+.pane-h { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 8px; height: 32px; padding: 0 12px; background: var(--head); border-bottom: 1px solid var(--line); }
 
-/* groups + tiles */
-.group { margin-bottom: 26px; }
-.group-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
-.group-head h2 { font: 600 20px/1.2 var(--display); letter-spacing: -.025em; }
-.group-head span { color: var(--muted); font-size: 13.5px; }
-.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-#tiles-plastic { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-a.tile.empty { justify-content: space-between; min-height: 150px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink); text-decoration: none; }
-a.tile.empty .empty-v { margin-top: 12px; color: var(--muted); font-size: 14px; }
-a.tile.empty .empty-cta { margin-top: 10px; color: var(--blue); font-size: 13px; font-weight: 600; }
-#tiles-metal, #tiles-lme { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.market { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; color: var(--ink-2); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
-.market small { color: var(--muted); font-size: 12.5px; font-weight: 500; }
-.market::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.market.sep { margin-top: 20px; }
-/* detail popup */
-dialog.detail { width: min(580px, 100% - 32px); padding: 0; overflow: hidden; }
-.d-top { padding: 22px 24px 0; }
-.d-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.d-k { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--muted); font-size: 13px; font-weight: 600; }
-.d-k i { width: 10px; height: 10px; border-radius: 3px; }
-dialog.detail h2 { margin-top: 4px; font-size: 26px; }
-.d-close { width: 36px; height: 36px; flex: none; border: 0; border-radius: 10px; background: var(--soft); cursor: pointer; display: grid; place-items: center; }
-.d-close:hover { background: var(--line); }
-.d-close svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
-.d-price { margin-top: 14px; font: 600 40px/1 var(--display); letter-spacing: -.035em; }
-.d-price small { font: 500 15px Figtree, sans-serif; color: var(--muted); letter-spacing: 0; margin-left: 4px; }
-.d-sub { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 8px !important; color: var(--muted) !important; font-size: 13.5px; }
-.d-chart { margin: 18px 24px 0; }
-.d-chart svg { display: block; width: 100%; height: 130px; overflow: visible; }
-.d-axis { display: flex; justify-content: space-between; margin-top: 6px; color: var(--muted); font-size: 12px; }
-.d-empty { padding: 26px 16px; border-radius: 14px; background: var(--cream); color: var(--muted); font-size: 13.5px; text-align: center; }
-.d-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 18px 24px 0; }
-.d-stats div { padding: 10px 12px; border-radius: 12px; background: var(--cream); min-width: 0; }
-.d-stats span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
-.d-stats b { display: block; margin-top: 2px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.d-stats small { display: block; color: var(--muted); font-size: 11.5px; }
-.d-foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 18px; padding: 14px 24px; border-top: 1px solid var(--line); background: #fff; font-size: 13px; color: var(--muted); }
-.d-foot a { color: var(--blue); font-weight: 600; text-decoration: none; }
-.d-foot a:hover { text-decoration: underline; }
-#tiles-plastic .tile-origin { display: none; }
-#tiles-plastic .tile-note { flex-direction: column; align-items: flex-start; gap: 2px; }
-.tile { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 18px 20px 16px; border: 0; border-radius: 20px; background: var(--cream); text-align: left; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s; }
-.tile:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgba(15, 17, 36, .35); }
-.tile-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.tile-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
-.tile-label i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
-.tile-origin { padding: 2px 8px; border-radius: 99px; background: #fff; color: var(--ink-2); font-size: 12px; font-weight: 600; white-space: nowrap; }
-.tile-value { margin-top: 12px; font: 600 30px/1 var(--display); letter-spacing: -.03em; }
-.tile-value small { font: 500 14px Figtree, sans-serif; letter-spacing: 0; color: var(--muted); margin-left: 3px; }
-.tile-note { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 13px; }
-.chg { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.chg.up { color: var(--ok); } .chg.down { color: var(--bad); } .chg.flat { color: var(--muted); }
-.tile svg.spark { display: block; width: 100%; height: 36px; margin-top: 14px; overflow: visible; }
+/* watchlist */
+.wl-cols, .wl-row { display: grid; grid-template-columns: minmax(0, 1fr) 46px 76px 64px 70px; gap: 8px; align-items: center; }
+.wl-cols { position: sticky; top: 32px; z-index: 2; height: 26px; padding: 0 12px; background: #fff; border-bottom: 1px solid var(--line); }
+.wl-cols span:not(:first-child) { text-align: right; }
+.wl-group { position: sticky; top: 58px; z-index: 1; padding: 5px 12px; background: var(--head); border-bottom: 1px solid var(--line-2); }
+.wl-row { width: 100%; min-height: 38px; padding: 4px 12px 4px 10px; border: 0; border-bottom: 1px solid var(--line-2); border-left: 2px solid transparent; background: #fff; text-align: left; cursor: pointer; }
+.wl-row:hover { background: #f7f8fa; }
+.wl-row[aria-current="true"] { background: var(--sel); border-left-color: var(--navy); }
+.wl-name { min-width: 0; }
+.wl-name code { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+.wl-name small { display: block; color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wl-last, .wl-abs { text-align: right; font: 500 12.5px var(--mono); white-space: nowrap; }
+.wl-chg { text-align: right; }
+.wl-row svg { display: block; width: 46px; height: 18px; overflow: visible; }
+a.wl-row { text-decoration: none; }
+a.wl-row .wl-last { color: var(--blue); font: 600 12px var(--ui); }
 
-/* panels */
-.panel { margin-bottom: 16px; padding: 22px 24px; border-radius: 22px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
-.panel-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
-.panel-head h2 { font: 600 20px/1.3 var(--display); letter-spacing: -.025em; }
-.panel-sub { margin-top: 2px; color: var(--muted); font-size: 13.5px; }
-.controls { display: flex; gap: 8px; flex-wrap: wrap; }
-.tabs { display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--soft); }
-.tabs button { padding: 6px 12px; border: 0; border-radius: 9px; background: none; color: var(--ink-2); font-weight: 600; font-size: 13.5px; cursor: pointer; }
-.tabs button:hover { color: var(--ink); }
-.tabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 4px rgba(0, 0, 0, .1); }
-.legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.legend button { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 0; border-radius: 99px; background: var(--cream); font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
-.legend button[aria-pressed="false"] { opacity: .45; }
-.legend i { width: 14px; height: 3px; border-radius: 2px; }
-.chart { position: relative; height: 380px; }
-
-/* table */
+/* instrument */
+.main { display: flex; flex-direction: column; }
+.inst { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px 24px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.inst-id { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.inst-id code { font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+.inst-id h1 { font: 500 15px/1.2 var(--ui); color: var(--ink-2); }
+.inst-meta { margin-top: 5px; color: var(--muted); font-size: 12px; }
+.inst-meta .num { color: var(--ink-2); }
+.inst-meta abbr { text-decoration: underline dotted; text-underline-offset: 2px; cursor: help; }
+.inst-px { text-align: right; }
+.inst-px .big { font: 600 28px/1 var(--mono); letter-spacing: -.02em; }
+.inst-px .big small { font: 500 13px var(--ui); color: var(--muted); letter-spacing: 0; margin-left: 4px; }
+.inst-px .line { margin-top: 6px; font: 500 12.5px var(--mono); }
+.inst-px .line .muted { font-family: var(--ui); }
+.tabbar { display: flex; justify-content: space-between; align-items: stretch; flex-wrap: wrap; gap: 0 16px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+.seg { display: flex; gap: 2px; }
+.seg button { height: 34px; padding: 0 10px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--muted); font: 600 12px var(--ui); letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--navy); }
+.view { padding: 12px 18px 18px; }
+.view[hidden] { display: none; }
+.ichart { position: relative; height: clamp(240px, 38vh, 440px); }
+.isub-h { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding: 6px 0 2px; border-top: 1px solid var(--line-2); }
+.isub-h .legend-k { display: flex; gap: 14px; color: var(--muted); font: 500 11.5px var(--mono); }
+.isub-h .legend-k i { display: inline-block; width: 10px; height: 8px; margin-right: 5px; vertical-align: 0; }
+.isub { position: relative; height: 96px; }
+.isub-none { padding: 10px 0 2px; color: var(--faint); font-size: 12px; border-top: 1px solid var(--line-2); margin-top: 4px; }
+.kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; margin-top: 14px; border-top: 1px solid var(--line); }
+.kv div { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line-2); }
+.kv dt { color: var(--muted); font-size: 12.5px; }
+.kv dd { margin: 0; font: 500 12.5px var(--mono); text-align: right; white-space: nowrap; }
+.kv dd small { color: var(--faint); font-size: 11.5px; margin-left: 6px; }
+.note { margin-top: 12px; color: var(--muted); font-size: 12px; }
+.note a { color: var(--blue); text-decoration: none; }
+.note a:hover { text-decoration: underline; }
+.empty { padding: 40px 18px; color: var(--muted); }
+.subbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 10px; }
+.legend button { display: inline-flex; align-items: center; gap: 6px; padding: 2px 0; border: 0; background: none; color: var(--ink-2); font: 500 12px var(--mono); cursor: pointer; }
+.legend button[aria-pressed="false"] { opacity: .35; }
+.legend i { width: 14px; height: 2px; }
+.chart-sub { margin-bottom: 8px; color: var(--muted); font-size: 12px; }
+.chart { position: relative; height: clamp(260px, 50vh, 520px); }
 .table-scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
-th { padding: 0 0 10px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12.5px; font-weight: 600; text-align: right; white-space: nowrap; }
-td { padding: 13px 0; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-th + th, td + td { padding-left: 18px; }
+th { position: sticky; top: 0; padding: 7px 0; border-bottom: 1px solid var(--line); background: #fff; color: var(--muted); font: 600 11.5px var(--ui); letter-spacing: .06em; text-transform: uppercase; text-align: right; white-space: nowrap; }
+td { padding: 7px 0; border-bottom: 1px solid var(--line-2); text-align: right; white-space: nowrap; font: 500 12.5px var(--mono); }
+th + th, td + td { padding-left: 16px; }
 th:first-child, td:first-child { text-align: left; }
-tr:last-child td { border-bottom: 0; }
-.cell { display: flex; align-items: center; gap: 10px; }
-.cell i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
-.cell small { display: block; color: var(--muted); font-size: 12.5px; font-weight: 500; }
-.muted { color: var(--muted); }
-td a { color: var(--blue); font-weight: 600; text-decoration: none; }
-td a:hover { text-decoration: underline; }
+tbody tr { cursor: pointer; }
+tbody tr:hover td { background: #f7f8fa; }
+td .nm { font: 400 12px var(--ui); color: var(--muted); margin-left: 8px; }
+td a { color: var(--blue); font: 500 12px var(--ui); text-decoration: none; }
 
-.err { display: none; margin-bottom: 16px; padding: 12px 16px; border-radius: 14px; background: #fde6e3; color: var(--bad); font-size: 14px; font-weight: 500; }
-footer { margin-top: 8px; padding: 26px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.65; }
-footer p { max-width: 880px; }
-footer p + p { margin-top: 8px; }
-footer b { color: var(--ink-2); }
-.install { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; padding: 18px 20px; border-radius: 20px; background: var(--cream); }
-.install[hidden] { display: none; }
-.install img { width: 44px; height: 44px; border-radius: 12px; display: block; flex: none; }
-.install-text { display: flex; align-items: center; gap: 14px; min-width: 0; }
-.install-text b { display: block; color: var(--ink); font: 600 17px/1.2 var(--display); letter-spacing: -.02em; }
-.install-text span { color: var(--muted); font-size: 13.5px; }
-.install-text span a { color: var(--blue); font-weight: 600; }
-#bm { cursor: grab; text-decoration: none; }
-.btn.blue { background: var(--blue); }
-.btn.blue:hover { background: var(--blue-ink); }
-dialog { width: min(400px, 100% - 32px); padding: 24px; border: 0; border-radius: 22px; color: var(--ink); box-shadow: 0 30px 80px -20px rgba(11, 20, 102, .45); }
-dialog::backdrop { background: rgba(15, 17, 36, .45); }
-dialog h2 { font: 600 21px/1.2 var(--display); letter-spacing: -.025em; }
+/* right column */
+.side { display: flex; flex-direction: column; }
+.blk { border-bottom: 1px solid var(--line); }
+.blk .pane-h { position: static; }
+.rows { padding: 2px 12px 6px; }
+.mv { display: grid; grid-template-columns: minmax(0, 1fr) 88px 62px; gap: 8px; align-items: center; width: 100%; padding: 6px 0; border: 0; border-bottom: 1px solid var(--line-2); background: none; text-align: left; cursor: pointer; }
+.mv:last-child { border-bottom: 0; }
+.mv:hover code { color: var(--blue); }
+.mv code { font-size: 12.5px; font-weight: 600; }
+.mv .num { font-size: 12.5px; text-align: right; }
+.fx { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; padding: 2px 12px 6px; }
+.fx div { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line-2); font: 500 12.5px var(--mono); }
+.fx div span { color: var(--muted); font-family: var(--ui); }
+.src { margin: 0; padding: 2px 12px 6px; list-style: none; }
+.src li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--line-2); }
+.src li:last-child { border-bottom: 0; }
+.src b { display: block; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.src small { display: block; color: var(--muted); font: 400 11.5px var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.src time { font: 500 12px var(--mono); }
+.src time.old { color: #b45309; }
+#about-dlg { width: min(560px, 100% - 32px); }
+#about-dlg p { color: var(--muted); font-size: 13px; line-height: 1.55; }
+#about-dlg b { color: var(--ink-2); }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 3px; background: #fff; color: var(--ink); font: 600 12px var(--ui); text-decoration: none; white-space: nowrap; cursor: pointer; }
+.btn:hover { border-color: var(--ink-2); }
+.btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* install help dialog */
+dialog { width: min(400px, 100% - 32px); padding: 20px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .35); }
+dialog::backdrop { background: rgba(17, 24, 39, .4); }
+dialog h2 { font: 600 16px/1.3 var(--ui); }
 dialog p { margin-top: 6px; color: var(--ink-2); }
-dialog ol { margin: 14px 0 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px; }
-dialog li { counter-increment: s; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--cream); font-weight: 500; }
-dialog li::before { content: counter(s); width: 24px; height: 24px; border-radius: 50%; background: var(--yellow); display: grid; place-items: center; font: 700 13px Figtree, sans-serif; flex: none; }
-dialog li svg { width: 18px; height: 18px; fill: none; stroke: var(--blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; margin-left: auto; }
-dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 18px; }
+dialog ol { margin: 12px 0 0; padding: 0 0 0 18px; display: grid; gap: 8px; }
+dialog li svg { width: 15px; height: 15px; margin-left: 6px; vertical-align: -3px; fill: none; stroke: var(--ink-2); stroke-width: 2; }
+dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
 
-@media (max-width: 960px) {
-  .tiles, #tiles-plastic, #tiles-metal, #tiles-lme { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .d-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .hero-stat { min-width: 0; width: 100%; }
+/* ---------- responsive ---------- */
+@media (max-width: 1180px) {
+  .term { height: auto; }
+  .watch, .main { height: calc(100vh - var(--bar)); height: calc(100dvh - var(--bar)); }
+  .side { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+  .term { grid-template-columns: 380px minmax(0, 1fr); }
+  .side { border-left: 0; border-top: 1px solid var(--line); }
+  .cmd { width: 240px; }
+  .kv { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 600px) {
-  .wrap { width: calc(100% - 32px); }
-  .sync { display: none; }
-  #refresh { width: 40px; padding: 0; justify-content: center; }
+@media (max-width: 760px) {
+  .stamp { display: none; }
+  #refresh { padding: 0 12px; }
   #refresh .btn-label { display: none; }
-  .cur-pick select { padding: 0 30px 0 12px; font-size: 13.5px; }
-  .top .wrap { gap: 8px; }
-  .hero { padding: 26px 20px 20px; border-radius: 22px; margin-top: 16px; }
-  .tiles { gap: 10px; }
-  .tile { padding: 14px 14px 12px; }
-  .tile-value { font-size: 22px; }
-  .tile-origin { display: none; }
-  .tile-note { flex-direction: column; align-items: flex-start; gap: 2px; }
-  .panel { padding: 18px 16px; }
-  .chart { height: 280px; }
+  .term { display: flex; flex-direction: column; height: auto; }
+  .watch, .main { height: auto; overflow: visible; }
+  .watch { order: 2; } .main { order: 1; } .side { order: 3; display: block; }
+  .cmd { width: auto; flex: 1; border-right: 0; }
+  .cmd input { padding-left: 12px; }
+  .cmd .kbd, .tape { display: none; }
+  .q-list { width: 100vw; position: fixed; top: var(--bar); }
+  .watch { border-right: 0; border-top: 1px solid var(--line); }
+  .side { border-left: 0; }
+  .wl-cols, .wl-row { grid-template-columns: minmax(0, 1fr) 76px 60px 70px; }
+  .wl-row svg, .wl-cols span:nth-child(2) { display: none; }
+  .inst { padding: 12px 14px; }
+  .inst-px .big { font-size: 22px; }
+  .tabbar, .view { padding-left: 14px; padding-right: 14px; }
+  .kv { grid-template-columns: 1fr; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  .tape { overflow-x: auto; }
+}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="/"><img src="logo.svg" alt="">tracky</a>
-    <div class="spacer"></div>
-    <span class="sync" id="updated"><i></i>Loading…</span>
+<header class="bar">
+  <a class="brand" href="/" aria-label="Tracky"><img src="logo.svg" alt="">Tracky</a>
+  <div class="cmd">
+    <span class="kbd" aria-hidden="true">/</span>
+    <input id="q" type="search" placeholder="Search tickers, commodities, or sources…" autocomplete="off" spellcheck="false"
+      role="combobox" aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" aria-label="Search (press / or Ctrl+K)">
+    <ul class="q-list" id="q-list" role="listbox" hidden></ul>
+  </div>
+  <div class="tape" aria-label="Latest prices"><div class="tape-track" id="tape"></div></div>
+  <div class="bar-r">
+    <span class="stamp" id="updated">Loading…</span>
     <label class="cur-pick"><span class="sr">Currency</span>
       <select id="cur">
-        <option value="local">Local currency</option><option value="PHP">₱ PHP</option><option value="USD">$ USD</option>
-        <option value="MYR">RM MYR</option><option value="CNY">¥ CNY</option><option value="EUR">€ EUR</option>
+        <option value="local">LOCAL</option><option value="PHP">PHP</option><option value="USD">USD</option>
+        <option value="MYR">MYR</option><option value="CNY">CNY</option><option value="EUR">EUR</option>
       </select>
     </label>
-    <button class="btn" id="refresh" aria-label="Refresh prices"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg><span class="btn-label">Refresh</span></button>
-  </div>
-</header>
-
-<main class="wrap">
-  <section class="hero">
-    <div class="mesh" aria-hidden="true"><i class="m1"></i><i class="m2"></i><i class="m3"></i><i class="m4"></i></div>
-    <div>
-      <p class="hero-k" id="hero-k">Prices in each market's own currency</p>
-      <h1>Rubber, resin & metals</h1>
-      <p class="hero-sub">Malaysian and Philippine rubber, China plastic resin, and Shanghai and London metals. Switch <b>currency</b> at the top to compare them in one.</p>
-      <div class="fx" id="fx"></div>
-    </div>
-    <div class="hero-stat" id="hero-stat"></div>
-  </section>
-
-  <div class="err" id="err" role="status"></div>
-
-  <section class="group">
-    <div class="group-head"><h2>Rubber</h2><span>SMR daily · PH cuplump monthly</span></div>
-    <div class="tiles" id="tiles-rubber"></div>
-  </section>
-  <section class="group">
-    <div class="group-head"><h2>Plastic resin</h2><span>China spot, daily · per kg</span></div>
-    <div class="tiles" id="tiles-plastic"></div>
-  </section>
-  <section class="group">
-    <div class="group-head"><h2>Metals</h2><span>Daily · per tonne</span></div>
-    <div class="market">Shanghai Futures Exchange <small>SHFE · CNY settlement</small></div>
-    <div class="tiles" id="tiles-metal"></div>
-    <div class="market sep">London Metal Exchange <small>LME · US$ cash settlement</small></div>
-    <div class="tiles" id="tiles-lme"></div>
-  </section>
-
-  <section class="panel">
-    <div class="panel-head">
-      <div><h2>Price history</h2><p class="panel-sub" id="chart-sub">Average ₱/kg per month</p></div>
-      <div class="controls">
-        <div class="tabs" id="cgroup" role="tablist" aria-label="Group">
-          <button data-v="rubber" aria-selected="true">Rubber</button><button data-v="plastic" aria-selected="false">Resin</button><button data-v="metal" aria-selected="false">Metals</button>
-        </div>
-        <div class="tabs" id="gran" role="tablist" aria-label="Period">
-          <button data-v="daily" aria-selected="false">Daily</button><button data-v="weekly" aria-selected="false">Weekly</button>
-          <button data-v="monthly" aria-selected="true">Monthly</button><button data-v="yearly" aria-selected="false">Yearly</button>
-        </div>
-        <div class="tabs" id="range" role="tablist" aria-label="Range">
-          <button data-v="90" aria-selected="false">3M</button><button data-v="365" aria-selected="false">1Y</button><button data-v="0" aria-selected="true">All</button>
-        </div>
+    <div class="menu">
+      <button id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-controls="menu-pop" aria-label="Settings and tools"><svg viewBox="0 0 16 16"><circle cx="3" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="13" cy="8" r="1.5"/></svg></button>
+      <div class="menu-pop" id="menu-pop" hidden>
+        <div class="mi" id="bm-box"><div><b>Send to Tracky bookmark</b><small>Drag onto your bookmarks bar, then click it on a SunSirs or 21cp page to save SAN / PPB.</small></div><a class="grab" id="bm" href="#" draggable="true">Drag me</a></div>
+        <a class="mi" href="/capture.html"><div><b>Enter a price by hand</b><small>SAN or PPB, in CNY/t</small></div></a>
+        <hr>
+        <button class="mi" id="install" type="button"><div><b>Install app</b><small>Home screen, works offline</small></div></button>
+        <button class="mi" id="about-btn" type="button"><div><b>About the data</b><small>Sources, units and currency</small></div></button>
       </div>
     </div>
-    <div class="legend" id="legend"></div>
-    <div class="chart"><canvas id="chart" aria-label="Price history chart" role="img"></canvas></div>
+    <button id="refresh" aria-label="Refresh prices"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg><span class="btn-label">Refresh</span></button>
+  </div>
+</header>
+<div class="err" id="err" role="status"></div>
+
+<main class="term">
+  <aside class="pane watch" aria-label="Watchlist">
+    <div class="pane-h"><h2 class="cap">Watchlist</h2><span class="cap" id="wl-count"></span></div>
+    <div class="wl-cols cap"><span>Symbol</span><span>7D</span><span>Last</span><span>Chg</span><span>%Chg</span></div>
+    <div id="watch" role="listbox" aria-label="Instruments" tabindex="0"></div>
+  </aside>
+
+  <section class="pane main" aria-label="Instrument">
+    <div class="inst" id="inst"></div>
+    <div class="tabbar">
+      <div class="seg" id="mtabs" role="tablist" aria-label="View">
+        <button data-v="chart" aria-selected="true">Chart</button><button data-v="compare" aria-selected="false">Compare</button><button data-v="table" aria-selected="false">All prices</button>
+      </div>
+      <div class="seg" id="irange" role="tablist" aria-label="Chart range">
+        <button data-v="30" aria-selected="false">1M</button><button data-v="90" aria-selected="false">3M</button><button data-v="180" aria-selected="false">6M</button>
+        <button data-v="365" aria-selected="true">1Y</button><button data-v="0" aria-selected="false">Max</button>
+      </div>
+    </div>
+
+    <div class="view" id="view-chart">
+      <div class="ichart"><canvas id="ichart" aria-label="Price chart for the selected instrument" role="img"></canvas></div>
+      <div id="isub-wrap">
+        <div class="isub-h"><span class="cap" id="isub-title"></span><span class="legend-k" id="isub-key"></span></div>
+        <div class="isub"><canvas id="isub" aria-label="Volume and open interest" role="img"></canvas></div>
+      </div>
+      <p class="isub-none" id="isub-none" hidden></p>
+      <dl class="kv" id="istats"></dl>
+      <p class="note" id="inote"></p>
+    </div>
+
+    <div class="view" id="view-compare" hidden>
+      <div class="subbar">
+        <div class="seg" id="cgroup" role="tablist" aria-label="Group">
+          <button data-v="rubber" aria-selected="true">Rubber</button><button data-v="plastic" aria-selected="false">Resin</button><button data-v="metal" aria-selected="false">Metals</button>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div class="seg" id="gran" role="tablist" aria-label="Period">
+            <button data-v="daily" aria-selected="false">D</button><button data-v="weekly" aria-selected="false">W</button>
+            <button data-v="monthly" aria-selected="true">M</button><button data-v="yearly" aria-selected="false">Y</button>
+          </div>
+          <div class="seg" id="range" role="tablist" aria-label="Range">
+            <button data-v="90" aria-selected="false">3M</button><button data-v="365" aria-selected="false">1Y</button><button data-v="0" aria-selected="true">Max</button>
+          </div>
+        </div>
+      </div>
+      <p class="chart-sub" id="chart-sub"></p>
+      <div class="legend" id="legend"></div>
+      <div class="chart"><canvas id="chart" aria-label="Comparison chart" role="img"></canvas></div>
+    </div>
+
+    <div class="view table-scroll" id="view-table" hidden><table id="tbl"></table></div>
   </section>
 
-  <section class="panel">
-    <div class="panel-head"><div><h2>Averages</h2><p class="panel-sub">Trailing averages up to each series' latest price. Weekly figures only apply to daily data.</p></div></div>
-    <div class="table-scroll"><table id="tbl"></table></div>
-  </section>
+  <aside class="pane side" aria-label="Market overview">
+    <div class="blk"><div class="pane-h"><h3 class="cap">Top movers · 1D</h3></div><div class="rows" id="movers"></div></div>
+    <div class="blk"><div class="pane-h"><h3 class="cap">FX · per USD</h3></div><div class="fx" id="fx"></div></div>
+    <div class="blk"><div class="pane-h"><h3 class="cap">Sources</h3><span class="cap">Last print</span></div><ol class="src" id="feed"></ol></div>
+  </aside>
 </main>
 
-<footer class="wrap">
-  <div class="install" id="install">
-    <div class="install-text">
-      <img src="/icons/icon-192.png" alt="">
-      <div><b>Tracky on your phone</b><span>Opens like an app and shows the last prices even offline.</span></div>
-    </div>
-    <button class="btn blue" id="install-btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add to home screen</button>
-  </div>
-  <div class="install" id="bm-box">
-    <div class="install-text">
-      <img src="/logo.svg" alt="">
-      <div><b>Send to Tracky</b><span>For AS and PP block copolymer. Drag the button to your bookmarks bar, open the price page on SunSirs or 21cp, then click the bookmark to save that day's price. Selecting the price first makes it exact. Or <a href="/capture.html">enter one by hand</a>.</span></div>
-    </div>
-    <a class="btn" id="bm" href="#" draggable="true" title="Drag me to your bookmarks bar"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Send to Tracky</a>
-  </div>
+<dialog id="about-dlg" aria-labelledby="about-title">
+  <h2 id="about-title">About the data</h2>
   <p><b>Sources.</b> SMR 5, 10, 20 — Malaysian Rubber Board daily price (sen/kg). PH rubber — Philippine Statistics Authority national farmgate price for rubber cuplump, monthly and published about 3–4 months late; no public feed carries a daily PSR price.
   AS and PP block copolymer — prices you capture from SunSirs or 21cp with the Send to Tracky bookmark (CNY/tonne), since those sites block automated access.
   PVC (SG-5, East China), LDPE (film grade), EVA (foaming grade), PP homo (raffia grade) and ABS — Guidechem GuideTrends daily China spot prices (CNY/tonne), shown per kg; history builds up day by day as Tracky keeps scraping.
@@ -306,33 +345,44 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
   LME copper and aluminum — London Metal Exchange official cash settlement (US$/tonne), via Westmetall. Metals are shown per tonne.</p>
   <p><b>Currency.</b> By default each price shows in its market's own currency: SMR in ringgit, PH rubber in pesos, China resin and SHFE metals in yuan, LME metals in US dollars.
   Picking a currency at the top converts everything with ECB reference rates (via Frankfurter) on each price's own date. The chart uses the group's most common currency until you pick one.</p>
-</footer>
-
-<dialog id="detail" class="detail" aria-labelledby="d-title"></dialog>
+  <div class="dialog-actions"><button class="btn" id="about-close">Close</button></div>
+</dialog>
 
 <dialog id="install-help" aria-labelledby="install-title">
-  <h2 id="install-title">Add Tracky to your home screen</h2>
+  <h2 id="install-title">Install Tracky</h2>
   <p id="install-intro">Your browser doesn't show an install prompt, so add it from the menu:</p>
   <ol id="install-steps"></ol>
-  <div class="dialog-actions"><button class="btn" id="install-close">Got it</button></div>
+  <div class="dialog-actions"><button class="btn" id="install-close">Close</button></div>
 </dialog>
 
 <script type="module">
-import { aggregate, windowAvg, pctChange } from './agg.js';
+import { aggregate, windowAvg, pctChange, volatility, sma, ytd, correlation } from './agg.js';
 
-// Series colours: distinct in hue and lightness on white within each group.
-const COLORS = { smr5: '#7fa6ff', smr10: '#0b1466', smr20: '#2547ff', phRubber: '#13795b',
-  pvc: '#d9480f', ldpe: '#b07d00', eva: '#c2257a', ppHomo: '#0f8b8d', abs: '#6b4bd6', as: '#2b8a3e', ppBlock: '#1c7ed6',
-  copper: '#b4532a', aluminum: '#6b7a90', wireRod: '#0b1466', lmeCopper: '#e8915a', lmeAluminum: '#2f3a4a' };
+// Short symbols shown in place of colour swatches, terminal style.
+const CODE = { smr5: 'SMR5', smr10: 'SMR10', smr20: 'SMR20', phRubber: 'PHCUP', pvc: 'PVC', ldpe: 'LDPE', eva: 'EVA', ppHomo: 'PPH', abs: 'ABS', as: 'SAN', ppBlock: 'PPB',
+  copper: 'CU.SHF', aluminum: 'AL.SHF', wireRod: 'WR.SHF', lmeCopper: 'CU.LME', lmeAluminum: 'AL.LME' };
+// Restrained line palette for the compare chart only (navy first, then blue, ochre, slate, teal, brown, grey).
+const LINES = ['#0b1466', '#2547ff', '#a37b00', '#64748b', '#0e7490', '#9a3412', '#374151'];
 const GROUPS = { rubber: ['smr5', 'smr10', 'smr20', 'phRubber'], plastic: ['pvc', 'ldpe', 'eva', 'ppHomo', 'abs', 'as', 'ppBlock'], metal: ['copper', 'aluminum', 'wireRod', 'lmeCopper', 'lmeAluminum'] };
-const TILE_ROWS = { rubber: GROUPS.rubber, plastic: GROUPS.plastic, metal: ['copper', 'aluminum', 'wireRod'], lme: ['lmeCopper', 'lmeAluminum'] };
-const label = (s) => s.market ? `${s.name} · ${s.market}` : s.name;
-const SYM = { PHP: '₱', USD: 'US$', MYR: 'RM', CNY: '¥', EUR: '€' };
+const WATCH = [['Rubber', GROUPS.rubber], ['Plastic resin · China', GROUPS.plastic], ['Metals · SHFE', ['copper', 'aluminum', 'wireRod']], ['Metals · LME', ['lmeCopper', 'lmeAluminum']]];
+const ORDER = Object.values(GROUPS).flat();
+const SYM = { PHP: '₱', USD: '$', MYR: 'RM', CNY: '¥', EUR: '€' };
 const CHOICES = ['local', ...Object.keys(SYM)];
-const money = (cur, v, perT) => v === undefined ? '—'
-  : SYM[cur] + v.toLocaleString('en-US', { minimumFractionDigits: perT ? 0 : 2, maximumFractionDigits: perT ? 0 : 2 }); // per-tonne prices without cents
+const nfmt = (v, perT) => v.toLocaleString('en-US', { minimumFractionDigits: perT ? 0 : 2, maximumFractionDigits: perT ? 0 : 2 }); // per-tonne prices without cents
+const money = (cur, v, perT) => v === undefined ? '—' : SYM[cur] + nfmt(v, perT);
 const per = (s) => s.per === 't' ? 't' : 'kg';
 const fm = (s, v) => money(s.disp, v, s.per === 't');
+const unit = (s) => `${s.disp}/${per(s)}`;
+// Zero moves print explicitly as 0.00%; '—' only means there is not enough history to compute one.
+const pctTxt = (v) => v === undefined ? '—' : Math.abs(v) < 0.005 ? '0.00%' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`;
+const badge = (v, title = '') => `<span class="badge ${dir(v)}"${title ? ` title="${title}"` : ''}>${pctTxt(v)}</span>`;
+const dir = (v) => v === undefined || Math.abs(v) < 0.005 ? 'flat' : v > 0 ? 'up' : 'down';
+const fmtDate = (iso, g) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB',
+  g === 'yearly' ? { year: 'numeric', timeZone: 'UTC' } : g === 'monthly' ? { month: 'short', year: 'numeric', timeZone: 'UTC' } : { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const short = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: '2-digit', month: 'short', timeZone: 'UTC' });
+const dayBefore = (iso, n) => new Date(Date.parse(iso + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10);
+const store = { get: (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+
 // FX history holds units of each currency per 1 USD by date; use the last rate on or before the price's date.
 function ratesOn(date) {
   const h = data.fx.history;
@@ -342,115 +392,264 @@ function ratesOn(date) {
 }
 const convert = (v, from, to, date) => { if (from === to) return v; const r = ratesOn(date); return (v / r[from]) * r[to]; };
 const converted = (s, to) => s.raw.map((p) => ({ date: p.date, v: convert(p.v, s.cur, to, p.date) }));
-// Shown as-is when no conversion or unit change happened, so the source number is only repeated when it adds something.
-const sourceNote = (s) => (s.disp === s.cur && (s.factor ?? 1) === 1) ? '' : `${s.raw.at(-1).native.toLocaleString('en-US')} ${s.unit} · `;
-let currency = 'local';
-try { currency = localStorage.getItem('tracky.currency') || 'local'; } catch {}
+// The source's own number is only repeated when it differs from what is shown (converted or a unit change).
+const sourceNote = (s) => (s.disp === s.cur && (s.factor ?? 1) === 1) ? '' : `${s.raw.at(-1).native.toLocaleString('en-US')} ${s.unit}`;
+
+let currency = store.get('tracky.currency', 'local');
 if (!CHOICES.includes(currency)) currency = 'local';
-const chg = (v, label = '') => v === undefined ? `<span class="chg flat">—</span>`
-  : `<span class="chg ${v > 0.005 ? 'up' : v < -0.005 ? 'down' : 'flat'}">${v > 0.005 ? '▲' : v < -0.005 ? '▼' : ''} ${Math.abs(v).toFixed(2)}%${label}</span>`;
-const fmtDate = (iso, g) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US',
-  g === 'yearly' ? { year: 'numeric', timeZone: 'UTC' } : g === 'monthly' ? { month: 'short', year: 'numeric', timeZone: 'UTC' } : { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-
-let data, series = {}, hidden = new Set(), gran = 'monthly', rangeDays = 0, chartGroup = 'rubber', chart;
-
-function spark(points, color) {
-  const pts = points.slice(-90);
-  if (pts.length < 2) return `<svg class="spark" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
-    <line x1="0" y1="18" x2="100" y2="18" stroke="${color}" stroke-opacity=".35" stroke-dasharray="2 4" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
-  const ys = pts.map((p) => p.v), lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
-  const d = pts.map((p, i) => `${((i / (pts.length - 1)) * 100).toFixed(2)},${(33 - ((p.v - lo) / span) * 30).toFixed(2)}`).join(' L');
-  return `<svg class="spark" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M${d}" fill="none" stroke="${color}" stroke-width="1.75" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
-}
+let selected = store.get('tracky.selected', 'smr20');
+let data, series = {}, hidden = new Set(), gran = 'monthly', rangeDays = 0, chartGroup = 'rubber', chart, ichart, irange = 365, view = 'chart';
 
 function build() {
   series = {};
-  for (const id of Object.values(GROUPS).flat()) {
+  for (const id of ORDER) {
     if (!data.series[id]?.length) continue;
-    const s = { ...data.meta[id], raw: data.series[id] };
+    const s = { ...data.meta[id], raw: data.series[id], code: CODE[id] };
     s.disp = currency === 'local' ? s.cur : currency;
     s.pts = converted(s, s.disp);
     if (s.manual && s.raw.at(-1).src) s.origin = `Captured · ${s.raw.at(-1).src}`;
+    s.chg = pctChange(s.pts, s.freq === 'daily' ? 1 : 31);
+    const last = s.pts.at(-1);
+    s.abs = s.chg === undefined ? undefined : last.v - last.v / (1 + s.chg / 100);
     series[id] = s;
   }
+  if (!series[selected]) selected = ORDER.find((id) => series[id]) || selected;
 }
 
-function tile(id) {
-  const s = series[id];
-  if (!s) {
-    const m = data.meta?.[id];
-    return m?.manual ? `<a class="tile empty" href="#bm-box"><div class="tile-top"><span class="tile-label"><i style="background:${COLORS[id]}"></i>${m.name}</span></div>
-      <div class="empty-v">No price yet</div><div class="empty-cta">Capture one with Send to Tracky ↓</div></a>` : '';
-  }
-  const last = s.pts.at(-1), daily = s.freq === 'daily';
-  const note = `${sourceNote(s)}${fmtDate(last.date, daily ? 'daily' : 'monthly')}`;
-  return `<button class="tile" data-id="${id}" aria-haspopup="dialog" title="View details">
-    <div class="tile-top"><span class="tile-label"><i style="background:${COLORS[id]}"></i>${s.name}</span><span class="tile-origin">${s.origin}</span></div>
-    <div class="tile-value">${fm(s, last.v)}<small>/${per(s)}</small></div>
-    <div class="tile-note"><span>${note}</span>${chg(pctChange(s.pts, daily ? 1 : 31), daily ? ' 1D' : ' 1M')}</div>
-    ${spark(s.pts, COLORS[id])}</button>`;
+// ---------- ticker ----------
+function renderTape() {
+  const items = ORDER.filter((id) => series[id]).map((id) => {
+    const s = series[id];
+    return `<button class="tk" type="button" data-id="${id}"><code>${s.code}</code><span>${nfmt(s.pts.at(-1).v, s.per === 't')}</span><span class="${dir(s.chg)}">${pctTxt(s.chg)}</span></button>`;
+  }).join('');
+  // Two copies so the CSS loop (translate -50%) is seamless; the second copy is hidden from screen readers.
+  document.getElementById('tape').innerHTML = items + `<span aria-hidden="true" style="display:contents">${items.replace(/<button /g, '<button tabindex="-1" ')}</span>`;
 }
 
-function renderTiles() {
-  for (const [g, ids] of Object.entries(TILE_ROWS)) document.getElementById('tiles-' + g).innerHTML = ids.map(tile).join('');
-  document.querySelectorAll('.tile').forEach((el) => el.onclick = () => openDetail(el.dataset.id));
-}
-
-// Legend chips only hide a line on the chart; cards and the table always show every series.
-function toggle(id) { hidden.has(id) ? hidden.delete(id) : hidden.add(id); renderLegend(); renderChart(); }
-
-const dayBefore = (iso, n) => new Date(Date.parse(iso + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10);
-function bigChart(pts, color) {
-  if (pts.length < 2) return `<div class="d-empty">History is still building up: ${pts.length} data point${pts.length === 1 ? '' : 's'} so far. A line appears after the next update.</div>`;
+// ---------- watchlist ----------
+// 7-day sparkline (last 7 observations for monthly series), coloured by direction over the window.
+function spark7(s) {
+  const last = s.pts.at(-1);
+  let pts = s.freq === 'daily' ? s.pts.filter((p) => p.date > dayBefore(last.date, 7)) : s.pts.slice(-7);
+  if (pts.length < 2 && s.freq === 'daily') pts = s.pts.slice(-2);
+  const w = 46, h = 18;
+  if (pts.length < 2) return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="0" y1="${h / 2}" x2="${w}" y2="${h / 2}" stroke="#9ca3af" stroke-dasharray="2 3"/></svg>`;
   const ys = pts.map((p) => p.v), lo = Math.min(...ys), hi = Math.max(...ys), span = hi - lo || 1;
-  const xy = pts.map((p, i) => `${((i / (pts.length - 1)) * 100).toFixed(2)},${(46 - ((p.v - lo) / span) * 42).toFixed(2)}`);
-  const id = 'dg' + color.slice(1);
-  return `<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".18"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
-    <path d="M${xy.join(' L')} L100,50 L0,50Z" fill="url(#${id})"/>
-    <path d="M${xy.join(' L')}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
-    <div class="d-axis"><span>${fmtDate(pts[0].date, 'daily')}</span><span>${fmtDate(pts.at(-1).date, 'daily')}</span></div>`;
+  const color = pts.at(-1).v > pts[0].v ? '#2e7d32' : pts.at(-1).v < pts[0].v ? '#d32f2f' : '#6b7280';
+  const d = pts.map((p, i) => `${((i / (pts.length - 1)) * w).toFixed(1)},${(h - 2 - ((p.v - lo) / span) * (h - 4)).toFixed(1)}`).join(' L');
+  return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="M${d}" fill="none" stroke="${color}" stroke-width="1.25"/></svg>`;
+}
+const signed = (v, t) => v === undefined ? '—' : Math.abs(v) < (t ? 0.5 : 0.005) ? '0' : `${v > 0 ? '+' : '−'}${nfmt(Math.abs(v), t)}`;
+
+function renderWatch() {
+  let n = 0;
+  document.getElementById('watch').innerHTML = WATCH.map(([title, ids]) => `<div class="wl-group cap">${title}</div>` + ids.map((id) => {
+    const s = series[id];
+    if (!s) {
+      const m = data.meta?.[id];
+      return m?.manual ? `<a class="wl-row" href="/capture.html"><span class="wl-name"><code>${CODE[id]}</code><small>${m.name} · no price yet</small></span><span></span><span class="wl-last">Capture</span><span></span><span></span></a>` : '';
+    }
+    n++;
+    const last = s.pts.at(-1), t = s.per === 't';
+    const sub = s.name.replace(/\s/g, '') === s.code ? s.origin : s.name + (s.market ? ' · ' + s.market : '');
+    return `<button class="wl-row" type="button" role="option" data-id="${id}" aria-current="${id === selected}" aria-selected="${id === selected}" title="${s.name}${s.market ? ' · ' + s.market : ''} · as of ${fmtDate(last.date, 'daily')}">
+      <span class="wl-name"><code>${s.code}</code><small>${sub} · ${unit(s)}</small></span>
+      ${spark7(s)}
+      <span class="wl-last">${nfmt(last.v, t)}</span>
+      <span class="wl-abs ${dir(s.chg)}">${signed(s.abs, t)}</span>
+      <span class="wl-chg">${badge(s.chg, s.freq === 'daily' ? '1-day change' : '1-month change')}</span></button>`;
+  }).join('')).join('');
+  document.getElementById('wl-count').textContent = `${n} instruments`;
 }
 
-function openDetail(id) {
-  const s = series[id], pts = s.pts, last = pts.at(-1), daily = s.freq === 'daily';
+function select(id, scroll) {
+  if (!series[id]) return;
+  selected = id; store.set('tracky.selected', id);
+  document.querySelectorAll('.wl-row[data-id]').forEach((el) => { const on = el.dataset.id === id; el.setAttribute('aria-current', on); el.setAttribute('aria-selected', on); });
+  if (scroll) document.querySelector(`.wl-row[data-id="${id}"]`)?.scrollIntoView({ block: 'nearest' });
+  if (view !== 'chart') setView('chart');
+  renderInstrument();
+}
+
+// ---------- selected instrument ----------
+function renderInstrument() {
+  const s = series[selected], el = document.getElementById('inst');
+  if (!s) { el.innerHTML = '<div class="empty">No prices yet.</div>'; return; }
+  const pts = s.pts, last = pts.at(-1), daily = s.freq === 'daily';
+  // Conversion math lives in the metadata line (full working in a tooltip), not next to the price.
+  const raw = s.raw.at(-1), rate = convert(1, s.cur, s.disp, last.date);
+  const how = `${raw.native.toLocaleString('en-US')} ${s.unit}${s.factor ? ' ÷ 1,000' : ''}${s.disp !== s.cur ? ` × ${rate.toFixed(4)} ${s.disp} per ${s.cur} (ECB, ${short(last.date)})` : ''} = ${nfmt(last.v, s.per === 't')} ${unit(s)}`;
+  const conv = sourceNote(s) ? ` · <abbr title="${how}">src <span class="num">${raw.native.toLocaleString('en-US')}</span> ${s.unit} → ${unit(s)}</abbr>` : '';
+  el.innerHTML = `<div>
+      <div class="inst-id"><code>${s.code}</code><h1>${s.name}${s.market ? ' · ' + s.market : ''}</h1></div>
+      <p class="inst-meta">${s.origin} · ${daily ? 'Daily' : 'Monthly'} · ${s.source}${conv}</p>
+    </div>
+    <div class="inst-px">
+      <div class="big">${fm(s, last.v)}<small>${unit(s)}</small></div>
+      <p class="line"><span class="${dir(s.chg)}">${signed(s.abs, s.per === 't')}</span> ${badge(s.chg)}
+        <span class="muted"> ${daily ? '1D' : '1M'} · as of ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</span></p>
+    </div>`;
+
   const year = pts.filter((p) => p.date > dayBefore(last.date, 365));
   const hi = year.reduce((a, b) => (b.v > a.v ? b : a)), lo = year.reduce((a, b) => (b.v < a.v ? b : a));
-  const native = sourceNote(s).replace(/ · $/, '');
-  const pc = (v) => v === undefined ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`;
-  const cls = (v) => v === undefined ? '' : v > 0.005 ? 'style="color:var(--ok)"' : v < -0.005 ? 'style="color:var(--bad)"' : '';
-  const stat = (k, v, sub = '', style = '') => `<div><span>${k}</span><b ${style}>${v}</b>${sub ? `<small>${sub}</small>` : ''}</div>`;
-  const changes = (daily ? [['1D', 1], ['1W', 7]] : []).concat([['1M', 30], ['1Y', 365]])
-    .map(([k, n]) => { const v = pctChange(pts, n); return stat(`Change ${k}`, pc(v), '', cls(v)); });
-  const dlg = document.getElementById('detail');
-  dlg.innerHTML = `<div class="d-top">
-      <div class="d-head"><div><p class="d-k"><i style="background:${COLORS[id]}"></i>${s.market ? s.market + ' · ' : ''}${s.origin}</p><h2 id="d-title">${s.name}</h2></div>
-        <button class="d-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-      <div class="d-price">${fm(s, last.v)}<small>/${per(s)}</small></div>
-      <p class="d-sub">${native ? `<span>${native}</span>` : ''}<span>${fmtDate(last.date, daily ? 'daily' : 'monthly')}</span>${chg(pctChange(pts, daily ? 1 : 31), daily ? ' 1D' : ' 1M')}</p>
-    </div>
-    <div class="d-chart">${bigChart(year, COLORS[id])}</div>
-    <div class="d-stats">
-      ${changes.join('')}
-      ${daily ? stat('Avg 7D', fm(s, windowAvg(pts, 7))) : ''}${stat('Avg 30D', fm(s, windowAvg(pts, 30)))}${stat('Avg 1Y', fm(s, windowAvg(pts, 365)))}
-      ${stat('52-wk high', fm(s, hi.v), fmtDate(hi.date, daily ? 'daily' : 'monthly'))}${stat('52-wk low', fm(s, lo.v), fmtDate(lo.date, daily ? 'daily' : 'monthly'))}
-      ${stat('History', `${pts.length} pts`, `since ${fmtDate(pts[0].date, daily ? 'daily' : 'monthly')}`)}
-    </div>
-    <div class="d-foot"><a href="${s.url}" target="_blank" rel="noopener">${s.source} ↗</a><span>Updated ${s.freq}</span></div>`;
-  dlg.querySelector('.d-close').onclick = () => dlg.close();
-  dlg.showModal();
+  const pos = hi.v === lo.v ? 50 : ((last.v - lo.v) / (hi.v - lo.v)) * 100;
+  const row = (k, v, cls = '', sub = '') => `<div><dt>${k}</dt><dd class="${cls}">${v}${sub ? `<small>${sub}</small>` : ''}</dd></div>`;
+  const ch = (k, n, ok = true) => { const v = ok ? pctChange(pts, n) : undefined; return row(k, pctTxt(v), dir(v)); };
+  const vol = daily ? volatility(pts, 30) : undefined, y = ytd(pts);
+  // Benchmark: LME copper, or SHFE copper when LME copper itself is selected.
+  const bmId = selected === 'lmeCopper' ? 'copper' : 'lmeCopper', bm = series[bmId];
+  const corr = daily && bm ? correlation(pts, converted(bm, s.disp), 90) : undefined;
+  const ma = (n) => daily ? fm(s, sma(pts, n)) : '—';
+  document.getElementById('istats').innerHTML = [
+    ch('Change 1D', 1, daily), ch('Change 1W', 7, daily), ch('Change 1M', 30),
+    ch('Change 3M', 90), ch('Change 1Y', 365), row('YTD return', pctTxt(y), dir(y)),
+    row('Volatility 30D', vol === undefined ? '—' : `${vol.toFixed(1)}%`, '', 'annualised'), row('MA 50D', ma(50)), row('MA 200D', ma(200)),
+    row('Average 30D', fm(s, windowAvg(pts, 30))), row('Average 1Y', fm(s, windowAvg(pts, 365))), row(`Corr 90D vs ${CODE[bmId]}`, corr === undefined ? '—' : corr.toFixed(2), '', 'daily returns'),
+    row('52W high', fm(s, hi.v), '', short(hi.date)), row('52W low', fm(s, lo.v), '', short(lo.date)), row('52W range position', `${pos.toFixed(0)}%`),
+    row('Observations', String(pts.length), '', `from ${short(pts[0].date)}`), row('Frequency', daily ? 'Daily' : 'Monthly'), row('Unit', unit(s)),
+  ].join('');
+  document.getElementById('inote').innerHTML = `Source: <a href="${s.url}" target="_blank" rel="noopener">${s.source}</a>`
+    + (s.manual ? ' · new prices come from the Send to Tracky bookmark.' : '') + (pts.length < 2 ? ' · history is still building up.' : '');
+  renderIChart();
 }
-document.getElementById('detail').addEventListener('click', (e) => { if (e.target.id === 'detail') e.target.close(); });
 
+const axisFont = { family: 'JetBrains Mono', size: 11 };
+// Crosshair: dashed vertical line on hover (mirrored on the sub panel) and a horizontal price line with a value tag.
+const crosshair = {
+  id: 'crosshair',
+  afterEvent(chart, args) {
+    const e = args.event, a = chart.chartArea;
+    const inside = e.type !== 'mouseout' && a && e.x >= a.left && e.x <= a.right && e.y >= a.top && e.y <= a.bottom;
+    chart.$x = inside ? e.x : null; chart.$y = inside ? e.y : null;
+    const peer = chart.$peer;
+    if (peer && !peer.canvas.parentElement.closest('[hidden]')) { peer.$x = chart.$x; peer.$y = null; peer.draw(); }
+    args.changed = true;
+  },
+  afterDatasetsDraw(chart) {
+    const x = chart.$x;
+    if (x == null) return;
+    const { ctx, chartArea: { top, bottom, left, right } } = chart, fmtY = chart.$fmt;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(17, 24, 39, .4)'; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(x + .5, top); ctx.lineTo(x + .5, bottom);
+    if (chart.$y != null && fmtY) { ctx.moveTo(left, chart.$y + .5); ctx.lineTo(right, chart.$y + .5); }
+    ctx.stroke(); ctx.setLineDash([]);
+    if (chart.$y != null && fmtY) {
+      const txt = fmtY(chart.scales.y.getValueForPixel(chart.$y));
+      ctx.font = '500 11px JetBrains Mono'; const w = ctx.measureText(txt).width + 10;
+      ctx.fillStyle = '#0b1466'; ctx.fillRect(right + 1, chart.$y - 9, w, 18);
+      ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText(txt, right + 6, chart.$y + 1);
+    }
+    ctx.restore();
+  },
+};
+const Y_W = 76; // fixed y-axis width so the price and sub panels line up pixel for pixel
+const tooltip = (title, label) => ({ backgroundColor: '#111827', padding: 8, cornerRadius: 2, displayColors: false, titleFont: { family: 'Inter Tight', weight: '600', size: 12 }, bodyFont: axisFont, callbacks: { title, label } });
+
+function renderIChart() {
+  const s = series[selected];
+  if (!s) return;
+  const last = s.pts.at(-1).date, cutoff = irange ? dayBefore(last, irange) : '';
+  const pts = s.pts.filter((p) => p.date > cutoff);
+  const rawByDate = new Map(s.raw.map((p) => [p.date, p]));
+  const cfg = {
+    type: 'line',
+    data: { datasets: [{ data: pts.map((p) => ({ x: Date.parse(p.date), y: p.v, iso: p.date })), borderColor: '#0b1466', backgroundColor: 'rgba(11, 20, 102, .04)', fill: true,
+      borderWidth: 1.5, tension: 0, pointRadius: pts.length < 3 ? 3 : 0, pointHoverRadius: 3, pointHoverBackgroundColor: '#0b1466', pointHoverBorderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'index', axis: 'x', intersect: false },
+      plugins: { legend: { display: false },
+        tooltip: tooltip((it) => fmtDate(it[0].raw.iso, s.freq === 'daily' ? 'daily' : 'monthly'), (it) => {
+          const r = rawByDate.get(it.raw.iso), lines = [`${fm(s, it.parsed.y)} ${unit(s)}`];
+          if (r?.o !== undefined) lines.push(`O ${nfmt(r.o, true)}  H ${nfmt(r.h, true)}  L ${nfmt(r.l, true)}  C ${nfmt(r.c ?? r.native, true)} ${s.cur}`);
+          return lines;
+        }) },
+      scales: {
+        x: { type: 'linear', min: pts.length ? Date.parse(pts[0].date) : undefined, max: pts.length ? Date.parse(pts.at(-1).date) : undefined,
+          grid: { color: '#f1f2f5', drawTicks: false }, border: { color: '#e1e4ea' },
+          ticks: { color: '#6b7280', font: axisFont, padding: 6, align: 'inner', maxTicksLimit: innerWidth < 600 ? 4 : 8, maxRotation: 0, callback: (v) => short(new Date(v).toISOString().slice(0, 10)) } },
+        y: { position: 'right', afterFit: (sc) => { sc.width = Y_W; }, grid: { color: '#f1f2f5', drawTicks: false }, border: { display: false },
+          ticks: { color: '#6b7280', font: axisFont, padding: 8, maxTicksLimit: 7, callback: (v) => nfmt(v, s.per === 't') } } } },
+    plugins: [crosshair],
+  };
+  if (ichart) { ichart.data = cfg.data; ichart.options = cfg.options; ichart.update(); } else ichart = new Chart(document.getElementById('ichart'), cfg);
+  ichart.$fmt = (v) => nfmt(v, s.per === 't');
+  renderSub(s, pts, rawByDate, cfg.options.scales.x);
+  ichart.$peer = document.getElementById('isub-wrap').hidden ? null : isub;
+  // Match the sub pane's plot area to the price pane's so the crosshair and bars line up exactly.
+  if (ichart.$peer) {
+    const d = ichart.chartArea.left - isub.chartArea.left + (isub.options.layout?.padding?.left || 0);
+    if (Math.abs(d - (isub.options.layout?.padding?.left || 0)) > .5) { isub.options.layout = { padding: { left: Math.max(0, d) } }; isub.update(); }
+  }
+}
+
+// Sub panel: SHFE volume (bars) + open interest (line), or LME warehouse stock; hidden for sources without either.
+let isub;
+function renderSub(s, pts, rawByDate, xScale) {
+  const rows = pts.map((p) => ({ x: Date.parse(p.date), r: rawByDate.get(p.date) }));
+  const hasVol = rows.some((d) => d.r?.vol !== undefined), hasStock = rows.some((d) => d.r?.stock !== undefined);
+  document.getElementById('isub-wrap').hidden = !(hasVol || hasStock);
+  const none = document.getElementById('isub-none');
+  none.hidden = hasVol || hasStock;
+  none.textContent = `No volume, open-interest or stock data is published by ${s.source}.`;
+  if (!(hasVol || hasStock)) return;
+  const compact = (v) => Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(v);
+  document.getElementById('isub-title').textContent = hasVol ? 'Volume · open interest (lots, main contract)' : 'LME warehouse stock (tonnes)';
+  document.getElementById('isub-key').innerHTML = hasVol ? '<span><i style="background:rgba(11,20,102,.3)"></i>VOL</span><span><i style="background:#a37b00;height:2px"></i>OI</span>'
+    : '<span><i style="background:rgba(11,20,102,.3)"></i>STOCK</span>';
+  const bars = { type: 'bar', label: hasVol ? 'Volume' : 'Stock', data: rows.map((d) => ({ x: d.x, y: hasVol ? d.r?.vol : d.r?.stock })),
+    backgroundColor: 'rgba(11, 20, 102, .3)', hoverBackgroundColor: 'rgba(11, 20, 102, .6)', barPercentage: 1, categoryPercentage: 1, grouped: false, yAxisID: 'y' };
+  const oi = { type: 'line', label: 'Open interest', data: rows.map((d) => ({ x: d.x, y: d.r?.oi })), borderColor: '#a37b00', borderWidth: 1.25, pointRadius: 0, tension: 0, yAxisID: 'y1' };
+  const cfg = {
+    data: { datasets: hasVol ? [bars, oi] : [bars] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'index', axis: 'x', intersect: false },
+      plugins: { legend: { display: false },
+        tooltip: tooltip((it) => fmtDate(new Date(it[0].parsed.x).toISOString().slice(0, 10), 'daily'), (it) => `${it.dataset.label} ${compact(it.parsed.y)}`) },
+      scales: {
+        x: { ...xScale, ticks: { display: false }, border: { color: '#e1e4ea' } },
+        y: { position: 'right', afterFit: (sc) => { sc.width = Y_W; }, beginAtZero: true, grid: { color: '#f1f2f5', drawTicks: false }, border: { display: false },
+          ticks: { color: '#6b7280', font: axisFont, padding: 8, maxTicksLimit: 3, callback: compact } },
+        y1: { display: false } } },
+    plugins: [crosshair],
+  };
+  if (isub) { isub.data = cfg.data; isub.options = cfg.options; isub.update(); } else isub = new Chart(document.getElementById('isub'), cfg);
+}
+
+// ---------- right column ----------
+function renderSide() {
+  const moves = ORDER.filter((id) => series[id] && series[id].freq === 'daily' && series[id].pts.length > 1)
+    .map((id) => ({ id, s: series[id], c: series[id].chg })).filter((m) => m.c !== undefined)
+    .sort((a, b) => Math.abs(b.c) - Math.abs(a.c)).slice(0, 6);
+  document.getElementById('movers').innerHTML = moves.map(({ id, s, c }) => `<button class="mv" type="button" data-id="${id}" title="${s.name}">
+    <code>${s.code}</code><span class="num">${nfmt(s.pts.at(-1).v, s.per === 't')}</span>${badge(c)}</button>`).join('')
+    || '<p class="muted" style="padding:6px 0">No daily moves yet.</p>';
+
+  const r = data.fx.latest;
+  document.getElementById('fx').innerHTML = ['PHP', 'MYR', 'CNY', 'EUR'].map((c) => `<div><span>${c}</span>${r[c].toFixed(c === 'EUR' ? 4 : 3)}</div>`).join('');
+
+  const bySource = {};
+  for (const s of Object.values(series)) {
+    if (s.manual) continue; // hand-captured prices are not a feed
+    const d = s.pts.at(-1).date, k = s.source;
+    (bySource[k] ||= { date: d, codes: [] }).codes.push(s.code);
+    if (d > bySource[k].date) bySource[k].date = d;
+  }
+  const weekAgo = dayBefore(new Date().toISOString().slice(0, 10), 7);
+  document.getElementById('feed').innerHTML = Object.entries(bySource).sort((a, b) => b[1].date.localeCompare(a[1].date))
+    .map(([src, v]) => `<li><div><b>${src}</b><small>${[...new Set(v.codes)].join(' ')}</small></div>
+      <time class="${v.date < weekAgo ? 'old' : ''}" title="${v.date < weekAgo ? 'Older than a week' : ''}">${short(v.date)}</time></li>`).join('');
+}
+
+// ---------- compare chart ----------
+const lineColor = (id) => LINES[Math.max(0, GROUPS[series[id]?.group]?.indexOf(id) ?? 0) % LINES.length];
 function renderLegend() {
   const el = document.getElementById('legend');
-  el.innerHTML = Object.entries(series).filter(([, s]) => s.group === chartGroup).map(([id, s]) => `<button data-id="${id}" aria-pressed="${!hidden.has(id)}" style="color:${COLORS[id]}">
-    <i style="background:${COLORS[id]}"></i><span style="color:var(--ink)">${label(s)}</span></button>`).join('');
-  el.querySelectorAll('button').forEach((b) => b.onclick = () => toggle(b.dataset.id));
+  el.innerHTML = Object.entries(series).filter(([, s]) => s.group === chartGroup).map(([id, s]) => `<button data-id="${id}" aria-pressed="${!hidden.has(id)}" title="${s.name}">
+    <i style="background:${lineColor(id)}"></i>${s.code}</button>`).join('');
+  el.querySelectorAll('button').forEach((b) => b.onclick = () => { hidden.has(b.dataset.id) ? hidden.delete(b.dataset.id) : hidden.add(b.dataset.id); renderLegend(); renderChart(); });
 }
 
 function renderChart() {
+  if (view !== 'compare') return;
   const cutoff = rangeDays ? new Date(Date.now() - rangeDays * 864e5).toISOString().slice(0, 10) : '';
   const unitT = chartGroup === 'metal';
   const inGroup = Object.entries(series).filter(([, s]) => s.group === chartGroup);
@@ -459,76 +658,141 @@ function renderChart() {
   const cc = currency !== 'local' ? currency : Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0] || 'USD';
   const datasets = inGroup.filter(([id]) => !hidden.has(id)).map(([id, s]) => {
     const pts = aggregate(converted(s, cc), gran).filter((p) => p.date >= cutoff);
-    return { label: label(s), data: pts.map((p) => ({ x: Date.parse(p.date), y: p.v, iso: p.date })),
-      borderColor: COLORS[id], backgroundColor: COLORS[id], borderWidth: 2,
-      tension: .3, pointRadius: pts.length === 1 ? 4 : 0, pointHoverRadius: 4, pointHoverBorderWidth: 2, pointHoverBorderColor: '#fff', spanGaps: true };
+    return { label: s.code, data: pts.map((p) => ({ x: Date.parse(p.date), y: p.v, iso: p.date })), borderColor: lineColor(id), backgroundColor: lineColor(id),
+      borderWidth: 1.5, tension: 0, pointRadius: pts.length === 1 ? 3 : 0, pointHoverRadius: 3, spanGaps: true };
   });
-  const font = { family: 'Figtree', size: 12 };
-  document.getElementById('chart-sub').textContent = `Average ${SYM[cc]}/${unitT ? 'tonne' : 'kg'} (${cc}) per ${{ daily: 'day', weekly: 'week', monthly: 'month', yearly: 'year' }[gran]}. Monthly series show one point per month.`;
+  document.getElementById('chart-sub').textContent = `Average ${cc}/${unitT ? 't' : 'kg'} per ${{ daily: 'day', weekly: 'week', monthly: 'month', yearly: 'year' }[gran]} · monthly series plot once a month`;
   const cfg = {
     type: 'line', data: { datasets },
-    options: { responsive: true, maintainAspectRatio: false, animation: { duration: 350 },
-      interaction: { mode: 'nearest', axis: 'x', intersect: false },
-      layout: { padding: { top: 6 } },
-      plugins: { legend: { display: false },
-        tooltip: { backgroundColor: '#0f1124', padding: 12, cornerRadius: 12, boxPadding: 5, usePointStyle: true,
-          titleFont: { ...font, weight: '600' }, bodyFont: font, titleColor: '#c9d2ff',
-          callbacks: { title: (it) => fmtDate(it[0].raw.iso, gran), label: (it) => ` ${it.dataset.label}  ${money(cc, it.parsed.y, unitT)}` } } },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'nearest', axis: 'x', intersect: false },
+      plugins: { legend: { display: false }, tooltip: { ...tooltip((it) => fmtDate(it[0].raw.iso, gran), (it) => ` ${it.dataset.label}  ${money(cc, it.parsed.y, unitT)}`), displayColors: true, boxPadding: 4 } },
       scales: {
-        x: { type: 'linear', grid: { display: false }, border: { color: '#e4e2da' },
-          ticks: { color: '#5d6275', font, maxTicksLimit: 7, maxRotation: 0,
-            callback: (v) => fmtDate(new Date(v).toISOString().slice(0, 10), gran === 'yearly' ? 'yearly' : 'monthly') } },
-        y: { position: 'right', grid: { color: '#f1eee5' }, border: { display: false },
-          ticks: { color: '#5d6275', font, padding: 8, maxTicksLimit: 6, callback: (v) => SYM[cc] + (unitT ? Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(v) : v) } } } },
+        x: { type: 'linear', grid: { color: '#f1f2f5', drawTicks: false }, border: { color: '#e1e4ea' }, ticks: { color: '#6b7280', font: axisFont, padding: 6, maxTicksLimit: 8, maxRotation: 0,
+          callback: (v) => fmtDate(new Date(v).toISOString().slice(0, 10), gran === 'yearly' ? 'yearly' : 'monthly') } },
+        y: { position: 'right', grid: { color: '#f1f2f5', drawTicks: false }, border: { display: false }, ticks: { color: '#6b7280', font: axisFont, padding: 8, maxTicksLimit: 7,
+          callback: (v) => unitT ? Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(v) : v } } } },
   };
   if (chart) { chart.data = cfg.data; chart.options = cfg.options; chart.update(); } else chart = new Chart(document.getElementById('chart'), cfg);
 }
 
+// ---------- all prices ----------
 function renderTable() {
-  const head = '<tr><th>Series</th><th>Latest</th><th>Avg 7D</th><th>Avg 30D</th><th>Avg 1Y</th><th>1W</th><th>1M</th><th>1Y</th><th>Source</th></tr>';
-  const order = Object.values(GROUPS).flat().filter((id) => series[id]);
-  const rows = order.map((id) => {
-    const s = series[id], last = s.pts.at(-1), daily = s.freq === 'daily';
-    return `<tr>
-      <td><div class="cell"><i style="background:${COLORS[id]}"></i><div><b>${label(s)}</b><small>${s.origin} · ${fmtDate(last.date, daily ? 'daily' : 'monthly')}</small></div></div></td>
-      <td>${fm(s, last.v)}<span class="muted">/${per(s)}</span></td><td>${daily ? fm(s, windowAvg(s.pts, 7)) : '<span class="muted">—</span>'}</td>
-      <td>${fm(s, windowAvg(s.pts, 30))}</td><td>${fm(s, windowAvg(s.pts, 365))}</td>
-      <td>${chg(daily ? pctChange(s.pts, 7) : undefined)}</td><td>${chg(pctChange(s.pts, 30))}</td><td>${chg(pctChange(s.pts, 365))}</td>
-      <td>${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${s.source}</a>` : '<span class="muted">Computed</span>'}</td></tr>`;
+  const head = '<thead><tr><th>Symbol</th><th>Last</th><th>Unit</th><th>1D</th><th>1W</th><th>1M</th><th>1Y</th><th>Avg 30D</th><th>Avg 1Y</th><th>As of</th><th>Source</th></tr></thead>';
+  const rows = ORDER.filter((id) => series[id]).map((id) => {
+    const s = series[id], last = s.pts.at(-1), daily = s.freq === 'daily', t = s.per === 't';
+    const c = (n, ok = true) => { const v = ok ? pctChange(s.pts, n) : undefined; return `<td class="${dir(v)}">${pctTxt(v)}</td>`; };
+    const avg = (n) => { const v = windowAvg(s.pts, n); return v === undefined ? '—' : nfmt(v, t); };
+    return `<tr data-id="${id}"><td><b>${s.code}</b><span class="nm">${s.name}${s.market ? ' · ' + s.market : ''}</span></td>
+      <td>${nfmt(last.v, t)}</td><td class="muted">${unit(s)}</td>${c(1, daily)}${c(7, daily)}${c(30)}${c(365)}
+      <td>${avg(30)}</td><td>${avg(365)}</td><td class="muted">${short(last.date)}</td>
+      <td><a href="${s.url}" target="_blank" rel="noopener">${s.source}</a></td></tr>`;
   }).join('');
-  document.getElementById('tbl').innerHTML = head + rows;
+  document.getElementById('tbl').innerHTML = head + `<tbody>${rows}</tbody>`;
+}
+
+function setView(v) {
+  view = v;
+  document.querySelectorAll('#mtabs button').forEach((b) => b.setAttribute('aria-selected', b.dataset.v === v));
+  for (const k of ['chart', 'compare', 'table']) document.getElementById('view-' + k).hidden = k !== v;
+  document.getElementById('irange').style.visibility = v === 'chart' ? 'visible' : 'hidden';
+  if (v === 'compare') { renderLegend(); renderChart(); }
 }
 
 function render(d) {
-  data = d; build(); renderTiles(); renderLegend(); renderChart(); renderTable();
-  const r = d.fx.latest;
-  document.getElementById('fx').innerHTML = ['PHP', 'MYR', 'CNY', 'EUR'].map((c) => `<span class="num"><i>US$1</i> ${SYM[c]}${r[c].toFixed(2)}</span>`).join('');
-  document.getElementById('hero-k').textContent = currency === 'local' ? "Prices in each market's own currency" : `All prices in ${currency}`;
+  data = d; build();
+  renderTape(); renderWatch(); renderInstrument(); renderSide(); renderTable(); renderLegend(); renderChart();
   const errs = Object.entries(d.errors || {}), el = document.getElementById('err'), up = document.getElementById('updated');
-  up.className = 'sync' + (errs.length ? ' stale' : '');
-  up.innerHTML = '<i></i>' + (d.updatedAt ? `Updated ${new Date(d.updatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}` : 'No data yet');
-  const smr = series.smr20;
-  document.getElementById('hero-stat').innerHTML = smr ? `<p>SMR 20 · ${fmtDate(smr.pts.at(-1).date, 'daily')}</p>
-    <b>${fm(smr, smr.pts.at(-1).v)}<small>/kg</small></b>${spark(smr.pts, '#ffd84d').replace('class="spark"', '')}
-    <span class="delta">${(v => v === undefined ? '' : `${v >= 0 ? '▲' : '▼'} ${Math.abs(v).toFixed(2)}% this month`)(pctChange(smr.pts, 30))}</span>` : '';
+  up.className = 'stamp' + (errs.length ? ' stale' : '');
+  up.textContent = d.updatedAt ? `UPD ${new Date(d.updatedAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}` : 'No data';
   el.style.display = errs.length ? 'block' : 'none';
-  el.textContent = errs.length ? `Couldn't refresh ${errs.map(([k]) => d.meta?.[k]?.name || k).join(', ')}. Showing the last saved prices.` : '';
+  el.textContent = errs.length ? `Feed error: ${errs.map(([k]) => CODE[k] || k).join(', ')} not refreshed. Showing last saved prices.` : '';
 }
 
-const tabs = (id, fn) => document.querySelectorAll(`#${id} button`).forEach((b) => b.onclick = () => {
-  document.querySelectorAll(`#${id} button`).forEach((x) => x.setAttribute('aria-selected', x === b)); fn(b.dataset.v); renderChart();
+// ---------- events ----------
+const seg = (id, fn) => document.querySelectorAll(`#${id} button`).forEach((b) => b.onclick = () => {
+  document.querySelectorAll(`#${id} button`).forEach((x) => x.setAttribute('aria-selected', x === b)); fn(b.dataset.v);
 });
-tabs('gran', (v) => gran = v);
-tabs('range', (v) => rangeDays = +v);
-tabs('cgroup', (v) => { chartGroup = v; renderLegend(); });
+seg('mtabs', setView);
+seg('irange', (v) => { irange = +v; renderIChart(); });
+seg('gran', (v) => { gran = v; renderChart(); });
+seg('range', (v) => { rangeDays = +v; renderChart(); });
+seg('cgroup', (v) => { chartGroup = v; renderLegend(); renderChart(); });
+
+// Any element carrying data-id (watchlist row, ticker item, mover, table row) selects that instrument.
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-id]');
+  if (!el || el.closest('#legend') || e.target.closest('a')) return;
+  if (el.closest('#watch, #tape, #movers, #tbl')) select(el.dataset.id, !el.closest('#watch'));
+});
+// Arrow keys move through the watchlist.
+document.getElementById('watch').addEventListener('keydown', (e) => {
+  const step = { ArrowDown: 1, ArrowUp: -1 }[e.key];
+  if (!step) return;
+  e.preventDefault();
+  const ids = [...document.querySelectorAll('.wl-row[data-id]')].map((el) => el.dataset.id);
+  const next = ids[Math.max(0, Math.min(ids.length - 1, ids.indexOf(selected) + step))];
+  select(next, true);
+  document.querySelector(`.wl-row[data-id="${next}"]`)?.focus();
+});
+
+// ---------- command bar: '/' or Ctrl/Cmd+K ----------
+const q = document.getElementById('q'), qList = document.getElementById('q-list');
+let qItems = [], qIdx = 0;
+const ACTIONS = [
+  { kind: 'Action', code: 'REFRESH', label: 'Refresh prices', run: () => document.getElementById('refresh').click() },
+  { kind: 'Action', code: 'CAPTURE', label: 'Enter a SAN / PPB price by hand', run: () => { location.href = '/capture.html'; } },
+  { kind: 'Action', code: 'ABOUT', label: 'About the data', run: () => document.getElementById('about-dlg').showModal() },
+  { kind: 'Action', code: 'INSTALL', label: 'Install app', run: () => document.getElementById('install').click() },
+  ...CHOICES.map((c) => ({ kind: 'Currency', code: c.toUpperCase(), label: c === 'local' ? 'Show each market in its own currency' : `Show all prices in ${c}`,
+    run: () => { curSel.value = c; curSel.onchange(); } })),
+];
+function search(text) {
+  const t = text.trim().toLowerCase();
+  const inst = ORDER.filter((id) => series[id]).map((id) => {
+    const s = series[id];
+    return { kind: s.group === 'metal' ? 'Metal' : s.group === 'plastic' ? 'Resin' : 'Rubber', code: s.code, label: `${s.name}${s.market ? ' · ' + s.market : ''} · ${s.source}`,
+      hay: `${s.code} ${s.name} ${s.market || ''} ${s.source} ${s.origin} ${s.group}`.toLowerCase(), run: () => select(id, true) };
+  });
+  const all = [...inst, ...ACTIONS.map((a) => ({ ...a, hay: `${a.code} ${a.label} ${a.kind}`.toLowerCase() }))];
+  return (t ? all.filter((x) => t.split(/\s+/).every((w) => x.hay.includes(w))) : inst).slice(0, 12);
+}
+function drawList() {
+  qList.innerHTML = qItems.length
+    ? qItems.map((x, i) => `<li role="option" id="q-${i}" aria-selected="${i === qIdx}" data-i="${i}"><code>${x.code}</code><small>${x.label}</small><span class="kind">${x.kind}</span></li>`).join('')
+    : '<div class="q-empty">No matches</div>';
+  q.setAttribute('aria-activedescendant', qItems.length ? `q-${qIdx}` : '');
+}
+const openList = () => { qItems = search(q.value); qIdx = 0; drawList(); qList.hidden = false; q.setAttribute('aria-expanded', 'true'); };
+const closeList = () => { qList.hidden = true; q.setAttribute('aria-expanded', 'false'); };
+const runItem = (x) => { if (!x) return; closeList(); q.value = ''; q.blur(); x.run(); };
+q.addEventListener('focus', openList);
+q.addEventListener('input', openList);
+q.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault(); qIdx = (qIdx + (e.key === 'ArrowDown' ? 1 : -1) + qItems.length) % Math.max(1, qItems.length);
+    drawList(); qList.querySelector(`#q-${qIdx}`)?.scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') { e.preventDefault(); runItem(qItems[qIdx]); }
+  else if (e.key === 'Escape') { closeList(); q.blur(); }
+});
+qList.addEventListener('mousedown', (e) => { const li = e.target.closest('li[data-i]'); if (li) { e.preventDefault(); runItem(qItems[+li.dataset.i]); } });
+q.addEventListener('blur', () => setTimeout(closeList, 100));
+addEventListener('keydown', (e) => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
+  if ((e.key === '/' && !typing) || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) { e.preventDefault(); q.focus(); }
+});
+
+// ---------- settings menu ----------
+const menuBtn = document.getElementById('menu-btn'), menuPop = document.getElementById('menu-pop');
+const setMenu = (open) => { menuPop.hidden = !open; menuBtn.setAttribute('aria-expanded', open); };
+menuBtn.onclick = (e) => { e.stopPropagation(); setMenu(menuPop.hidden); };
+document.addEventListener('click', (e) => { if (!menuPop.hidden && !e.target.closest('.menu')) setMenu(false); });
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menuPop.hidden) { setMenu(false); menuBtn.focus(); } });
+document.getElementById('about-btn').onclick = () => { setMenu(false); document.getElementById('about-dlg').showModal(); };
+document.getElementById('about-close').onclick = () => document.getElementById('about-dlg').close();
 
 const curSel = document.getElementById('cur');
 curSel.value = currency;
-curSel.onchange = () => {
-  currency = curSel.value;
-  try { localStorage.setItem('tracky.currency', currency); } catch {}
-  if (data) render(data);
-};
+curSel.onchange = () => { currency = curSel.value; store.set('tracky.currency', currency); if (data) render(data); };
 
 const btn = document.getElementById('refresh');
 btn.onclick = async () => {
@@ -538,17 +802,25 @@ btn.onclick = async () => {
 
 const d = await (await fetch('/api/prices')).json();
 if (Object.keys(d.series || {}).length) render(d);
-else { document.getElementById('updated').innerHTML = '<i></i>Fetching prices…'; btn.click(); }
+else { document.getElementById('updated').textContent = 'Fetching…'; btn.click(); }
 
 // ---------- Send to Tracky bookmarklet ----------
 // Collects the page URL, title, selected text and table rows, then opens Tracky's capture page with them in the URL hash
 // (the hash never reaches any server). The user confirms the price there before anything is saved.
-const bookmarklet = `javascript:(()=>{const d={u:location.href,t:document.title,s:String(getSelection()).trim().slice(0,1000),`
-  + `r:[...document.querySelectorAll('tr')].map(e=>e.innerText.replace(/\\s+/g,' ').trim()).filter(t=>/\\d{4}/.test(t)&&t.length<300).slice(0,150)};`
-  + `window.open('${location.origin}/capture.html#'+encodeURIComponent(JSON.stringify(d)),'tracky','width=540,height=800')})()`;
+// Chart history: reads the data series of any ECharts / Highcharts / Chart.js chart already drawn on the page
+// (the data the viewer's own browser loaded), as [x, y] pairs per series. x is a date label or a timestamp.
+const chartGrab = "const H=[];const add=(n,p)=>{p=p.filter(q=>q[0]!=null&&q[1]!=null&&q[1]!=='-'&&!isNaN(+q[1]));if(p.length>1)H.push({n:String(n||''),p:p.slice(-800)})};"
+  + "try{if(window.echarts)document.querySelectorAll('[_echarts_instance_]').forEach(el=>{const c=echarts.getInstanceByDom(el);if(!c)return;const o=c.getOption(),xs=((o.xAxis||[])[0]||{}).data||[];"
+  + "(o.series||[]).forEach(s=>add(s.name,(s.data||[]).map((v,i)=>{let x=xs[i],y=v;if(v&&typeof v==='object'&&!Array.isArray(v))y=v.value;if(Array.isArray(y)){x=y[0];y=y[1]}"
+  + "return[x&&typeof x==='object'?x.value:x,y]})))})}catch(e){}"
+  + "try{(window.Highcharts&&Highcharts.charts||[]).forEach(c=>c&&c.series.forEach(s=>add(s.name,s.points.map(q=>[q.category!=null?q.category:q.x,q.y]))))}catch(e){}"
+  + "try{Object.values(window.Chart&&Chart.instances||{}).forEach(c=>{const l=c.data.labels||[];c.data.datasets.forEach(s=>add(s.label,s.data.map((v,i)=>v&&typeof v==='object'?[v.x,v.y]:[l[i],v])))})}catch(e){}";
+const bookmarklet = `javascript:(()=>{${chartGrab}const d={u:location.href,t:document.title,s:String(getSelection()).trim().slice(0,1000),`
+  + `r:[...document.querySelectorAll('tr')].map(e=>e.innerText.replace(/\\s+/g,' ').trim()).filter(t=>/\\d{4}/.test(t)&&t.length<300).slice(0,150),h:H.slice(0,8)};`
+  + `window.open('${location.origin}/capture.html#'+encodeURIComponent(JSON.stringify(d)),'tracky','width=560,height=860')})()`;
 const bm = document.getElementById('bm');
 bm.href = bookmarklet;
-bm.onclick = (e) => { e.preventDefault(); alert('Drag this button onto your bookmarks bar, then click it on a SunSirs or 21cp price page.'); };
+bm.onclick = (e) => { e.preventDefault(); alert('Drag “Drag me” onto your bookmarks bar, then click the bookmark on a SunSirs or 21cp price page.'); };
 
 // ---------- PWA ----------
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch((e) => console.warn('SW failed', e));
@@ -563,7 +835,7 @@ addEventListener('appinstalled', () => { installBox.hidden = true; deferred = nu
 const ICON_SHARE = '<svg viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
 const ICON_PLUS = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
 const ICON_MENU = '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>';
-document.getElementById('install-btn').onclick = async () => {
+document.getElementById('install').onclick = async () => {
   if (deferred) {
     deferred.prompt();
     const { outcome } = await deferred.userChoice;
