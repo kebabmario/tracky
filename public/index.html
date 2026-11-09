@@ -268,6 +268,7 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
         <a class="mi" href="/capture.html"><div><b>Enter a price by hand</b><small>SAN, PPB, ABS or PPH, in CNY/t</small></div></a>
         <hr>
         <button class="mi" id="install" type="button"><div><b>Install app</b><small>Home screen, works offline</small></div></button>
+        <button class="mi" id="forget-key" type="button" hidden><div><b>Forget Tracky key</b><small>Remove the saving key from this device</small></div></button>
         <button class="mi" id="about-btn" type="button"><div><b>About the data</b><small>Sources, units and currency</small></div></button>
       </div>
     </div>
@@ -798,10 +799,37 @@ curSel.value = currency;
 curSel.onchange = () => { currency = curSel.value; store.set('tracky.currency', currency); if (data) render(data); };
 
 const btn = document.getElementById('refresh');
+// Saving needs the site's Tracky key when the server has one (the live site). It is asked for once and kept on this device.
+const KEY_STORE = 'tracky.key';
+const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ''; } catch { return ''; } };
+const setKey = (k) => { try { k ? localStorage.setItem(KEY_STORE, k) : localStorage.removeItem(KEY_STORE); } catch {} };
+async function authFetch(url, opts = {}) {
+  const send = () => fetch(url, { ...opts, headers: { ...opts.headers, ...(getKey() && { 'X-Tracky-Key': getKey() }) } });
+  let res = await send();
+  if (res.status === 401) {
+    const j = await res.clone().json().catch(() => ({}));
+    if (j.needKey) {
+      const k = prompt(`${j.error} Enter your Tracky key (it stays on this device):`);
+      if (k) { setKey(k.trim()); res = await send(); if (res.status === 401) setKey(''); }
+    }
+  }
+  return res;
+}
+
 btn.onclick = async () => {
   btn.disabled = true; btn.classList.add('spin');
-  try { render(await (await fetch('/api/refresh', { method: 'POST' })).json()); } finally { btn.disabled = false; btn.classList.remove('spin'); }
+  const err = document.getElementById('err');
+  try {
+    const res = await authFetch('/api/refresh', { method: 'POST' });
+    const j = await res.json().catch(() => null);
+    if (res.ok && j?.series) render(j);
+    else { err.style.display = 'block'; err.textContent = `Refresh failed: ${j?.error || `HTTP ${res.status}`}`; }
+  } catch { err.style.display = 'block'; err.textContent = `Refresh failed: can't reach Tracky's server.`; }
+  finally { btn.disabled = false; btn.classList.remove('spin'); document.getElementById('forget-key').hidden = !getKey(); }
 };
+const forget = document.getElementById('forget-key');
+forget.hidden = !getKey();
+forget.onclick = () => { setKey(''); forget.hidden = true; setMenu(false); };
 
 const d = await (await fetch('/api/prices')).json();
 if (Object.keys(d.series || {}).length) render(d);

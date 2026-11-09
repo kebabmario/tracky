@@ -190,12 +190,51 @@ function merge(old = [], fresh) {
   return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
 }
 
-export async function loadData() {
+// ---------- storage: data/prices.json locally, Vercel Blob when BLOB_READ_WRITE_TOKEN is set ----------
+// Vercel functions have a read-only filesystem, so the live site keeps its data in Blob. Each save is a new,
+// uniquely named blob (a fresh URL, so the CDN never serves an old copy); the newest is current and older ones are pruned.
+const BLOB_PREFIX = 'tracky/prices-';
+const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
+let blobCache = null; // { at, data } — short read cache for GET /api/prices only
+
+async function blobVersions() {
+  const { list } = await import('@vercel/blob');
+  const { blobs } = await list({ prefix: BLOB_PREFIX, limit: 100 });
+  return blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+}
+
+// fresh: skip the read cache (always used before a write, so one save never overwrites another with stale data).
+export async function loadData({ fresh = false } = {}) {
+  if (useBlob()) {
+    if (!fresh && blobCache && Date.now() - blobCache.at < 30_000) return structuredClone(blobCache.data);
+    const [newest] = await blobVersions(); // errors propagate: never fall back to old data and then save over Blob
+    if (newest) {
+      const res = await fetch(newest.url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Blob read failed (${res.status})`);
+      const data = await res.json();
+      blobCache = { at: Date.now(), data };
+      return structuredClone(data);
+    }
+    // No blob yet (first run on Vercel): start from the data file bundled with the deployment.
+  }
   try { return JSON.parse(await readFile(DATA_FILE, 'utf8')); } catch { return { series: {} }; }
 }
 
+async function writeData(data) {
+  if (useBlob()) {
+    const { put, del } = await import('@vercel/blob');
+    await put(`${BLOB_PREFIX}${Date.now()}.json`, JSON.stringify(data), { access: 'public', contentType: 'application/json', addRandomSuffix: true });
+    blobCache = { at: Date.now(), data: structuredClone(data) };
+    const old = (await blobVersions()).slice(5); // keep the last 5 versions as a safety net
+    if (old.length) await del(old.map((b) => b.url));
+    return;
+  }
+  await mkdir(new URL('./data/', import.meta.url), { recursive: true });
+  await writeFile(DATA_FILE, JSON.stringify(data, null, 1));
+}
+
 export async function scrape() {
-  const data = await loadData();
+  const data = await loadData({ fresh: true });
   const firstRun = !data.series.smr5?.length;
   const start = iso(new Date(Date.now() - 4 * 365 * 864e5));
   const fx = await fxHistory(start);
@@ -240,8 +279,7 @@ async function save(data) {
     data.series[id] = pts.map(({ date, native, v, ...extra }) => ({ date, native, v: round(native * f, 4), ...extra }));
   }
   data.meta = SERIES;
-  await mkdir(new URL('./data/', import.meta.url), { recursive: true });
-  await writeFile(DATA_FILE, JSON.stringify(data, null, 1));
+  await writeData(data);
   return data;
 }
 
@@ -271,7 +309,7 @@ export async function addCaptures({ series, src, points }) {
     if (err) errors.add(err); else ok.push(c);
   }
   if (!ok.length) throw Object.assign(new Error([...errors][0] || 'No valid prices'), { status: 400 });
-  const data = await loadData();
+  const data = await loadData({ fresh: true });
   let host;
   try { host = src ? new URL(src).hostname : undefined; } catch { host = undefined; }
   data.series[series] = merge(data.series[series], ok.map((c) => ({ date: c.date, native: c.price, ...(host && { src: host }) })));

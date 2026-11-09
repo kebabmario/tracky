@@ -104,3 +104,12 @@ test('bulk capture validation', async () => {
   await assert.rejects(addCaptures({ series: 'as', points: [{ date: '2026-01-01', price: 5 }] }), /between 1,000/);
   await assert.rejects(addCaptures({ series: 'nope', points: [{ date: '2026-01-01', price: 9000 }] }), /Unknown material/);
 });
+
+test('key check', async () => {
+  const { keyOk } = await import('../auth.js');
+  assert.equal(keyOk('s3cret', 's3cret'), true);
+  assert.equal(keyOk('wrong', 's3cret'), false);
+  assert.equal(keyOk('', 's3cret'), false);
+  assert.equal(keyOk(undefined, ''), false);
+  assert.equal(keyOk('anything', ''), false);
+});

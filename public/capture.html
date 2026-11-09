@@ -162,6 +162,23 @@ if (cands.length) {
   }
 }
 
+// Saving needs the site's Tracky key when the server has one (the live site). It is asked for once and kept on this device.
+const KEY_STORE = 'tracky.key';
+const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ''; } catch { return ''; } };
+const setKey = (k) => { try { k ? localStorage.setItem(KEY_STORE, k) : localStorage.removeItem(KEY_STORE); } catch {} };
+async function authFetch(url, opts = {}) {
+  const send = () => fetch(url, { ...opts, headers: { ...opts.headers, ...(getKey() && { 'X-Tracky-Key': getKey() }) } });
+  let res = await send();
+  if (res.status === 401) {
+    const j = await res.clone().json().catch(() => ({}));
+    if (j.needKey) {
+      const k = prompt(`${j.error} Enter your Tracky key (it stays on this device):`);
+      if (k) { setKey(k.trim()); res = await send(); if (res.status === 401) setKey(''); }
+    }
+  }
+  return res;
+}
+
 const show = (text, ok) => { const m = $('msg'); m.hidden = false; m.className = 'msg ' + (ok ? 'ok' : 'bad'); m.textContent = text; };
 $('f').onsubmit = async (e) => {
   e.preventDefault();
@@ -174,9 +191,15 @@ $('f').onsubmit = async (e) => {
   const body = { series, points, ...(src && { src }) };
   $('save').disabled = true;
   try {
-    const res = await fetch('/api/capture', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    const j = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(j.error || 'Could not save');
+    let res;
+    try { res = await authFetch('/api/capture', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); }
+    catch { throw new Error(`Can't reach Tracky's server at ${location.host}. Start it with “npm start”, then try again.`); }
+    const j = await res.json().catch(() => null);
+    if (!res.ok || !j) {
+      // No JSON back means this address serves the page files only (e.g. a Vercel deployment) with no Tracky server behind it.
+      if (!j) throw new Error(`Could not save: ${location.host} has no Tracky server to save to (HTTP ${res.status}). Open Tracky where server.js runs, e.g. http://localhost:3000, and drag the bookmark from there.`);
+      throw new Error(j.error || `Could not save (HTTP ${res.status}).`);
+    }
     const name = $('series').selectedOptions[0].text;
     show(withHist ? `Saved ${j.saved.toLocaleString('en-US')} ${name} prices${j.skipped ? ` (${j.skipped} skipped)` : ''}.`
       : `Saved ${name} at ${single.price.toLocaleString('en-US')} CNY/t for ${single.date}.`, true);

@@ -7591,16 +7591,2951 @@
   ],
   "ppHomo": [
    {
+    "date": "2025-11-10",
+    "native": 7130,
+    "v": 7.13,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-11",
+    "native": 7130,
+    "v": 7.13,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-12",
+    "native": 7100,
+    "v": 7.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-13",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-14",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-17",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-18",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-19",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-20",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-21",
+    "native": 7050,
+    "v": 7.05,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-24",
+    "native": 6950,
+    "v": 6.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-25",
+    "native": 6950,
+    "v": 6.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-26",
+    "native": 6950,
+    "v": 6.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-27",
+    "native": 6950,
+    "v": 6.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-28",
+    "native": 6950,
+    "v": 6.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-01",
+    "native": 6950,
+    "v": 6.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-02",
+    "native": 6900,
+    "v": 6.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-03",
+    "native": 6900,
+    "v": 6.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-04",
+    "native": 6900,
+    "v": 6.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-05",
+    "native": 6900,
+    "v": 6.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-08",
+    "native": 6900,
+    "v": 6.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-09",
+    "native": 6850,
+    "v": 6.85,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-10",
+    "native": 6850,
+    "v": 6.85,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-11",
+    "native": 6850,
+    "v": 6.85,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-12",
+    "native": 6850,
+    "v": 6.85,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-15",
+    "native": 6900,
+    "v": 6.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-16",
+    "native": 6980,
+    "v": 6.98,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-17",
+    "native": 6980,
+    "v": 6.98,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-18",
+    "native": 6980,
+    "v": 6.98,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-19",
+    "native": 7000,
+    "v": 7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-22",
+    "native": 7000,
+    "v": 7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-23",
+    "native": 7060,
+    "v": 7.06,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-24",
+    "native": 7100,
+    "v": 7.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-25",
+    "native": 7100,
+    "v": 7.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-26",
+    "native": 7060,
+    "v": 7.06,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-29",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-30",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-31",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-04",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-05",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-06",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-07",
+    "native": 7200,
+    "v": 7.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-08",
+    "native": 7250,
+    "v": 7.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-09",
+    "native": 7250,
+    "v": 7.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-12",
+    "native": 7250,
+    "v": 7.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-13",
+    "native": 7250,
+    "v": 7.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-14",
+    "native": 7250,
+    "v": 7.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-15",
+    "native": 7350,
+    "v": 7.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-16",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-19",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-20",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-21",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-22",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-23",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-26",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-27",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-28",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-29",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-30",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-02",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-03",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-04",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-05",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-06",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-09",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-10",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-11",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-12",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-24",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-25",
+    "native": 7450,
+    "v": 7.45,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-26",
+    "native": 7600,
+    "v": 7.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-27",
+    "native": 7800,
+    "v": 7.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-28",
+    "native": 7800,
+    "v": 7.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-02",
+    "native": 7800,
+    "v": 7.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-03",
+    "native": 7800,
+    "v": 7.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-04",
+    "native": 7950,
+    "v": 7.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-05",
+    "native": 7950,
+    "v": 7.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-06",
+    "native": 7950,
+    "v": 7.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-09",
+    "native": 8500,
+    "v": 8.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-10",
+    "native": 8500,
+    "v": 8.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-11",
+    "native": 8200,
+    "v": 8.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-12",
+    "native": 8500,
+    "v": 8.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-13",
+    "native": 8800,
+    "v": 8.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-16",
+    "native": 9000,
+    "v": 9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-17",
+    "native": 9000,
+    "v": 9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-18",
+    "native": 9000,
+    "v": 9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-19",
+    "native": 9500,
+    "v": 9.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-20",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-23",
+    "native": 9700,
+    "v": 9.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-24",
+    "native": 9900,
+    "v": 9.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-25",
+    "native": 9900,
+    "v": 9.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-26",
+    "native": 9900,
+    "v": 9.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-27",
+    "native": 9950,
+    "v": 9.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-30",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-31",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-01",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-02",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-03",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-07",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-08",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-09",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-10",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-13",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-14",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-15",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-16",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-17",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-20",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-21",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-22",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-23",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-24",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-27",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-28",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-29",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-30",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-06",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-07",
+    "native": 10500,
+    "v": 10.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-08",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-09",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-11",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-12",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-13",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-14",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-15",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-18",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-19",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-20",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-21",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-22",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-25",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-26",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-27",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-28",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-29",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-01",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-02",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-03",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-04",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-05",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-08",
+    "native": 10700,
+    "v": 10.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-09",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-10",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-11",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-12",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-15",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-16",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-17",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-18",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-22",
+    "native": 10780,
+    "v": 10.78,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-23",
+    "native": 10200,
+    "v": 10.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-24",
+    "native": 9950,
+    "v": 9.95,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-25",
+    "native": 9750,
+    "v": 9.75,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-26",
+    "native": 9400,
+    "v": 9.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-29",
+    "native": 9400,
+    "v": 9.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-30",
+    "native": 9400,
+    "v": 9.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-01",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-02",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-03",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-06",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-07",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-08",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-09",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-10",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-13",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-14",
+    "native": 9800,
+    "v": 9.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-15",
+    "native": 9800,
+    "v": 9.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-16",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-17",
+    "native": 9600,
+    "v": 9.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-20",
+    "native": 9700,
+    "v": 9.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-21",
+    "native": 9700,
+    "v": 9.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-22",
+    "native": 9800,
+    "v": 9.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-23",
+    "native": 10000,
+    "v": 10,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-24",
+    "native": 10000,
+    "v": 10,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-27",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-28",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-29",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-30",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-31",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-03",
+    "native": 10250,
+    "v": 10.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-04",
+    "native": 10250,
+    "v": 10.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-05",
+    "native": 10250,
+    "v": 10.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-06",
+    "native": 10250,
+    "v": 10.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-07",
+    "native": 10250,
+    "v": 10.25,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-10",
+    "native": 10300,
+    "v": 10.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-11",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-12",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-13",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-14",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-17",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-18",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-19",
+    "native": 10350,
+    "v": 10.35,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-20",
+    "native": 10400,
+    "v": 10.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-21",
+    "native": 10400,
+    "v": 10.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-24",
+    "native": 10400,
+    "v": 10.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-25",
+    "native": 10400,
+    "v": 10.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-26",
+    "native": 10400,
+    "v": 10.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-27",
+    "native": 10400,
+    "v": 10.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-28",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-31",
+    "native": 10600,
+    "v": 10.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-01",
+    "native": 10800,
+    "v": 10.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-02",
+    "native": 11000,
+    "v": 11,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-03",
+    "native": 11000,
+    "v": 11,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-04",
+    "native": 11000,
+    "v": 11,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-07",
+    "native": 11100,
+    "v": 11.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-08",
+    "native": 11400,
+    "v": 11.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-09",
+    "native": 11400,
+    "v": 11.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-10",
+    "native": 11500,
+    "v": 11.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-11",
+    "native": 11500,
+    "v": 11.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-14",
+    "native": 11600,
+    "v": 11.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-15",
+    "native": 11600,
+    "v": 11.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-16",
+    "native": 11600,
+    "v": 11.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-17",
+    "native": 11600,
+    "v": 11.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-18",
+    "native": 11600,
+    "v": 11.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-20",
+    "native": 11600,
+    "v": 11.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-21",
+    "native": 11500,
+    "v": 11.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-22",
+    "native": 11300,
+    "v": 11.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-23",
+    "native": 11300,
+    "v": 11.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-24",
+    "native": 11300,
+    "v": 11.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-28",
+    "native": 11300,
+    "v": 11.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-29",
+    "native": 11300,
+    "v": 11.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-30",
+    "native": 11300,
+    "v": 11.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-08",
+    "native": 11500,
+    "v": 11.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-09",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-10",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-12",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-13",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-14",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-15",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-16",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-19",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-20",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-21",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-22",
+    "native": 11700,
+    "v": 11.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-23",
+    "native": 11750,
+    "v": 11.75,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-26",
+    "native": 11900,
+    "v": 11.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-27",
+    "native": 12100,
+    "v": 12.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-28",
+    "native": 12200,
+    "v": 12.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-29",
+    "native": 12400,
+    "v": 12.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-30",
+    "native": 12400,
+    "v": 12.4,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-02",
+    "native": 12600,
+    "v": 12.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-03",
+    "native": 12700,
+    "v": 12.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-04",
+    "native": 12900,
+    "v": 12.9,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-05",
+    "native": 12900,
+    "v": 12.9,
+    "src": "intl.21cp.com"
+   },
+   {
     "date": "2026-11-06",
     "native": 11092,
     "v": 11.092
+   },
+   {
+    "date": "2026-11-09",
+    "native": 12900,
+    "v": 12.9,
+    "src": "intl.21cp.com"
    }
   ],
   "abs": [
    {
+    "date": "2025-11-10",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-11",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-12",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-13",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-14",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-17",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-18",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-19",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-20",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-21",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-24",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-25",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-26",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-27",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-11-28",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-01",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-02",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-03",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-04",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-05",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-08",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-09",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-10",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-11",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-12",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-15",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-16",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-17",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-18",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-19",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-22",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-23",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-24",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-25",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-26",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-29",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-30",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2025-12-31",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-04",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-05",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-06",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-07",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-08",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-09",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-12",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-13",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-14",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-15",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-16",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-19",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-20",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-21",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-22",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-23",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-26",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-27",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-28",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-29",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-01-30",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-02",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-03",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-04",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-05",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-06",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-09",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-10",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-11",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-12",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-24",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-25",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-26",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-27",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-02-28",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-02",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-03",
+    "native": 15800,
+    "v": 15.8,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-04",
+    "native": 16200,
+    "v": 16.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-05",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-06",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-09",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-10",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-11",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-12",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-13",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-16",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-17",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-18",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-19",
+    "native": 18200,
+    "v": 18.2,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-20",
+    "native": 18700,
+    "v": 18.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-23",
+    "native": 18700,
+    "v": 18.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-24",
+    "native": 20100,
+    "v": 20.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-25",
+    "native": 20100,
+    "v": 20.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-26",
+    "native": 20100,
+    "v": 20.1,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-27",
+    "native": 21300,
+    "v": 21.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-30",
+    "native": 21300,
+    "v": 21.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-03-31",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-01",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-02",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-03",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-07",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-08",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-09",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-10",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-13",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-14",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-15",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-16",
+    "native": 23000,
+    "v": 23,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-17",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-20",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-21",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-22",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-23",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-24",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-27",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-28",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-29",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-04-30",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-06",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-07",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-08",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-09",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-11",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-12",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-13",
+    "native": 22000,
+    "v": 22,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-14",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-15",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-18",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-19",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-20",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-21",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-22",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-25",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-26",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-27",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-28",
+    "native": 21000,
+    "v": 21,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-05-29",
+    "native": 20000,
+    "v": 20,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-01",
+    "native": 20000,
+    "v": 20,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-02",
+    "native": 20000,
+    "v": 20,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-03",
+    "native": 20000,
+    "v": 20,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-04",
+    "native": 20000,
+    "v": 20,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-05",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-08",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-09",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-10",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-11",
+    "native": 18000,
+    "v": 18,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-12",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-15",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-16",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-17",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-18",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-22",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-23",
+    "native": 17000,
+    "v": 17,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-24",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-25",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-26",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-29",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-06-30",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-01",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-02",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-03",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-06",
+    "native": 15700,
+    "v": 15.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-07",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-08",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-09",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-10",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-13",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-14",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-15",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-16",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-17",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-20",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-21",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-22",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-23",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-24",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-27",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-28",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-29",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-30",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-07-31",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-03",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-04",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-05",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-06",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-07",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-10",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-11",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-12",
+    "native": 15300,
+    "v": 15.3,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-13",
+    "native": 15000,
+    "v": 15,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-14",
+    "native": 15000,
+    "v": 15,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-17",
+    "native": 15000,
+    "v": 15,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-18",
+    "native": 15000,
+    "v": 15,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-19",
+    "native": 15000,
+    "v": 15,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-20",
+    "native": 15000,
+    "v": 15,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-21",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-24",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-25",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-26",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-27",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-28",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-08-31",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-01",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-02",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-03",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-04",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-07",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-08",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-09",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-10",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-11",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-14",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-15",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-16",
+    "native": 16500,
+    "v": 16.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-17",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-18",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-20",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-21",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-22",
+    "native": 16000,
+    "v": 16,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-23",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-24",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-28",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-29",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-09-30",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-08",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-09",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-10",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-12",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-13",
+    "native": 15700,
+    "v": 15.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-14",
+    "native": 15700,
+    "v": 15.7,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-15",
+    "native": 15600,
+    "v": 15.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-16",
+    "native": 15600,
+    "v": 15.6,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-19",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-20",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-21",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-22",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-23",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-26",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-27",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-28",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-29",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-10-30",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-02",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-03",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-04",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
+    "date": "2026-11-05",
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
+   },
+   {
     "date": "2026-11-06",
-    "native": 12083,
-    "v": 12.083
+    "native": 15500,
+    "v": 15.5,
+    "src": "intl.21cp.com"
    },
    {
     "date": "2026-11-07",
@@ -27884,6 +30819,6 @@
    ]
   ]
  },
- "updatedAt": "2026-11-09T12:25:19.148Z",
+ "updatedAt": "2026-11-09T12:44:02.307Z",
  "errors": {}
 }
