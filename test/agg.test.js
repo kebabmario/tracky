@@ -53,7 +53,10 @@ test('capture helpers', async () => {
   const { guessMaterial, guessDate, guessPrices, candidateRows } = await import('../public/capture-parse.js');
   assert.equal(guessMaterial('', 'PP block copolymer price - SunSirs'), 'ppBlock');
   assert.equal(guessMaterial('AS(SAN) NF2200 Ningbo'), 'as');
-  assert.equal(guessMaterial('PP homo T30S'), '');
+  assert.equal(guessMaterial('PP homo T30S'), 'ppHomo');
+  assert.equal(guessMaterial('ABS 0215A Jilin'), 'abs');
+  assert.equal(guessMaterial('ABS resin price'), 'abs');
+  assert.equal(guessMaterial('PP random 4220'), '');
   assert.equal(guessDate('Price 2026/11/06 and 2026-11-08 and 2027-01-01', '2026-11-09'), '2026-11-08');
   assert.equal(guessDate('no date here', '2026-11-09'), '2026-11-09');
   assert.deepEqual(guessPrices('2026-11-08 AS 9,850 yuan/ton (+50) 1.2%'), [9850]);
@@ -62,6 +65,9 @@ test('capture helpers', async () => {
   assert.deepEqual(candidateRows(['PS 8800', 'AS NF2200 9850', 'header'], 'as'), ['AS NF2200 9850', 'PS 8800']);
   const { checkCapture } = await import('../scraper.js');
   assert.equal(checkCapture({ series: 'ppBlock', date: '2026-11-09', price: 8200 }, '2026-11-09'), null);
+  assert.equal(checkCapture({ series: 'abs', date: '2026-11-09', price: 12000 }, '2026-11-09'), null);
+  assert.equal(checkCapture({ series: 'ppHomo', date: '2026-11-09', price: 9000 }, '2026-11-09'), null);
+  assert.ok(checkCapture({ series: 'pvc', date: '2026-11-09', price: 5000 }, '2026-11-09'));
   assert.ok(checkCapture({ series: 'ppBlock', date: '2026-11-09', price: NaN }, '2026-11-09'));
 });
 

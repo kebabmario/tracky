@@ -37,7 +37,9 @@ Object.assign(SERIES, {
   as: { name: 'AS (SAN)', ...CAPTURE },
   ppBlock: { name: 'PP block copo', ...CAPTURE },
 });
-export const CAPTURE_IDS = ['as', 'ppBlock'];
+// SAN and PPB come only from captures; ABS and PP homo also take captures (e.g. 21cp chart history) on top of the
+// daily Guidechem feed. On a date both have, the feed's price wins at the next scrape.
+export const CAPTURE_IDS = ['as', 'ppBlock', 'abs', 'ppHomo'];
 const MRB_GRADES = { smr5: 'SMR 5', smr10: 'SMR 10', smr20: 'SMR 20' };
 const SHFE_PRODUCTS = { copper: 'cu', aluminum: 'al', wireRod: 'wr' };
 

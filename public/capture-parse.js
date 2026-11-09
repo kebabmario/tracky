@@ -3,12 +3,16 @@
 
 const PP_BLOCK = /共聚|copolymer|block\s*co|impact|K8003|EPS30R|K7726|M2600R|K8009|EP548R/i;
 const AS = /\bAS\b|\bSAN\b|苯乙烯[-－]?丙烯腈|styrene[-\s]?acrylonitrile|NF2200|PN-?127|80HF/i;
+const ABS = /\bABS\b|丙烯腈[-－]?丁二烯[-－]?苯乙烯|acrylonitrile[-\s]?butadiene|0215A|PA-?757|HP181|AG15A1/i;
+const PP_HOMO = /均聚|homo-?polymer|\bhomo\b|\bPPH\b|raffia|拉丝|T30S|S1003|F401|L5E89|V30G/i;
 
 export function guessMaterial(...texts) {
   for (const t of texts) {
     if (!t) continue;
     if (PP_BLOCK.test(t)) return 'ppBlock';
+    if (ABS.test(t)) return 'abs';
     if (AS.test(t)) return 'as';
+    if (PP_HOMO.test(t)) return 'ppHomo';
   }
   return '';
 }
@@ -36,7 +40,7 @@ export function guessPrices(text) {
 
 // Table rows worth showing as one-click candidates: ones with a price, rows naming the material first.
 export function candidateRows(rows, material) {
-  const re = material === 'ppBlock' ? PP_BLOCK : material === 'as' ? AS : null;
+  const re = { ppBlock: PP_BLOCK, as: AS, abs: ABS, ppHomo: PP_HOMO }[material] || null;
   return (rows || [])
     .filter((r) => guessPrices(r).length)
     .map((r, i) => ({ r, score: (re && re.test(r) ? 0 : 1) * 1000 + i }))

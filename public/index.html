@@ -264,8 +264,8 @@ dialog .dialog-actions { display: flex; justify-content: flex-end; margin-top: 1
     <div class="menu">
       <button id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-controls="menu-pop" aria-label="Settings and tools"><svg viewBox="0 0 16 16"><circle cx="3" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="13" cy="8" r="1.5"/></svg></button>
       <div class="menu-pop" id="menu-pop" hidden>
-        <div class="mi" id="bm-box"><div><b>Send to Tracky bookmark</b><small>Drag onto your bookmarks bar, then click it on a SunSirs or 21cp page to save SAN / PPB.</small></div><a class="grab" id="bm" href="#" draggable="true">Drag me</a></div>
-        <a class="mi" href="/capture.html"><div><b>Enter a price by hand</b><small>SAN or PPB, in CNY/t</small></div></a>
+        <div class="mi" id="bm-box"><div><b>Send to Tracky bookmark</b><small>Drag onto your bookmarks bar, then click it on a SunSirs or 21cp page to save SAN, PPB, ABS or PPH.</small></div><a class="grab" id="bm" href="#" draggable="true">Drag me</a></div>
+        <a class="mi" href="/capture.html"><div><b>Enter a price by hand</b><small>SAN, PPB, ABS or PPH, in CNY/t</small></div></a>
         <hr>
         <button class="mi" id="install" type="button"><div><b>Install app</b><small>Home screen, works offline</small></div></button>
         <button class="mi" id="about-btn" type="button"><div><b>About the data</b><small>Sources, units and currency</small></div></button>
@@ -508,7 +508,10 @@ function renderInstrument() {
     row('52W high', fm(s, hi.v), '', short(hi.date)), row('52W low', fm(s, lo.v), '', short(lo.date)), row('52W range position', `${pos.toFixed(0)}%`),
     row('Observations', String(pts.length), '', `from ${short(pts[0].date)}`), row('Frequency', daily ? 'Daily' : 'Monthly'), row('Unit', unit(s)),
   ].join('');
+  // Feed series can also hold Send to Tracky captures (ABS, PPH); say how many and from where.
+  const caps = s.manual ? [] : s.raw.filter((p) => p.src), hosts = [...new Set(caps.map((p) => p.src))].join(', ');
   document.getElementById('inote').innerHTML = `Source: <a href="${s.url}" target="_blank" rel="noopener">${s.source}</a>`
+    + (caps.length ? ` · plus ${caps.length} price${caps.length === 1 ? '' : 's'} captured from ${hosts}` : '')
     + (s.manual ? ' · new prices come from the Send to Tracky bookmark.' : '') + (pts.length < 2 ? ' · history is still building up.' : '');
   renderIChart();
 }
@@ -740,7 +743,7 @@ const q = document.getElementById('q'), qList = document.getElementById('q-list'
 let qItems = [], qIdx = 0;
 const ACTIONS = [
   { kind: 'Action', code: 'REFRESH', label: 'Refresh prices', run: () => document.getElementById('refresh').click() },
-  { kind: 'Action', code: 'CAPTURE', label: 'Enter a SAN / PPB price by hand', run: () => { location.href = '/capture.html'; } },
+  { kind: 'Action', code: 'CAPTURE', label: 'Enter a SAN, PPB, ABS or PPH price by hand', run: () => { location.href = '/capture.html'; } },
   { kind: 'Action', code: 'ABOUT', label: 'About the data', run: () => document.getElementById('about-dlg').showModal() },
   { kind: 'Action', code: 'INSTALL', label: 'Install app', run: () => document.getElementById('install').click() },
   ...CHOICES.map((c) => ({ kind: 'Currency', code: c.toUpperCase(), label: c === 'local' ? 'Show each market in its own currency' : `Show all prices in ${c}`,
