@@ -2,6 +2,16 @@
   "name": "tracky",
   "version": "1.0.0",
   "description": "Rubber, resin and metals commodity terminal",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://tracky.kebabmario.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kebabmario/tracky.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kebabmario/tracky/issues"
+  },
   "type": "module",
   "scripts": {
     "start": "node server.js",
