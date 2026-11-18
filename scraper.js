@@ -191,8 +191,8 @@ function merge(old = [], fresh) {
 }
 
 // ---------- storage: data/prices.json locally, Vercel Blob when BLOB_READ_WRITE_TOKEN is set ----------
-// Vercel functions have a read-only filesystem, so the live site keeps its data in Blob. Each save is a new,
-// uniquely named blob (a fresh URL, so the CDN never serves an old copy); the newest is current and older ones are pruned.
+// Vercel functions have a read-only filesystem, so the live site keeps its data in a private Blob store. Each save
+// is a new, uniquely named blob; the newest is current and older ones are pruned.
 const BLOB_PREFIX = 'tracky/prices-';
 export const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
 let blobCache = null; // { at, data } — short read cache for GET /api/prices only
@@ -209,9 +209,11 @@ export async function loadData({ fresh = false } = {}) {
     if (!fresh && blobCache && Date.now() - blobCache.at < 30_000) return structuredClone(blobCache.data);
     const [newest] = await blobVersions(); // errors propagate: never fall back to old data and then save over Blob
     if (newest) {
-      const res = await fetch(newest.url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Blob read failed (${res.status})`);
-      const data = await res.json();
+      // Private store: read through the SDK with the store token, straight from origin (no CDN cache).
+      const { get } = await import('@vercel/blob');
+      const r = await get(newest.url, { access: 'private', useCache: false });
+      if (!r || r.statusCode !== 200) throw new Error(`Blob read failed (${r ? r.statusCode : 'not found'})`);
+      const data = await new Response(r.stream).json();
       blobCache = { at: Date.now(), data };
       return structuredClone(data);
     }
@@ -223,7 +225,7 @@ export async function loadData({ fresh = false } = {}) {
 async function writeData(data) {
   if (useBlob()) {
     const { put, del } = await import('@vercel/blob');
-    await put(`${BLOB_PREFIX}${Date.now()}.json`, JSON.stringify(data), { access: 'public', contentType: 'application/json', addRandomSuffix: true });
+    await put(`${BLOB_PREFIX}${Date.now()}.json`, JSON.stringify(data), { access: 'private', contentType: 'application/json', addRandomSuffix: true });
     blobCache = { at: Date.now(), data: structuredClone(data) };
     const old = (await blobVersions()).slice(5); // keep the last 5 versions as a safety net
     if (old.length) await del(old.map((b) => b.url));

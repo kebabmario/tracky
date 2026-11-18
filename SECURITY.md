@@ -39,4 +39,4 @@ Out of scope:
   deployment refuses all writes.
 - The capture key is kept in the browser's local storage on devices where it has been entered.
   Use the "Forget Tracky key" menu option on shared devices.
-- The Blob store is public by URL. Store only data you are willing to publish.
+- Use a private Blob store. Tracky reads and writes it with the store token; nothing is exposed by URL.

@@ -114,7 +114,8 @@ All variables are optional for local use. Copy `.env.example` to `.env` and star
 ## Deployment (Vercel)
 
 1. Import the repository in Vercel.
-2. Create a Blob store under Storage and connect it to the project. This sets `BLOB_READ_WRITE_TOKEN`.
+2. Create a Blob store with private access under Storage and connect it to the project. This sets
+   `BLOB_READ_WRITE_TOKEN`.
 3. Add `CAPTURE_KEY` and `CRON_SECRET` as environment variables with long random values.
 4. Deploy. `vercel.json` schedules `/api/cron` daily at 10:00 UTC.
 
