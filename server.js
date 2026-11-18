@@ -19,7 +19,9 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
 let queue = Promise.resolve();
 const serial = (fn) => (queue = queue.then(fn, fn));
 let scraping = null;
-const refresh = () => (scraping ??= serial(scrape).catch((e) => console.error('[scrape]', e.message)).finally(() => (scraping = null)));
+// One scrape at a time; concurrent callers share it. runScrape rejects on failure, refresh (local timer) only logs.
+const runScrape = () => (scraping ??= serial(scrape).finally(() => (scraping = null)));
+const refresh = () => runScrape().catch((e) => console.error('[scrape]', e.message));
 
 async function readJson(req, limit = 4096) {
   let body = '';
@@ -55,7 +57,12 @@ createServer(async (req, res) => {
     }
     if (path === '/api/refresh' && req.method === 'POST') {
       if (!writeGuard(req, res)) return;
-      await refresh();
+      try {
+        await runScrape();
+      } catch (e) {
+        console.error('[refresh]', e);
+        return sendJson(res, 500, { ok: false, error: `Refresh failed: ${e.message}` });
+      }
       return sendJson(res, 200, await loadData({ fresh: true }));
     }
     // Vercel Cron: GET with "Authorization: Bearer <CRON_SECRET>".
@@ -100,7 +107,10 @@ createServer(async (req, res) => {
     const fresh = path === '/sw.js' || extname(file) === '.html';
     res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', ...(fresh && { 'Cache-Control': 'no-cache' }) });
     res.end(body);
-  } catch {
-    res.writeHead(404).end('Not found');
+  } catch (e) {
+    // Static misses are 404s; anything thrown by an API route is a server error worth reporting.
+    if (!path.startsWith('/api/')) return res.writeHead(404).end('Not found');
+    console.error('[api]', path, e);
+    sendJson(res, 500, { ok: false, error: e.message });
   }
 }).listen(PORT, () => console.log(`tracky on http://localhost:${PORT}`));
