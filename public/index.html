@@ -699,8 +699,11 @@ function render(d) {
   data = d; build();
   renderTape(); renderWatch(); renderInstrument(); renderSide(); renderTable(); renderLegend(); renderChart();
   const errs = Object.entries(d.errors || {}), el = document.getElementById('err'), up = document.getElementById('updated');
-  up.className = 'stamp' + (errs.length ? ' stale' : '');
-  up.textContent = d.updatedAt ? `UPD ${new Date(d.updatedAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}` : 'No data';
+  // Prices refresh daily; more than 36 hours without an update means the scheduled refresh is not running.
+  const stale = d.updatedAt && Date.now() - Date.parse(d.updatedAt) > 36 * 3600e3;
+  up.className = 'stamp' + (errs.length || stale ? ' stale' : '');
+  up.title = stale ? 'Prices have not refreshed in over 36 hours. The scheduled refresh may not be running.' : '';
+  up.textContent = d.updatedAt ? `${stale ? 'STALE' : 'UPD'} ${new Date(d.updatedAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}` : 'No data';
   el.style.display = errs.length ? 'block' : 'none';
   el.textContent = errs.length ? `Feed error: ${errs.map(([k]) => CODE[k] || k).join(', ')} not refreshed. Showing last saved prices.` : '';
 }

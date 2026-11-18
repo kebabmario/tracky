@@ -194,7 +194,7 @@ function merge(old = [], fresh) {
 // Vercel functions have a read-only filesystem, so the live site keeps its data in Blob. Each save is a new,
 // uniquely named blob (a fresh URL, so the CDN never serves an old copy); the newest is current and older ones are pruned.
 const BLOB_PREFIX = 'tracky/prices-';
-const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
+export const useBlob = () => !!process.env.BLOB_READ_WRITE_TOKEN;
 let blobCache = null; // { at, data } — short read cache for GET /api/prices only
 
 async function blobVersions() {

@@ -3,7 +3,7 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, normalize } from 'node:path';
-import { scrape, loadData, addCapture, addCaptures } from './scraper.js';
+import { scrape, loadData, addCapture, addCaptures, useBlob } from './scraper.js';
 import { keyOk } from './auth.js';
 
 const ON_VERCEL = !!process.env.VERCEL;
@@ -59,8 +59,17 @@ createServer(async (req, res) => {
       return sendJson(res, 200, await loadData({ fresh: true }));
     }
     // Vercel Cron: GET with "Authorization: Bearer <CRON_SECRET>".
+    // Deployment health without exposing secrets: which pieces are configured and how old the data is.
+    if (path === '/api/status') {
+      const d = await loadData();
+      return sendJson(res, 200, { onVercel: ON_VERCEL, storage: useBlob() ? 'vercel-blob' : 'file', canSave: !ON_VERCEL || useBlob(),
+        captureKeySet: !!CAPTURE_KEY, cronSecretSet: !!CRON_SECRET, updatedAt: d.updatedAt || null, errors: d.errors || {} });
+    }
     if (path === '/api/cron') {
+      // Misconfiguration gets its own message so the Vercel cron log says what to fix.
+      if (!CRON_SECRET) return sendJson(res, 503, { ok: false, error: 'CRON_SECRET is not set on this deployment. Add it in Vercel, then redeploy.' });
       if (!keyOk((req.headers.authorization || '').replace(/^Bearer\s+/i, ''), CRON_SECRET)) return sendJson(res, 401, { ok: false, error: 'Unauthorized' });
+      if (ON_VERCEL && !useBlob()) return sendJson(res, 503, { ok: false, error: 'No Vercel Blob store is connected, so prices cannot be saved. Connect one under Storage, then redeploy.' });
       try {
         const d = await serial(scrape);
         return sendJson(res, 200, { ok: true, updatedAt: d.updatedAt, errors: d.errors });
